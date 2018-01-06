@@ -1,0 +1,10 @@
+{
+	"name": "Balance",
+	"author": "Zerahan",
+	"version": "1.0.0",
+	"factorio_version": "0.16",
+	"title": "Balance Mod",
+	"homepage": "",
+	"description": "Balancing various features of the game",
+	"dependencies": ["base","Warehousing"]
+} 
