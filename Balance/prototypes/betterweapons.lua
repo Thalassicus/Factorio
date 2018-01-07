@@ -32,8 +32,8 @@ data.raw["ammo"]["uranium-cannon-shell"].ammo_type.action.action_delivery.max_ra
 data.raw["ammo"]["explosive-uranium-cannon-shell"].ammo_type.action.action_delivery.max_range = 80 	-- 30
 data.raw["car"]["tank"].weight = 40000					-- 20000
 data.raw["car"]["tank"].turret_rotation_speed = 1 / 60	-- 0.35
-data.raw["car"]["tank"].effectivity = 1					-- 0.6
-data.raw["car"]["tank"].burner.effectivity = 1 			-- 0.75
+data.raw["car"]["tank"].effectivity = 0.6				-- 0.6
+data.raw["car"]["tank"].burner.effectivity = 0.7		-- 0.75
 data.raw["car"]["tank"].consumption = "1200kW"			-- 600kW
 data.raw["car"]["tank"].braking_power = "800kW"			-- 400kW
 data.raw["car"]["tank"].terrain_friction_modifier = 0.05-- 0.2
