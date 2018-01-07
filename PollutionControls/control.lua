@@ -14,7 +14,7 @@ TOXIC_DUMP_SMOKE_MIN			= 1			-- the minimum number of trivial smoke clouds creat
 TOXIC_DUMP_SMOKE_MAX			= 3			-- the maximum number of trivial smoke clouds created when gas is released
 
 POLLUTION_COLLECTOR_NAME		= 'airfilter'
-POLLUTION_COLLECTOR_INTERVAL	= 6			-- collect pollution every # ticks
+POLLUTION_COLLECTOR_INTERVAL	= 30		-- collect pollution every # ticks
 POLLUTION_COLLECTION_PER_SEC	= 500		-- amount of pollution collected from the surface per second
 POLLUTION_COLLECTION_MIN		= 170		-- minimum amount of pollution required for the collector to operate
 

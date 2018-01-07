@@ -84,7 +84,6 @@ data.raw["land-mine"]["land-mine"].resistances =
         percent = 100
 	}
 }
---[[
 table.insert(data.raw["technology"]["laser-turret-damage-1"].effects,
 	{
 		type = "ammo-damage",

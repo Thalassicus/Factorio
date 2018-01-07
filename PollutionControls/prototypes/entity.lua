@@ -71,7 +71,7 @@ table.insert(toxicturret.resistances,
 	type = "poison",
 	percent = 100,
 })
-toxicturret.attack_parameters.ammo_type.action.action_delivery.duration = 80
+toxicturret.attack_parameters.ammo_type.action.action_delivery.duration = 60
 
 local airfilter = util.table.deepcopy(data.raw['assembling-machine']['chemical-plant'])
 airfilter.name = "airfilter"
