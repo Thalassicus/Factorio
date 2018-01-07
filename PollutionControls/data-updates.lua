@@ -323,6 +323,7 @@ addResistance(data.raw["underground-belt"],		"poison", 100)
 addResistance(data.raw["lamp"],					"poison", 100)
 addResistance(data.raw["cargo-wagon"],			"poison", 100)
 addResistance(data.raw["fluid-wagon"],			"poison", 100)
+addResistance(data.raw["artillery-wagon"],		"poison", 100)
 addResistance(data.raw["tree"],					"poison", 100)
 addResistance(data.raw["radar"],				"poison", 100)
 
