@@ -20,6 +20,7 @@ toxicturret_item.icons={
 local airfilter_item = util.table.deepcopy(data.raw['item']['chemical-plant'])
 airfilter_item.name = "airfilter"
 airfilter_item.place_result = "airfilter"
+airfilter_item.stack_size = 50
 airfilter_item.icons={
 	{
 		icon = data.raw['item']['chemical-plant'].icon

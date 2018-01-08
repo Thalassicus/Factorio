@@ -137,6 +137,44 @@ data:extend(
 	},
 	{
 		type = "recipe",
+		name = "recycle-steam-engine",
+		category = "advanced-crafting",
+		subgroup = "recycle-drills",
+		icon = "__base__/graphics/icons/steam-engine.png",
+		icon_size = 32,
+		order = "s",
+		normal =
+		{
+			energy_required = 1,
+			ingredients =
+			{
+				{type="item", name="steam-engine", amount=1}
+			},
+			results =
+			{
+				{type="item", name="iron-gear-wheel", amount=8},
+				{type="item", name="pipe", amount=5},
+				{type="item", name="iron-plate", amount=10},
+			},
+		},
+		expensive =
+		{
+			energy_required = 1,
+			ingredients =
+			{
+				{type="item", name="steam-engine", amount=1}
+			},
+			results =
+			{
+				{type="item", name="iron-gear-wheel", amount=10},
+				{type="item", name="pipe", amount=5},
+				{type="item", name="iron-plate", amount=50},
+			},
+		},
+		enabled = true,
+	},
+	{
+		type = "recipe",
 		name = "recycle-pistol",
 		category = "advanced-crafting",
 		subgroup = "recycle-military",
