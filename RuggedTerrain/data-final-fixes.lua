@@ -133,7 +133,7 @@ data.raw["noise-expression"]["default-elevation"].expression = noise.define_nois
 	local low_ridge	= -64 - rdi
 
 	local plateau_noise = make_multioctave_noise_function(map.seed, 9, plateau_octaves, 1/3, 3, 4, 1/128)
-	local plateaus = noise.max(make_basis_noise_function(map.seed, 10, 8, 1/128)(x,y) - 8, 2 - tile.tier/2)
+	local plateaus = noise.max(make_basis_noise_function(map.seed, 10, 8, 1/128)(x,y) - 8, 3 - tile.tier)
 
 	local high_freq_noise = make_multioctave_modulated_noise_function{
 		seed0 = map.seed,
