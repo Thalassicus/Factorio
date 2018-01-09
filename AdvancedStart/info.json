@@ -1,0 +1,10 @@
+{
+	"name": "AdvancedStart",
+	"author": "Thalassicus",
+	"version": "1.0.0",
+	"factorio_version": "0.16",
+	"title": "Advanced Start",
+	"homepage": "",
+	"description": "This allows you to skip the early game in freeplay.",
+	"dependencies": ["base"]
+} 

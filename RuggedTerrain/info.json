@@ -1,0 +1,10 @@
+{
+	"name": "RuggedTerrain",
+	"author": "Thalassicus",
+	"version": "1.0",
+	"factorio_version": "0.16",
+	"title": "Rugged Terrain",
+	"homepage": "",
+	"description": "Causes the terrain to creates larger and more strategically important cliffs.",
+	"dependencies": ["base"]
+} 
