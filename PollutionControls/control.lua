@@ -132,11 +132,11 @@ function EnemyDied(event)
 	
 	if event.entity.type == "unit" then
 		--local quantity = event.entity.prototype.pollution_to_join_attack / GetPollutedAirCollected
-		event.entity.surface.spill_item_stack(event.entity.position, {name="xenomeros", count=math.floor(20*math.random())}, true, event.force)
+		event.entity.surface.spill_item_stack(event.entity.position, {name="xenomeros", count=math.ceil(20*math.random())}, true, event.force)
 	elseif event.entity.type == "unit-spawner" then
-		event.entity.surface.spill_item_stack({event.entity.position.x, event.entity.position.y}, {name="xenovasi", count=math.floor(10*math.random())}, true)
+		event.entity.surface.spill_item_stack({event.entity.position.x, event.entity.position.y}, {name="xenovasi", count=math.ceil(10*math.random())}, true)
 	elseif event.entity.type == "turret" then
-		event.entity.surface.spill_item_stack({event.entity.position.x, event.entity.position.y}, {name="xenomeros", count=math.floor(20*math.random())}, true)
+		event.entity.surface.spill_item_stack({event.entity.position.x, event.entity.position.y}, {name="xenomeros", count=math.ceil(20*math.random())}, true)
 	end
 end
 script.on_event(defines.events.on_entity_died, function(event) EnemyDied(event) end)
