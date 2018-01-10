@@ -85,8 +85,14 @@ end
 function EnemyDied(event)
 	--log("EnemyDied entity.name=".. event.entity.name .." (position="..event.entity.position.x..","..event.entity.position.y..") killer="..event.force.name.." entity.force="..event.entity.force.name)
 	
-	if event.entity.force ~= game.forces.enemy then return end	
-	event.entity.surface.spill_item_stack(event.entity.position, {name="xenomeros"}, true, event.force)
+	if event.entity.force ~= game.forces.enemy then return end
+	if event.entity.type == "unit-spawner" then
+		event.entity.surface.spill_item_stack(event.entity.position, {name="xenovasi"}, true)
+	elseif event.entity.type == "unit" then
+		event.entity.surface.spill_item_stack(event.entity.position, {name="xenomeros"}, true, event.force)
+	elseif event.entity.type == "turret" then
+		event.entity.surface.spill_item_stack(event.entity.position, {name="xenomeros"}, true, event.force)
+	end
 end
 script.on_event(defines.events.on_entity_died, function(event) EnemyDied(event) end)
 
