@@ -9,9 +9,15 @@ TOXIC_DUMP_RATE					= 4 * 60	-- how often should toxic dumps release gas? [secon
 TOXIC_DUMP_FILLPERCENT			= 0.5		-- When the toxic dump contains more than this percent of it's total capacity, release gas
 TOXIC_DUMP_SLUDGE_CONSUMED		= 10		-- the amount of toxic sludge to remove when gas is released
 TOXIC_DUMP_POLLUTION_RELEASED	= 100		-- the amount of pollution to add to the chunk when gas is released
-TOXIC_DUMP_CLOUDS				= 10		-- the number of toxic clouds to create when gas is released
+TOXIC_DUMP_CLOUDS				= 1		-- the number of toxic clouds to create when gas is released
 TOXIC_DUMP_SMOKE_MIN			= 1			-- the minimum number of trivial smoke clouds created when gas is released
 TOXIC_DUMP_SMOKE_MAX			= 3			-- the maximum number of trivial smoke clouds created when gas is released
+
+TOXIC_DUMP_CLOUD_SMALL			= 'toxic-cloud-small'
+TOXIC_DUMP_CLOUD_MEDIUM			= 'toxic-cloud-medium'
+TOXIC_DUMP_CLOUD_MEDIUM_PERCENT = 0.7
+TOXIC_DUMP_CLOUD_LARGE			= 'toxic-cloud-large'
+TOXIC_DUMP_CLOUD_LARGE_PERCENT = 0.9
 
 POLLUTION_COLLECTOR_NAME		= 'airfilter'
 POLLUTION_COLLECTOR_INTERVAL	= 30		-- collect pollution every # ticks
@@ -147,11 +153,17 @@ function OnTick_ToxicDumps(_Event)
 							position = {entity.position.x+math.random(-0.75,0.75),entity.position.y+math.random(-0.75,0.75)},
 						}
 					end
+					local cloudToUse = TOXIC_DUMP_CLOUD_SMALL
+					if percentCapacity > TOXIC_DUMP_CLOUD_LARGE_PERCENT then
+						cloudToUse = TOXIC_DUMP_CLOUD_LARGE
+					elseif percentCapacity > TOXIC_DUMP_CLOUD_MEDIUM_PERCENT then
+						cloudToUse = TOXIC_DUMP_CLOUD_MEDIUM
+					end
 					for i = 1,math.max(math.ceil(percentCapacity * TOXIC_DUMP_CLOUDS),1),1 do
 						game.surfaces[v.surface].create_entity({
-							name="toxic-cloud",
+							name=cloudToUse,
 							amount=1,
-							position={entity.position.x+math.random(-11,10),entity.position.y+math.random(-10,11)},
+							position={entity.position.x,entity.position.y},
 						})
 					end
 				end

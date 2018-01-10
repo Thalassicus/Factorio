@@ -356,19 +356,21 @@ firetoxicontree.fade_in_duration = 0
 firetoxicontree.fade_out_duration = 0
 
 
-local toxiccloud = util.table.deepcopy(data.raw['smoke-with-trigger']['poison-cloud'])
-toxiccloud.name = "toxic-cloud"
-toxiccloud.affected_by_wind = false
-toxiccloud.animation.scale = 1
-toxiccloud.animation.animation_speed = 0.25
-toxiccloud.animation.filename = "__PollutionControls__/graphics/entity/cloud/cloud-45-frames.png"
-toxiccloud.render_layer = "decorative"
---toxiccloud.cyclic = false
-toxiccloud.duration = 60 * 20
-toxiccloud.fade_away_duration = 2 * 60
-toxiccloud.action.action_delivery.target_effects.action.radius = 2
-toxiccloud.color = {r=0.333, g=0.063, b=0.451}
-toxiccloud.action.action_delivery.target_effects.action.action_delivery.target_effects = {
+local toxiccloud_small = util.table.deepcopy(data.raw['smoke-with-trigger']['poison-cloud'])
+toxiccloud_small.name = "toxic-cloud-small"
+toxiccloud_small.affected_by_wind = false
+toxiccloud_small.animation.scale = 1
+toxiccloud_small.animation.animation_speed = 0.25
+toxiccloud_small.animation.filename = "__PollutionControls__/graphics/entity/cloud/toxicwaste.png"
+toxiccloud_small.render_layer = "decorative"
+--toxiccloud_small.cyclic = false
+toxiccloud_small.duration = 60 * 6
+toxiccloud_small.fade_in_duration = 60 * 2
+toxiccloud_small.fade_away_duration = 60 * 2
+toxiccloud_small.spread_duration = 0
+toxiccloud_small.action.action_delivery.target_effects.action.radius = 2
+toxiccloud_small.color = {r=1.0, g=1.0, b=1.0}
+toxiccloud_small.action.action_delivery.target_effects.action.action_delivery.target_effects = {
 	{
 		type = "damage",
 		damage = { amount = 1, type = "poison"}
@@ -379,11 +381,26 @@ toxiccloud.action.action_delivery.target_effects.action.action_delivery.target_e
 	}
 }
 
+local toxiccloud_medium = util.table.deepcopy(toxiccloud_small)
+toxiccloud_medium.name = "toxic-cloud-medium"
+toxiccloud_medium.animation.scale = 2
+toxiccloud_medium.action.action_delivery.target_effects.action.action_delivery.target_effects[1].damage.amount = 4
+toxiccloud_medium.action.action_delivery.target_effects.action.radius = 6
+
+
+local toxiccloud_large = util.table.deepcopy(toxiccloud_small)
+toxiccloud_large.name = "toxic-cloud-large"
+toxiccloud_large.animation.scale = 3
+toxiccloud_large.action.action_delivery.target_effects.action.action_delivery.target_effects[1].damage.amount = 8
+toxiccloud_large.action.action_delivery.target_effects.action.radius = 9
+
 
 data:extend({
 	toxicflame,
 	toxicsticker,
 	firetoxic,
 	firetoxicontree,
-	toxiccloud,
+	toxiccloud_small,
+	toxiccloud_medium,
+	toxiccloud_large,
 })
