@@ -1,3 +1,5 @@
+data.raw["pipe-to-ground"]["pipe-to-ground"].fluid_box.pipe_connections[2].max_underground_distance=20
+
 local incinerator_item = util.table.deepcopy(data.raw['item']['nuclear-reactor'])
 incinerator_item.name = "incinerator"
 incinerator_item.place_result = "incinerator"
@@ -11,9 +13,9 @@ toxicturret_item.icons={
 		icon = data.raw['item']['flamethrower-turret'].icon
 	},
     {
-      icon = data.raw['fluid']['toxicsludge'].icon,
-      scale = 0.5,
-      shift = {4, -8}
+		icon = data.raw['fluid']['toxicsludge'].icon,
+		scale = 0.5,
+		shift = {4, -8}
     }
 }
 
@@ -26,9 +28,9 @@ airfilter_item.icons={
 		icon = data.raw['item']['chemical-plant'].icon
 	},
     {
-      icon = data.raw['fluid']['toxicsludge'].icon,
-      scale = 0.5,
-      shift = {4, -8}
+		icon = data.raw['fluid']['toxicsludge'].icon,
+		scale = 0.5,
+		shift = {4, -8}
     }
 }
 
@@ -49,4 +51,25 @@ data:extend({
 	toxicturret_item,
 	lowheater_item,
 	emitter_item,
+	
+	{
+		type = "item",
+		name = "xenomeros",
+		icon = "__base__/graphics/icons/medium-biter.png",
+		icon_size = 32,
+		flags = {"goes-to-main-inventory"},
+		subgroup = "raw-material",
+		order = "x[xenomeros]",
+		stack_size = 200
+	},
+	{
+		type = "item",
+		name = "xenovasi",
+		icon = "__base__/graphics/icons/biter-spawner.png",
+		icon_size = 32,
+		flags = {"goes-to-main-inventory"},
+		subgroup = "raw-material",
+		order = "x[xenovasi]",
+		stack_size = 50
+	},
 })

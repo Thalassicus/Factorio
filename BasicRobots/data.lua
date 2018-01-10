@@ -4,7 +4,7 @@
 
 local basic_robot = util.table.deepcopy(data.raw['construction-robot']['construction-robot'])
 basic_robot.name = "basic-construction-robot"
-basic_robot.minable.result = "basic-construction-robot"
+basic_robot.minable = nil
 basic_robot.order = "z"
 basic_robot.speed = 0.06
 basic_robot.max_energy = "0.4MJ"

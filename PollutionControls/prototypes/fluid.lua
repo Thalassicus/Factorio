@@ -7,6 +7,7 @@ toxicsludge.order = "a[fluid]-b[toxicsludge]"
 
 local pollution = util.table.deepcopy(data.raw['fluid']['crude-oil'])
 pollution.name = "polluted-air"
+pollution.auto_barrel = false
 pollution.base_color = {r=0.333, g=0.063, b=0.451}
 pollution.flow_color = {r=0.744, g=0.275, b=0.867}
 pollution.icon = "__PollutionControls__/graphics/icons/fluid/pollution.png"

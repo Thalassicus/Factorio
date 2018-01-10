@@ -268,7 +268,7 @@ data:extend(
 		},
 		results=
 		{
-			{"solar-panel", 5},
+			{"solar-panel", 2},
 			{"advanced-circuit", 1},
 			{"steel-plate", 5}
 		},

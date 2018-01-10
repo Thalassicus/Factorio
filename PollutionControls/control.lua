@@ -15,8 +15,8 @@ TOXIC_DUMP_SMOKE_MAX			= 3			-- the maximum number of trivial smoke clouds creat
 
 POLLUTION_COLLECTOR_NAME		= 'airfilter'
 POLLUTION_COLLECTOR_INTERVAL	= 30		-- collect pollution every # ticks
-POLLUTION_COLLECTION_PER_SEC	= 500		-- amount of pollution collected from the surface per second
-POLLUTION_COLLECTION_MIN		= 170		-- minimum amount of pollution required for the collector to operate
+--POLLUTION_COLLECTION_PER_SEC	= 500		-- amount of pollution collected from the surface per second
+POLLUTION_COLLECTION_MIN		= 50		-- minimum amount of pollution required for the collector to operate
 
 POLLUTED_AIR_NAME				= 'polluted-air'
 
@@ -69,6 +69,20 @@ function OnTick(_Event)
 		OnTick_PollutionCollectors(_Event)
 	end
 end
+
+
+
+--=================--
+-- Enemy Functions --
+--=================--
+
+function EnemyDied(event)
+	--log("EnemyDied entity.name=".. event.entity.name .." (position="..event.entity.position.x..","..event.entity.position.y..") killer="..event.force.name.." entity.force="..event.entity.force.name)
+	
+	if event.entity.force ~= game.forces.enemy then return end	
+	event.entity.surface.spill_item_stack(event.entity.position, {name="xenomeros"}, true, event.force)
+end
+script.on_event(defines.events.on_entity_died, function(event) EnemyDied(event) end)
 
 
 --===================--
@@ -191,7 +205,7 @@ function OnTick_PollutionCollectors(_Event)
 				if entity and entity.fluidbox then
 					for fluidIndex=1,#entity.fluidbox,1 do
 						local filter = entity.fluidbox.get_filter(fluidIndex)
-						if filter and filter.name == POLLUTED_AIR_NAME then
+						if filter and filter.name == POLLUTED_AIR_NAME and entity.is_connected_to_electric_network() then
 							CollectPollution(entity, fluidIndex, collector.surface)
 							break
 						end
@@ -219,12 +233,12 @@ function CollectPollution(entity, fluidIndex, surface)
 		end
 	end
 	
-	local pollution = entity.prototype.crafting_speed * POLLUTION_COLLECTOR_INTERVAL * POLLUTION_COLLECTION_PER_SEC / 60 
-	pollution = math.min(pollution, capacity - contents.amount)
+	--local pollution = entity.prototype.crafting_speed * POLLUTION_COLLECTOR_INTERVAL * POLLUTION_COLLECTION_PER_SEC / 60 
+	--pollution = math.min(pollution, capacity - contents.amount)
 	
-	log("pollution = "..pollution)
+	local pollution = capacity - contents.amount
 	
-	if (contents.amount >= capacity) then return end
+	if (pollution <= 0) then return end
 	
 	contents.amount = contents.amount + pollution
 	game.surfaces[surface].pollute({entity.position.x,entity.position.y}, -1 * pollution);
