@@ -15,23 +15,22 @@ data.raw["map-gen-presets"]["default"]["fun-rail-world"] = {
 			["trees"] = 		{ frequency = "very-low", 	size = "very-high" },
 			["enemy-base"] = 	{ frequency = "high", 		size = "medium", 	richness = "very-low" },
 		},
-		cliffs = "very-low",
 		water = "medium",
 		starting_area = "medium",
 	},
 	advanced_settings = {
 		pollution =
 		{
-			diffusion_ratio = 0.25, -- 0.02
+			diffusion_ratio = 0.10, -- 0.02
 			min_pollution_to_damage_trees = 6000,		-- 3500
 			pollution_with_max_forest_damage = 10000,	-- 10000
 			max_pollution_to_restore_trees = 5000,		-- 1000
 		},
 		enemy_evolution =
 		{
-			time_factor = (1/60/60) / 24, -- last number is # hours to advance evolution by 1%
+			time_factor = (1/60/60) / 24,			-- 70; last number is # hours to advance evolution by 1%
 			destroy_factor = 0.01,
-			pollution_factor = 0.1 / (100*1000), -- % evolution per 1000 pollution; was 1.5
+			pollution_factor = 0.1 / (100*1000),	-- 1.5; % evolution per 1000 pollution
 		},
 		enemy_expansion = 
 		{

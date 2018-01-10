@@ -1,4 +1,4 @@
-local incinerator_recipe =  util.table.deepcopy(data.raw['recipe']['nuclear-reactor'])
+local incinerator_recipe = util.table.deepcopy(data.raw['recipe']['nuclear-reactor'])
 incinerator_recipe.name = "incinerator"
 incinerator_recipe.result = "incinerator"
 incinerator_recipe.enabled = false
@@ -11,27 +11,23 @@ incinerator_recipe.ingredients =
 	{"pipe", 10}
 }
 
-local toxicturret_recipe =  util.table.deepcopy(data.raw['recipe']['flamethrower-turret'])
+local toxicturret_recipe = util.table.deepcopy(data.raw['recipe']['flamethrower-turret'])
 toxicturret_recipe.name = "toxic-turret"
 toxicturret_recipe.result = "toxic-turret"
 toxicturret_recipe.enabled = false
 
-local airfilter_recipe =  util.table.deepcopy(data.raw['recipe']['chemical-plant'])
-airfilter_recipe.name = "airfilter"
-airfilter_recipe.result = "airfilter"
-airfilter_recipe.enabled = false
 
-local lowheater_recipe =  util.table.deepcopy(data.raw['recipe']['heat-exchanger'])
+local lowheater_recipe = util.table.deepcopy(data.raw['recipe']['heat-exchanger'])
 lowheater_recipe.name = "low-heat-exchanger"
 lowheater_recipe.result = "low-heat-exchanger"
 lowheater_recipe.enabled = false
 
-local emitter_recipe =  util.table.deepcopy(data.raw['recipe']['storage-tank'])
+local emitter_recipe = util.table.deepcopy(data.raw['recipe']['storage-tank'])
 emitter_recipe.name = "emitter"
 emitter_recipe.category = "crafting"
 emitter_recipe.ingredients = nil
 emitter_recipe.normal = {
-    energy_required = 3,
+	energy_required = 3,
 	enabled = false,
 	ingredients = {
 		{type="item", name="pipe-to-ground", amount=4},
@@ -40,7 +36,7 @@ emitter_recipe.normal = {
 	result = "emitter"
 }
 emitter_recipe.expensive = {
-    energy_required = 6,
+	energy_required = 6,
 	enabled = false,
 	ingredients = {
 		{type="item", name="pipe-to-ground", amount=4},
@@ -50,24 +46,39 @@ emitter_recipe.expensive = {
 }
 
 data:extend({
-	airfilter_recipe,
 	incinerator_recipe,
 	toxicturret_recipe,
 	lowheater_recipe,
 	emitter_recipe,
 	{
 		type = "recipe",
+		name = "airfilter",
+		energy_required = 5,
+		enabled = false,
+		ingredients =
+		{
+			{name="xenovasi",			amount=1},
+			{name="steel-plate",		amount=5},
+			{name="iron-gear-wheel",	amount=5},
+			{name="electronic-circuit",	amount=5},
+			{name="pipe", 				amount=5},
+		},
+		result= "airfilter"
+	},
+	{
+		type = "recipe",
 		name = "collect-pollution",
 		category = "pollution",
 		enabled = false,
-		energy_required = 1,
+		energy_required = 2,
 		ingredients = 
 		{
-			{type="fluid", name="polluted-air", amount=100}
+			{name="xenomeros", amount=1},
+			{type="fluid", name="polluted-air", amount=500},
 		},
 		results=
 		{
-			{type="fluid", name="toxicsludge", amount=10}
+			{type="fluid", name="toxicsludge", amount=50},
 		},
 		main_product= "",
 		icon = "__PollutionControls__/graphics/icons/fluid/toxicsludge.png",
