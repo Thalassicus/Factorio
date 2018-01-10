@@ -57,7 +57,7 @@ data:extend({
 		enabled = false,
 		ingredients =
 		{
-			{name="xenovasi",			amount=1},
+			{name="xenovasi",			amount=10},
 			{name="steel-plate",		amount=5},
 			{name="iron-gear-wheel",	amount=5},
 			{name="electronic-circuit",	amount=5},

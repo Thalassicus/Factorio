@@ -55,8 +55,8 @@ data:extend({
 	{
 		type = "item",
 		name = "xenomeros",
-		icon = "__base__/graphics/icons/medium-biter.png",
-		icon_size = 32,
+		icon = "__PollutionControls__/graphics/icons/xenomeros.png",
+		icon_size = 128,
 		flags = {"goes-to-main-inventory"},
 		subgroup = "raw-material",
 		order = "x[xenomeros]",
@@ -65,8 +65,8 @@ data:extend({
 	{
 		type = "item",
 		name = "xenovasi",
-		icon = "__base__/graphics/icons/biter-spawner.png",
-		icon_size = 32,
+		icon = "__PollutionControls__/graphics/icons/xenovasi.png",
+		icon_size = 128,
 		flags = {"goes-to-main-inventory"},
 		subgroup = "raw-material",
 		order = "x[xenovasi]",

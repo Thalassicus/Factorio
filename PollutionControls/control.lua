@@ -23,7 +23,6 @@ POLLUTION_COLLECTOR_NAME		= 'airfilter'
 POLLUTION_COLLECTOR_INTERVAL	= 30		-- collect pollution every # ticks
 --POLLUTION_COLLECTION_PER_SEC	= 500		-- amount of pollution collected from the surface per second
 POLLUTION_COLLECTION_MIN		= 50		-- minimum amount of pollution required for the collector to operate
-
 POLLUTED_AIR_NAME				= 'polluted-air'
 
 
@@ -77,26 +76,6 @@ function OnTick(_Event)
 end
 
 
-
---=================--
--- Enemy Functions --
---=================--
-
-function EnemyDied(event)
-	--log("EnemyDied entity.name=".. event.entity.name .." (position="..event.entity.position.x..","..event.entity.position.y..") killer="..event.force.name.." entity.force="..event.entity.force.name)
-	
-	if event.entity.force ~= game.forces.enemy then return end
-	if event.entity.type == "unit-spawner" then
-		event.entity.surface.spill_item_stack(event.entity.position, {name="xenovasi"}, true)
-	elseif event.entity.type == "unit" then
-		event.entity.surface.spill_item_stack(event.entity.position, {name="xenomeros"}, true, event.force)
-	elseif event.entity.type == "turret" then
-		event.entity.surface.spill_item_stack(event.entity.position, {name="xenomeros"}, true, event.force)
-	end
-end
-script.on_event(defines.events.on_entity_died, function(event) EnemyDied(event) end)
-
-
 --===================--
 -- Utility Functions --
 --===================--
@@ -129,6 +108,38 @@ function ScanAll()
 		end
 	end
 end
+
+local pollutionPerRecipie = nil
+function GetPollutionPerRecipie()
+	if pollutionPerRecipie then return pollutionPerRecipie end
+	for k, ingredient in pairs(game.players[1].force.recipes["collect-pollution"].ingredients) do
+		if ingredient.name == POLLUTED_AIR_NAME then
+			pollutionPerRecipie = ingredient.amount
+			return pollutionPerRecipie
+		end
+	end
+end
+
+--================--
+-- Loot Functions --
+--================--
+
+
+function EnemyDied(event)
+	--log("EnemyDied entity.name=".. event.entity.name .." (position="..event.entity.position.x..","..event.entity.position.y..") killer="..event.force.name.." entity.force="..event.entity.force.name)
+	
+	if event.entity.force ~= game.forces.enemy or not event.force then return end
+	
+	if event.entity.type == "unit" then
+		--local quantity = event.entity.prototype.pollution_to_join_attack / GetPollutedAirCollected
+		event.entity.surface.spill_item_stack(event.entity.position, {name="xenomeros", count=math.floor(20*math.random())}, true, event.force)
+	elseif event.entity.type == "unit-spawner" then
+		event.entity.surface.spill_item_stack({event.entity.position.x, event.entity.position.y}, {name="xenovasi", count=math.floor(10*math.random())}, true)
+	elseif event.entity.type == "turret" then
+		event.entity.surface.spill_item_stack({event.entity.position.x, event.entity.position.y}, {name="xenomeros", count=math.floor(20*math.random())}, true)
+	end
+end
+script.on_event(defines.events.on_entity_died, function(event) EnemyDied(event) end)
 
 
 --======================--
@@ -243,13 +254,8 @@ function CollectPollution(entity, fluidIndex, surface)
 		}
 	end
 	
-	local capacity = 0
+	local capacity = 2 * GetPollutionPerRecipie()
 	local pollution = 0
-	for k, ingredient in pairs(entity.get_recipe().ingredients) do
-		if ingredient.name == POLLUTED_AIR_NAME then
-			capacity = 2 * ingredient.amount
-		end
-	end
 	
 	--local pollution = entity.prototype.crafting_speed * POLLUTION_COLLECTOR_INTERVAL * POLLUTION_COLLECTION_PER_SEC / 60 
 	--pollution = math.min(pollution, capacity - contents.amount)
