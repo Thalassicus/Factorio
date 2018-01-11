@@ -25,7 +25,7 @@ airfilter_item.place_result = "airfilter"
 airfilter_item.stack_size = 50
 airfilter_item.icons={
 	{
-		icon = data.raw['item']['chemical-plant'].icon
+		icon = data.raw['item']['steam-turbine'].icon
 	},
     {
 		icon = data.raw['fluid']['toxicsludge'].icon,

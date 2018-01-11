@@ -157,7 +157,7 @@ function EnemyDied(event)
 	if event.entity.type == "unit" then
 		log(event.entity.prototype.name .. " died")
 		--local quantity = data.raw["unit"]["small-biter"].pollution_to_join_attack
-		local quantity = (pollution_to_join_attack[event.entity.prototype.name] / 1000) * 2*math.random()
+		local quantity = (max_health[event.entity.prototype.name] / 200) * 2*math.random()
 		
 		if quantity >= 1 or quantity >= math.random() then
 			loot = {name="xenomeros", count=math.ceil(quantity)}
@@ -173,8 +173,13 @@ function EnemyDied(event)
 		loot = {name="xenovasi", count=math.ceil(5 * 2*math.random())}
 		isPlayerKiller = false
 	elseif event.entity.type == "turret" then
-		loot = {name="xenomeros", count=math.ceil(10 * 2*math.random())}
-		isPlayerKiller = false
+		local quantity = (max_health[event.entity.prototype.name] / 200) * 2*math.random()
+		if quantity >= 1 or quantity >= math.random() then
+			loot = {name="xenomeros", count=math.ceil(10 * 2*math.random())}
+			isPlayerKiller = false
+		else
+			return
+		end
 	end
 	
 	if loot == {} or loot == nil then return end

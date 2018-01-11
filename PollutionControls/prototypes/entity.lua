@@ -22,34 +22,34 @@ incinerator.burner.smoke =
 }
 
 local inceneratorsmoke = 
+{
+	type = "trivial-smoke",
+	name = "incenerator-smoke",
+	flags = {"not-on-map"},
+	duration = 600,
+	fade_in_duration = 0,
+	fade_away_duration = 600,
+	spread_duration = 600,
+	start_scale = 1.5,
+	end_scale = 2,
+	color = {r = 0.2, g = 0.2, b = 0.2, a = 0.5},
+	cyclic = true,
+	affected_by_wind = true,
+	animation =
 	{
-		type = "trivial-smoke",
-		name = "incenerator-smoke",
-		flags = {"not-on-map"},
-		duration = 600,
-		fade_in_duration = 0,
-		fade_away_duration = 600,
-		spread_duration = 600,
-		start_scale = 1.5,
-		end_scale = 2,
-		color = {r = 0.2, g = 0.2, b = 0.2, a = 0.5},
-		cyclic = true,
-		affected_by_wind = true,
-		animation =
-		{
-		  width = 152,
-		  height = 120,
-		  line_length = 5,
-		  frame_count = 60,
-		  axially_symmetrical = false,
-		  direction_count = 1,
-		  shift = {-0.53125, -0.4375},
-		  priority = "high",
-		  animation_speed = 0.25,
-		  filename = "__base__/graphics/entity/smoke/smoke.png",
-		  flags = { "smoke" }
-		}
+	  width = 152,
+	  height = 120,
+	  line_length = 5,
+	  frame_count = 60,
+	  axially_symmetrical = false,
+	  direction_count = 1,
+	  shift = {-0.53125, -0.4375},
+	  priority = "high",
+	  animation_speed = 0.25,
+	  filename = "__base__/graphics/entity/smoke/smoke.png",
+	  flags = { "smoke" }
 	}
+}
 
 
 incinerator.working_light_picture.filename="__PollutionControls__/graphics/entity/incinerator/reactor-lights-color.png"
@@ -84,6 +84,14 @@ airfilter.energy_usage = "200kW"
 airfilter.crafting_speed = 1
 airfilter.ingredient_count = 1
 airfilter.allowed_effects = {"speed"}
+airfilter.animation.north.layers = util.table.deepcopy(data.raw["generator"]["steam-turbine"]["vertical_animation"].layers)
+--airfilter.animation.south.layers = data.raw["generator"]["steam-turbine"]["vertical_animation"].layers
+airfilter.animation.east.layers = util.table.deepcopy(data.raw["generator"]["steam-turbine"]["horizontal_animation"].layers)
+--airfilter.animation.west.layers = data.raw["generator"]["steam-turbine"]["horizontal_animation"].layers
+airfilter.animation.north.layers[1].tint = {r = 0.7, g = 0.6, b = 0.7, a = 1}
+airfilter.animation.north.layers[1].hr_version.tint = {r = 0.7, g = 0.6, b = 0.7, a = 1}
+airfilter.animation.east.layers[1].tint = {r = 0.7, g = 0.6, b = 0.7, a = 1}
+airfilter.animation.east.layers[1].hr_version.tint = {r = 0.7, g = 0.6, b = 0.7, a = 1}
 local copyStats = {
 	"icon",
 	"icon_size",
@@ -91,15 +99,12 @@ local copyStats = {
 	"dying_explosion",
 	"collision_box",
 	"selection_box",
-	"working_sound"
+	"working_sound",
 }
 for _, v in pairs (copyStats) do
 	airfilter[v] = data.raw["generator"]["steam-turbine"][v]
 end
-airfilter.animation.north.layers = data.raw["generator"]["steam-turbine"]["vertical_animation"].layers
-airfilter.animation.south.layers = data.raw["generator"]["steam-turbine"]["vertical_animation"].layers
-airfilter.animation.east.layers = data.raw["generator"]["steam-turbine"]["horizontal_animation"].layers
-airfilter.animation.west.layers = data.raw["generator"]["steam-turbine"]["horizontal_animation"].layers
+--airfilter.icon.tint = {r = 0.7, g = 0.6, b = 0.7, a = 1}
 airfilter.fluid_boxes =
 {
 	{
@@ -121,6 +126,61 @@ airfilter.fluid_boxes =
 			{ type = "input-output", position = {0, -3} },
 		},
 	},
+}
+airfilter.smoke =
+{
+	{
+		name = "turbine-smoke",
+		north_position = {0.0, -1.0},
+		east_position = {0.75, -0.75},
+		frequency = 10 / 32,
+		starting_vertical_speed = 0.08,
+		slow_down_factor = 1,
+		starting_frame_deviation = 60
+	}
+}
+--[[
+airfilter.smoke =
+{
+	{
+		name = "airfilter-smoke",
+		north_position = {0, 0},
+		east_position = {0, 0},
+		frequency = 10,
+		starting_vertical_speed = 0.05,
+		slow_down_factor = 1,
+		starting_frame_deviation = 60
+	}
+}
+
+local airfilterSmoke = 
+{
+	type = "trivial-smoke",
+	name = "airfilter-smoke",
+	flags = {"not-on-map"},
+	duration = 60,
+	fade_in_duration = 0,
+	fade_away_duration = 60,
+	spread_duration = 60,
+	start_scale = 0.5,
+	end_scale = 2,
+	color = {r = 0.5, g = 0.5, b = 0.5, a = 0.5},
+	cyclic = true,
+	affected_by_wind = false,
+	animation =
+	{
+		width = 152,
+		height = 120,
+		line_length = 5,
+		frame_count = 60,
+		axially_symmetrical = false,
+		direction_count = 1,
+		shift = {-0.53125, -0.4375},
+		priority = "high",
+		animation_speed = 0.25,
+		filename = "__base__/graphics/entity/smoke/smoke.png",
+		flags = { "smoke" }
+	}
 }
 --]]
 
@@ -209,6 +269,7 @@ dumpsmoke.affected_by_wind = false
 
 
 data:extend({
+	--airfilterSmoke,
 	airfilter,
 	inceneratorsmoke,
 	incinerator,
