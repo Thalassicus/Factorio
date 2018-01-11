@@ -162,7 +162,7 @@ local function create_fill_barrel_recipe(item, fluid)
     energy_required = energy_per_fill,
     subgroup = "fill-barrel",
     order = "b[fill-" .. item.name .. "]",
-    enabled = true,
+    enabled = false,
     icons = generate_fill_barrel_icons(item, fluid),
     icon_size = 32,
     ingredients =
@@ -193,7 +193,7 @@ local function create_empty_barrel_recipe(item, fluid)
     energy_required = energy_per_empty,
     subgroup = "empty-barrel",
     order = "c[empty-" .. item.name .. "]",
-    enabled = true,
+    enabled = false,
     icons = generate_empty_barrel_icons(item, fluid),
     icon_size = 32,
     ingredients =

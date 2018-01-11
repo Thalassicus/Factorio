@@ -52,16 +52,29 @@ data:extend({
 	emitter_recipe,
 	{
 		type = "recipe",
+		name = "xenomeros",
+		energy_required = 0.5,
+		enabled = false,
+		ingredients =
+		{
+			{name="xenovasi", amount=1},
+		},
+		results=
+		{
+			{name="xenomeros", amount=1},
+		},
+	},
+	{
+		type = "recipe",
 		name = "airfilter",
 		energy_required = 5,
 		enabled = false,
 		ingredients =
 		{
 			{name="xenovasi",			amount=5},
-			{name="steel-plate",		amount=5},
-			{name="iron-gear-wheel",	amount=5},
 			{name="electronic-circuit",	amount=5},
-			{name="pipe", 				amount=5},
+			{name="iron-gear-wheel",	amount=50},
+			{name="pipe", 				amount=50},
 		},
 		result= "airfilter"
 	},
@@ -70,15 +83,15 @@ data:extend({
 		name = "collect-pollution",
 		category = "pollution",
 		enabled = false,
-		energy_required = 2,
+		energy_required = 5,
 		ingredients = 
 		{
 			{name="xenomeros", amount=1},
-			{type="fluid", name="polluted-air", amount=500},
+			{type="fluid", name="polluted-air", amount=1000},
 		},
 		results=
 		{
-			{type="fluid", name="toxicsludge", amount=50},
+			{type="fluid", name="toxicsludge", amount=100},
 		},
 		main_product= "",
 		icon = "__PollutionControls__/graphics/icons/fluid/toxicsludge.png",
@@ -121,6 +134,7 @@ data:extend({
 		}
 	},
 })
+--[[ -- This doesn't work?
 table.insert(data.raw["module"]["productivity-module"].limitation,"collect-pollution")
 table.insert(data.raw["module"]["productivity-module-2"].limitation,"collect-pollution")
 table.insert(data.raw["module"]["productivity-module-3"].limitation,"collect-pollution")
@@ -130,3 +144,4 @@ data.raw["module"]["effectivity-module-3"].limitation={"collect-pollution"}
 data.raw["module"]["effectivity-module"].limitation_message_key = "efficiency-module-only-on-polluters"
 data.raw["module"]["effectivity-module-2"].limitation_message_key = "efficiency-module-only-on-polluters"
 data.raw["module"]["effectivity-module-3"].limitation_message_key = "efficiency-module-only-on-polluters"
+--]]

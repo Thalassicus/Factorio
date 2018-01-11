@@ -73,16 +73,33 @@ table.insert(toxicturret.resistances,
 })
 toxicturret.attack_parameters.ammo_type.action.action_delivery.duration = 60
 
+--
 local airfilter = util.table.deepcopy(data.raw['assembling-machine']['chemical-plant'])
 airfilter.name = "airfilter"
 airfilter.order = "z"
 airfilter.minable.result = "airfilter"
 airfilter.crafting_categories = {"pollution"}
 airfilter.energy_source.emissions = 0
-airfilter.energy_usage = "210kW"
+airfilter.energy_usage = "200kW"
 airfilter.crafting_speed = 1
 airfilter.ingredient_count = 1
-
+airfilter.allowed_effects = {"speed"}
+local copyStats = {
+	"icon",
+	"icon_size",
+	"corpse",
+	"dying_explosion",
+	"collision_box",
+	"selection_box",
+	"working_sound"
+}
+for _, v in pairs (copyStats) do
+	airfilter[v] = data.raw["generator"]["steam-turbine"][v]
+end
+airfilter.animation.north.layers = data.raw["generator"]["steam-turbine"]["vertical_animation"].layers
+airfilter.animation.south.layers = data.raw["generator"]["steam-turbine"]["vertical_animation"].layers
+airfilter.animation.east.layers = data.raw["generator"]["steam-turbine"]["horizontal_animation"].layers
+airfilter.animation.west.layers = data.raw["generator"]["steam-turbine"]["horizontal_animation"].layers
 airfilter.fluid_boxes =
 {
 	{
@@ -97,15 +114,15 @@ airfilter.fluid_boxes =
 		production_type = "output",
 		pipe_covers = pipecoverspictures(),
 		base_level = 1,
-		pipe_connections = {{ position = {-1, 2} }}
+		filter = "toxicsludge",
+		pipe_connections =
+		{
+			{ type = "input-output", position = {0, 3} },
+			{ type = "input-output", position = {0, -3} },
+		},
 	},
-	{
-		production_type = "output",
-		pipe_covers = pipecoverspictures(),
-		base_level = 1,
-		pipe_connections = {{ position = {1, 2} }}
-	}
 }
+--]]
 
 local lowheater = util.table.deepcopy(data.raw['boiler']['heat-exchanger'])
 lowheater.name = "low-heat-exchanger"
@@ -184,6 +201,7 @@ emitter.collision_mask = { "item-layer", "object-layer", "water-tile"}
 
 local dumpsmoke = util.table.deepcopy(data.raw['trivial-smoke']['smoke'])
 dumpsmoke.name = "dump-smoke"
+dumpsmoke.duration = 30*60
 dumpsmoke.start_scale = 0.1
 dumpsmoke.end_scale = 6.0
 dumpsmoke.color = {r=0.744, g=0.275, b=0.867}

@@ -5,9 +5,9 @@ require "math"
 -- Constants --
 --===========--
 TOXIC_DUMP_NAME					= 'emitter'
-TOXIC_DUMP_RATE					= 4 * 60	-- how often should toxic dumps release gas? [seconds * ticks/second]
+TOXIC_DUMP_INTERVAL				= 30 * 60	-- dump pollution every # ticks
 TOXIC_DUMP_FILLPERCENT			= 0.5		-- When the toxic dump contains more than this percent of it's total capacity, release gas
-TOXIC_DUMP_SLUDGE_CONSUMED		= 10		-- the amount of toxic sludge to remove when gas is released
+TOXIC_DUMP_SLUDGE_PER_SEC		= 2.5		-- the amount of toxic sludge to remove per second at 100% capacity
 TOXIC_DUMP_POLLUTION_RELEASED	= 100		-- the amount of pollution to add to the chunk when gas is released
 TOXIC_DUMP_CLOUDS				= 1		-- the number of toxic clouds to create when gas is released
 TOXIC_DUMP_SMOKE_MIN			= 1			-- the minimum number of trivial smoke clouds created when gas is released
@@ -67,7 +67,7 @@ function OnEntityPreRemoved(_Event)
 end
 
 function OnTick(_Event)
-	if game.tick % TOXIC_DUMP_RATE == 0 then
+	if game.tick % TOXIC_DUMP_INTERVAL == 0 then
 		OnTick_ToxicDumps(_Event)
 	end
 	if game.tick % POLLUTION_COLLECTOR_INTERVAL == 0 then
@@ -124,20 +124,61 @@ end
 -- Loot Functions --
 --================--
 
+-- Can't access data directly?
+
+local pollution_to_join_attack = {}
+pollution_to_join_attack["small-biter"]			= 200
+pollution_to_join_attack["medium-biter"] 		= 1000
+pollution_to_join_attack["big-biter"]			= 4000
+pollution_to_join_attack["behemoth-biter"]		= 20000
+pollution_to_join_attack["small-spitter"]		= 200
+pollution_to_join_attack["medium-spitter"]		= 600
+pollution_to_join_attack["big-spitter"]			= 1500
+pollution_to_join_attack["behemoth-spitter"]	= 10000
+local max_health = {}
+max_health["small-biter"]			= 15
+max_health["medium-biter"] 			= 200
+max_health["big-biter"]				= 375
+max_health["behemoth-biter"]		= 3000
+max_health["small-spitter"]			= 10
+max_health["medium-spitter"]		= 50
+max_health["big-spitter"]			= 200
+max_health["behemoth-spitter"]		= 1500
+max_health["small-worm-turret"]		= 200
+max_health["medium-worm-turret"] 	= 400
+max_health["big-worm-turret"]		= 750
 
 function EnemyDied(event)
-	--log("EnemyDied entity.name=".. event.entity.name .." (position="..event.entity.position.x..","..event.entity.position.y..") killer="..event.force.name.." entity.force="..event.entity.force.name)
-	
 	if event.entity.force ~= game.forces.enemy or not event.force then return end
 	
+	local loot = {}
+	local isPlayerKiller = false
+	
 	if event.entity.type == "unit" then
-		--local quantity = event.entity.prototype.pollution_to_join_attack / GetPollutedAirCollected
-		event.entity.surface.spill_item_stack(event.entity.position, {name="xenomeros", count=math.ceil(20*math.random())}, true, event.force)
+		log(event.entity.prototype.name .. " died")
+		--local quantity = data.raw["unit"]["small-biter"].pollution_to_join_attack
+		local quantity = (pollution_to_join_attack[event.entity.prototype.name] / 1000) * 2*math.random()
+		
+		if quantity >= 1 or quantity >= math.random() then
+			loot = {name="xenomeros", count=math.ceil(quantity)}
+			local isPlayerKiller = event.cause and (event.cause.type == "player" or event.cause.type == "car" or event.cause.type == "capsule")
+			if not isPlayerKiller then
+				event.entity.surface.spill_item_stack(event.entity.position, loot, true, event.force)
+				return
+			end
+		else
+			return
+		end
 	elseif event.entity.type == "unit-spawner" then
-		event.entity.surface.spill_item_stack(event.entity.position, {name="xenovasi",  count=math.ceil(10*math.random())}, true)
+		loot = {name="xenovasi", count=math.ceil(5 * 2*math.random())}
+		isPlayerKiller = false
 	elseif event.entity.type == "turret" then
-		event.entity.surface.spill_item_stack(event.entity.position, {name="xenomeros", count=math.ceil(20*math.random())}, true)
+		loot = {name="xenomeros", count=math.ceil(10 * 2*math.random())}
+		isPlayerKiller = false
 	end
+	
+	if loot == {} or loot == nil then return end
+	event.entity.surface.spill_item_stack(event.entity.position, loot, true)
 end
 script.on_event(defines.events.on_entity_died, function(event) EnemyDied(event) end)
 
@@ -174,7 +215,7 @@ function OnTick_ToxicDumps(_Event)
 					local percentCapacity = entity.fluidbox[1].amount / capacity
 					local pollutionMultiplier = 4 * (percentCapacity) - 1.9
 					local current = entity.fluidbox[1]
-					current.amount = current.amount - pollutionMultiplier * TOXIC_DUMP_SLUDGE_CONSUMED
+					current.amount = current.amount - pollutionMultiplier * TOXIC_DUMP_SLUDGE_PER_SEC/60 * TOXIC_DUMP_INTERVAL
 					entity.fluidbox[1] = current
 					game.surfaces[v.surface].pollute({entity.position.x,entity.position.y}, pollutionMultiplier * TOXIC_DUMP_POLLUTION_RELEASED);
 					local smokeNum = math.max(math.random(TOXIC_DUMP_SMOKE_MIN, TOXIC_DUMP_SMOKE_MAX),1)
@@ -194,7 +235,7 @@ function OnTick_ToxicDumps(_Event)
 						game.surfaces[v.surface].create_entity({
 							name=cloudToUse,
 							amount=1,
-							position={entity.position.x,entity.position.y},
+							position={entity.position.x+0.01,entity.position.y+0.01},
 						})
 					end
 				end
@@ -228,7 +269,7 @@ end
 
 function OnTick_PollutionCollectors(_Event)
 	for k, collector in pairs(global.collectors) do
-		if POLLUTION_COLLECTION_MIN < game.surfaces[collector.surface].get_pollution({collector.position.x, collector.position.y}) then
+		if POLLUTION_COLLECTION_MIN < game.surfaces[collector.surface].get_pollution(collector.position) then
 			local entities = game.surfaces[collector.surface].find_entities_filtered{area = {{collector.position.x - .25, collector.position.y - .25}, {collector.position.x + .25, collector.position.y + .25}}, name = POLLUTION_COLLECTOR_NAME}
 			for _,entity in pairs(entities) do
 				if entity and entity.fluidbox then
@@ -254,18 +295,19 @@ function CollectPollution(entity, fluidIndex, surface)
 		}
 	end
 	
+	local surfacePollution = game.surfaces[surface].get_pollution(entity.position)
 	local capacity = 2 * GetPollutionPerRecipie()
 	local pollution = 0
 	
 	--local pollution = entity.prototype.crafting_speed * POLLUTION_COLLECTOR_INTERVAL * POLLUTION_COLLECTION_PER_SEC / 60 
 	--pollution = math.min(pollution, capacity - contents.amount)
 	
-	local pollution = capacity - contents.amount
+	local pollution = math.min(capacity - contents.amount, surfacePollution)
 	
 	if (pollution <= 0) then return end
 	
 	contents.amount = contents.amount + pollution
-	game.surfaces[surface].pollute({entity.position.x,entity.position.y}, -1 * pollution);
+	game.surfaces[surface].pollute(entity.position, -1 * pollution);
 	entity.fluidbox[fluidIndex] = contents
 end
 
