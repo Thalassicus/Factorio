@@ -15,9 +15,10 @@ TOXIC_DUMP_SMOKE_MAX			= 3						-- the maximum number of trivial smoke clouds cr
 
 TOXIC_DUMP_CLOUD_SMALL			= 'toxic-cloud-small'
 TOXIC_DUMP_CLOUD_MEDIUM			= 'toxic-cloud-medium'
-TOXIC_DUMP_CLOUD_MEDIUM_PERCENT = 0.25					-- As a percentage of "overflow"
+TOXIC_DUMP_CLOUD_MEDIUM_PERCENT = 0.05					-- As a percentage of "overflow"
 TOXIC_DUMP_CLOUD_LARGE			= 'toxic-cloud-large'
-TOXIC_DUMP_CLOUD_LARGE_PERCENT	= 0.8					-- As a percentage of "overflow"
+TOXIC_DUMP_CLOUD_LARGE_PERCENT	= 0.20					-- As a percentage of "overflow"
+TOXIC_DUMP_CONSUME_PERCENT		= 0.5					-- Destroys this percentage of the potential output when dumping toxic sludge, divided by toxic sludge ratio for concentrated pollution
 
 POLLUTION_COLLECTOR_NAME		= 'pollutioncollector' 
 POLLUTION_COLLECTOR_INTERVAL	= 60					-- collect pollution every # ticks

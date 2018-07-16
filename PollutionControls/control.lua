@@ -247,7 +247,13 @@ function OnTick_ToxicDumps(_Event)
 				local storedFluid = entity.fluidbox[1]
 				local fillPercent = storedFluid.amount / capacity
 				if fillPercent > TOXIC_DUMP_FILLPERCENT then
-					ConvertFluidToPollution(v.surface, entity.position, storedFluid.name, storedFluid.amount, true)
+					local pollutionToDump = storedFluid.amount
+					if storedFluid.name == POLLUTED_AIR_NAME then
+						pollutionToDump = storedFluid.amount * (1-(TOXIC_DUMP_CONSUME_PERCENT/TOXIC_SLUDGE_RATIO))
+					elseif storedFluid.name == TOXIC_SLUDGE_NAME
+						pollutionToDump = storedFluid.amount * (1-(TOXIC_DUMP_CONSUME_PERCENT))
+					end
+					ConvertFluidToPollution(v.surface, entity.position, storedFluid.name, pollutionToDump, true)
 					storedFluid.amount = 0
 					entity.fluidbox[1] = storedFluid
 					
