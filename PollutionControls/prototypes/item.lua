@@ -18,7 +18,7 @@ toxicturret_item.icons={
 		shift = {4, -8}
     }
 }
-
+--[[
 local airfilter_item = util.table.deepcopy(data.raw['item']['chemical-plant'])
 airfilter_item.name = "airfilter"
 airfilter_item.place_result = "airfilter"
@@ -33,6 +33,7 @@ airfilter_item.icons={
 		shift = {4, -8}
     }
 }
+--]]
 
 local lowheater_item = util.table.deepcopy(data.raw['item']['heat-exchanger'])
 lowheater_item.name = "low-heat-exchanger"
@@ -40,13 +41,12 @@ lowheater_item.place_result = "low-heat-exchanger"
 lowheater_item.icon = "__PollutionControls__/graphics/icons/low-heat-boiler.png"
 
 local emitter_item = util.table.deepcopy(data.raw['item']['storage-tank'])
-emitter_item.name = "emitter"
-emitter_item.place_result = "emitter"
+emitter_item.name = "dump-site"
+emitter_item.place_result = "dump-site"
 emitter_item.icon = "__PollutionControls__/graphics/icons/toxicdump_icon.png"
 emitter_item.subgroup = "defensive-structure"
 
 data:extend({
-	airfilter_item,
 	incinerator_item,
 	toxicturret_item,
 	lowheater_item,

@@ -19,15 +19,15 @@ data:extend(
 		{
 			{
 				type = "unlock-recipe",
-				recipe = "airfilter"
+				recipe = "pollutioncollector"
 			},
 			{
 				type = "unlock-recipe",
-				recipe = "collect-pollution"
+				recipe = "dump-site"
 			},
 			{
 				type = "unlock-recipe",
-				recipe = "emitter"
+				recipe = "hev-armor"
 			}
 		},
 		order = "c-a"
@@ -54,6 +54,14 @@ data:extend(
 		{
 			{
 				type = "unlock-recipe",
+				recipe = "xenomeros"
+			},
+			{
+				type = "unlock-recipe",
+				recipe = "liquify-pollution"
+			},
+			{
+				type = "unlock-recipe",
 				recipe = "toxic-turret"
 			},
 			{
@@ -71,6 +79,18 @@ data:extend(
 			{
 				type = "unlock-recipe",
 				recipe = "heat-pipe"
+			},
+			{
+				type = "unlock-recipe",
+				recipe = "domesticated-nest"
+			},
+			{
+				type = "unlock-recipe",
+				recipe = "nest-pollution-xenomeros"
+			},
+			{
+				type = "unlock-recipe",
+				recipe = "nest-sludge-xenovasi"
 			},
 		},
 		order = "c-a"

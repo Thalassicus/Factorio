@@ -16,6 +16,8 @@ circuitpipe_recipe.name = "circuit-pipe"
 circuitpipe_recipe.normal.result = "circuit-pipe"
 circuitpipe_recipe.expensive.result = "circuit-pipe"
 circuitpipe_recipe.enabled = true
+table.insert( circuitpipe_recipe.normal.ingredients,    {"electronic-circuit", 1} )
+table.insert( circuitpipe_recipe.expensive.ingredients, {"electronic-circuit", 1} )
 
 local bigwall_recipe =  util.table.deepcopy(data.raw['recipe']['stone-wall'])
 bigwall_recipe.name = "big-stone-wall"
