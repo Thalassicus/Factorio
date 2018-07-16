@@ -26,7 +26,7 @@ POLLUTION_COLLECTION_MIN		= 50					-- minimum amount of pollution required for t
 POLLUTION_COLLECTION_MAX_PERCENT= 0.1					-- maximum amount of pollution that can be collected, as a percentage of the available
 
 POLLUTED_AIR_NAME				= "polluted-air"
-POLLUTED_AIR_RATIO				= 2						-- amount of actual air pollution per unit of polluted-air
+POLLUTED_AIR_RATIO				= 4						-- amount of actual air pollution per unit of polluted-air
 TOXIC_SLUDGE_NAME				= "toxicsludge"
 TOXIC_SLUDGE_RATIO				= 10					-- amount of polluted-air per unit of toxic sludge
 
