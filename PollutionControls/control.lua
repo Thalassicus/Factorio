@@ -244,22 +244,11 @@ function OnTick_ToxicDumps(_Event)
 		for _,entity in pairs(entities) do
 			if entity and entity.fluidbox and entity.fluidbox[1] and (entity.fluidbox[1].name == POLLUTED_AIR_NAME or entity.fluidbox[1].name == TOXIC_SLUDGE_NAME) then
 				local capacity = entity.fluidbox.get_capacity(1)
-				local fillPercent = entity.fluidbox[1].amount / entity.fluidbox.get_capacity(1)
+				local storedFluid = entity.fluidbox[1]
+				local fillPercent = storedFluid.amount / capacity
 				if fillPercent > TOXIC_DUMP_FILLPERCENT then
-					local storedFluid = entity.fluidbox[1]
-					--[[
-					local overfillPercent = (fillPercent - TOXIC_DUMP_FILLPERCENT) / TOXIC_DUMP_FILLPERCENT
-					local fluidToRelease
-					if storedFluid.name==POLLUTED_AIR_NAME then
-						fluidToRelease = overfillPercent * TOXIC_DUMP_MAX_RELEASED * capacity
-					else
-						fluidToRelease = overfillPercent * TOXIC_DUMP_MAX_RELEASED * capacity / TOXIC_SLUDGE_RATIO
-					end
-					fluidToRelease = math.min(fluidToRelease, storedFluid.amount)
-					--]]
-					local fluidToRelease = storedFluid.amount
-					storedFluid.amount = storedFluid.amount - fluidToRelease
-					ConvertFluidToPollution(v.surface, entity.position, storedFluid.name, fluidToRelease, true)
+					ConvertFluidToPollution(v.surface, entity.position, storedFluid.name, storedFluid.amount, true)
+					storedFluid.amount = 0
 					entity.fluidbox[1] = storedFluid
 					
 					--local percentCapacity = entity.fluidbox[1].amount / capacity
@@ -276,12 +265,12 @@ function OnTick_ToxicDumps(_Event)
 						}
 					end
 					local cloudToUse = TOXIC_DUMP_CLOUD_SMALL
-					if overfillPercent > TOXIC_DUMP_CLOUD_LARGE_PERCENT then
+					if fillPercent > TOXIC_DUMP_CLOUD_LARGE_PERCENT then
 						cloudToUse = TOXIC_DUMP_CLOUD_LARGE
-					elseif overfillPercent > TOXIC_DUMP_CLOUD_MEDIUM_PERCENT then
+					elseif fillPercent > TOXIC_DUMP_CLOUD_MEDIUM_PERCENT then
 						cloudToUse = TOXIC_DUMP_CLOUD_MEDIUM
 					end
-					for i = 1,math.max(math.ceil(overfillPercent * TOXIC_DUMP_CLOUDS),1),1 do
+					for i = 1,math.max(math.ceil(fillPercent * TOXIC_DUMP_CLOUDS),1),1 do
 						game.surfaces[v.surface].create_entity({
 							name=cloudToUse,
 							amount=1,
