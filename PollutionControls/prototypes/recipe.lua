@@ -1,3 +1,5 @@
+require "constants"
+
 local incinerator_recipe = util.table.deepcopy(data.raw['recipe']['nuclear-reactor'])
 incinerator_recipe.name = "incinerator"
 incinerator_recipe.result = "incinerator"
@@ -23,26 +25,25 @@ lowheater_recipe.result = "low-heat-exchanger"
 lowheater_recipe.enabled = false
 
 local emitter_recipe = util.table.deepcopy(data.raw['recipe']['storage-tank'])
-emitter_recipe.name = "emitter"
+emitter_recipe.name = "dump-site"
 emitter_recipe.category = "crafting"
 emitter_recipe.ingredients = nil
+emitter_recipe.enabled = false
 emitter_recipe.normal = {
 	energy_required = 3,
-	enabled = false,
 	ingredients = {
 		{type="item", name="pipe-to-ground", amount=4},
 		{type="item", name="iron-axe", amount=1},
 	},
-	result = "emitter"
+	result = "dump-site"
 }
 emitter_recipe.expensive = {
 	energy_required = 6,
-	enabled = false,
 	ingredients = {
 		{type="item", name="pipe-to-ground", amount=4},
 		{type="item", name="steel-axe", amount=1},
 	},
-	result = "emitter"
+	result = "dump-site"
 }
 
 data:extend({
@@ -61,37 +62,24 @@ data:extend({
 		},
 		results=
 		{
-			{name="xenomeros", amount=1},
+			{name="xenomeros", amount=XENOMEROS_PER_XENOVASI},
 		},
 	},
 	{
 		type = "recipe",
-		name = "airfilter",
-		energy_required = 5,
+		name = "liquify-pollution",
+		category = "chemistry",
 		enabled = false,
-		ingredients =
-		{
-			{name="xenovasi",			amount=5},
-			{name="electronic-circuit",	amount=5},
-			{name="iron-gear-wheel",	amount=50},
-			{name="pipe", 				amount=50},
-		},
-		result= "airfilter"
-	},
-	{
-		type = "recipe",
-		name = "collect-pollution",
-		category = "pollution",
-		enabled = false,
-		energy_required = 5,
+		energy_required = 10,
 		ingredients = 
 		{
-			{name="xenomeros", amount=1},
-			{type="fluid", name="polluted-air", amount=1000},
+			{type="item", name="xenomeros", amount=1},
+			{type="fluid", name="polluted-air", amount=SLUDGE_PER_FILTER * TOXIC_SLUDGE_RATIO },
+			{type="fluid", name="water", amount=SLUDGE_PER_FILTER * WATER_PER_FILTER_PERCENT},
 		},
 		results=
 		{
-			{type="fluid", name="toxicsludge", amount=100},
+			{type="fluid", name="toxicsludge", amount=SLUDGE_PER_FILTER},
 		},
 		main_product= "",
 		icon = "__PollutionControls__/graphics/icons/fluid/toxicsludge.png",
@@ -117,7 +105,7 @@ data:extend({
 		},
 		results=
 		{
-			{type="fluid", name="steam", amount=50},
+			{type="fluid", name="steam", amount=50, temperature=165},
 			{type="item", name="coal", amount=10},
 			{type="fluid", name="heavy-oil", amount=25},
 		},
@@ -134,6 +122,19 @@ data:extend({
 		}
 	},
 })
+
+
+local newProducts = {
+	"waste-treatment",
+	"liquify-pollution",
+	"xenomeros",
+}
+
+for k,v in pairs(newProducts) do
+	table.insert(data.raw["module"]["productivity-module"].limitation,v)
+	table.insert(data.raw["module"]["productivity-module-2"].limitation,v)
+	table.insert(data.raw["module"]["productivity-module-3"].limitation,v)
+end
 --[[ -- This doesn't work?
 table.insert(data.raw["module"]["productivity-module"].limitation,"collect-pollution")
 table.insert(data.raw["module"]["productivity-module-2"].limitation,"collect-pollution")

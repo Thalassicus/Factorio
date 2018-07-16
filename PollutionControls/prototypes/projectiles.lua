@@ -1,3 +1,12 @@
+require "constants"
+
+data:extend({
+	{
+		type = "damage-type",
+		name = "toxic",
+	},
+})
+
 local fireutil = {}
 
 function fireutil.foreach(table_, fun_)
@@ -323,30 +332,30 @@ toxicflame.spine_animation.filename = "__PollutionControls__/graphics/entity/fla
 toxicflame.particle.filename = "__PollutionControls__/graphics/entity/flamethrower-fire-stream/flamethrower-explosion.png"
 toxicflame.action[1].action_delivery.target_effects[1].entity_name = "toxic-fire"
 toxicflame.action[2].action_delivery.target_effects[1].sticker = "toxic-sticker"
-toxicflame.action[2].action_delivery.target_effects[2].damage.type = "poison"
+toxicflame.action[2].action_delivery.target_effects[2].damage.type = POLLUTION_DAMAGE_TYPE
 toxicflame.particle_horizontal_speed = data.raw['stream']['flamethrower-fire-stream'].particle_horizontal_speed * 1.75
 
 local firetoxic = util.table.deepcopy(data.raw['fire']['fire-flame'])
 firetoxic.name = "toxic-fire"
-firetoxic.damage_per_tick.type = "poison"
+firetoxic.damage_per_tick.type = POLLUTION_DAMAGE_TYPE
 firetoxic.pictures = fireutil.create_fire_pictures({ blend_mode = "normal", animation_speed = 1, scale = 0.5})
 firetoxic.spawn_entity = "toxic-flame-on-tree"
 firetoxic.emissions_per_tick = 0.5 -- default: 0.005
 firetoxic.maximum_spread_count=0
-firetoxic.damage_per_tick.amount = 6 / 60
+firetoxic.damage_per_tick.amount = 6 / TICKS_PER_SECOND
 
 local toxicsticker = util.table.deepcopy(data.raw['sticker']['fire-sticker'])
 toxicsticker.name = "toxic-sticker"
 --toxicsticker.animation.tint = {r=0.333, g=0.063, b=0.451, a=0.001}
 toxicsticker.color = {r=0.333, g=0.063, b=0.451, a=0.001}
-toxicsticker.damage_per_tick.type = "poison"
+toxicsticker.damage_per_tick.type = POLLUTION_DAMAGE_TYPE
 toxicsticker.spread_fire_entity = "toxic-flame-on-tree"
-toxicsticker.fire_spread_cooldown=600
+toxicsticker.fire_spread_cooldown=10*TICKS_PER_SECOND
 toxicsticker.fire_spread_radius=0
 
 local firetoxicontree = util.table.deepcopy(data.raw['fire']['fire-flame-on-tree'])
 firetoxicontree.name = "toxic-flame-on-tree"
-firetoxicontree.damage_per_tick.type = "poison"
+firetoxicontree.damage_per_tick.type = POLLUTION_DAMAGE_TYPE
 firetoxicontree.spawn_entity = "toxic-flame-on-tree"
 firetoxicontree.small_tree_fire_pictures = fireutil.create_small_tree_flame_animations({ blend_mode = "additive", animation_speed = 0.5, scale = 0.7 * 0.75 })
 firetoxicontree.pictures = fireutil.create_fire_pictures({ blend_mode = "additive", animation_speed = 1, scale = 0.5 * 1.25})
@@ -355,41 +364,76 @@ firetoxicontree.maximum_spread_count = 0
 firetoxicontree.fade_in_duration = 0
 firetoxicontree.fade_out_duration = 0
 
+local toxicslowdownsticker = util.table.deepcopy(data.raw['sticker']['slowdown-sticker'])
+toxicslowdownsticker.name = "toxic-slowdown-sticker"
+toxicslowdownsticker.duration_in_ticks = 2*TICKS_PER_SECOND
+
 local toxiccloud_small = util.table.deepcopy(data.raw['smoke-with-trigger']['poison-cloud'])
 toxiccloud_small.name = "toxic-cloud-small"
 toxiccloud_small.affected_by_wind = false
-toxiccloud_small.animation.scale = 2
-toxiccloud_small.animation.animation_speed = 0.25
-toxiccloud_small.animation.filename = "__PollutionControls__/graphics/entity/cloud/toxicwaste.png"
-toxiccloud_small.render_layer = "decorative"
+toxiccloud_small.animation = {
+	layers = {
+		--[[{
+			filename = "__PollutionControls__/graphics/entity/cloud/toxicwaste_overlay.png",
+			flags = { "compressed" },
+			priority = "low",
+			width = 256,
+			height = 256,
+			frame_count = 45,
+			animation_speed = 0.25,
+			line_length = 7,
+			scale = 2,
+			draw_as_shadow = false,
+		},--]]
+		{
+			filename = "__PollutionControls__/graphics/entity/cloud/toxicwaste.png",
+			flags = { "compressed" },
+			priority = "low",
+			width = 256,
+			height = 256,
+			frame_count = 45,
+			animation_speed = 0.25,
+			line_length = 7,
+			scale = 2,
+			draw_as_shadow = true,
+		}
+	}
+}
+--toxiccloud_small.animation.scale = 2
+--toxiccloud_small.animation.animation_speed = 0.25
+--toxiccloud_small.animation.filename = "__PollutionControls__/graphics/entity/cloud/toxicwaste.png"
+
+--toxiccloud_small.render_layer = "decorative"
 toxiccloud_small.cyclic = true
-toxiccloud_small.duration = 30 * 60 + 1
-toxiccloud_small.fade_in_duration =  2 * 60 --the game appears to ignore fade_in_duration
-toxiccloud_small.fade_away_duration = 0
+toxiccloud_small.duration = 30 * TICKS_PER_SECOND + 1
+toxiccloud_small.fade_in_duration =  2 * TICKS_PER_SECOND --the game appears to ignore fade_in_duration
+toxiccloud_small.fade_away_duration = 1
 toxiccloud_small.spread_duration = 0
 toxiccloud_small.action.action_delivery.target_effects.action.radius = 6
 toxiccloud_small.color = {r=1.0, g=1.0, b=1.0}
 toxiccloud_small.action.action_delivery.target_effects.action.action_delivery.target_effects = {
 	{
 		type = "damage",
-		damage = { amount = 10, type = "poison"}
+		damage = { amount = 2, type = POLLUTION_DAMAGE_TYPE}
 	},
 	{
 		type = "create-sticker",
-		sticker = "slowdown-sticker"
+		sticker = "toxic-slowdown-sticker"
 	}
 }
 
 local toxiccloud_medium = util.table.deepcopy(toxiccloud_small)
 toxiccloud_medium.name = "toxic-cloud-medium"
-toxiccloud_medium.animation.scale = 3
+toxiccloud_medium.animation.layers[1].scale = 3
+--toxiccloud_medium.animation.layers[2].scale = 3
 toxiccloud_medium.action.action_delivery.target_effects.action.action_delivery.target_effects[1].damage.amount = 4
 toxiccloud_medium.action.action_delivery.target_effects.action.radius = 9
 
 
 local toxiccloud_large = util.table.deepcopy(toxiccloud_small)
 toxiccloud_large.name = "toxic-cloud-large"
-toxiccloud_large.animation.scale = 4
+toxiccloud_large.animation.layers[1].scale = 4
+--toxiccloud_large.animation.layers[2].scale = 4
 toxiccloud_large.action.action_delivery.target_effects.action.action_delivery.target_effects[1].damage.amount = 8
 toxiccloud_large.action.action_delivery.target_effects.action.radius = 12
 
@@ -399,6 +443,7 @@ data:extend({
 	toxicsticker,
 	firetoxic,
 	firetoxicontree,
+	toxicslowdownsticker,
 	toxiccloud_small,
 	toxiccloud_medium,
 	toxiccloud_large,

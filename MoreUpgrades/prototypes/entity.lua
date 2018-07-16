@@ -143,20 +143,21 @@ local bigwall = util.table.deepcopy(data.raw['wall']['stone-wall'])
 bigwall.name = "big-stone-wall"
 bigwall.order = "z"
 bigwall.minable.result = "big-stone-wall"
+bigwall.icon = "__MoreUpgrades__/graphics/icons/big-wall_icon.png"
 bigwall.max_health = data.raw['wall']['stone-wall'].max_health * 8
 bigwall.collision_box = {{-0.9, -0.9}, {0.9, 0.9}}
 bigwall.selection_box = {{-1.0, -1.0}, {1.0, 1.0}}
 
-local scale = 1.2
-local shift = -1
-local shadowshift = {0.95, 0.9}
+local scale = 1.1
+local shift = -0.2
+local shadowshift = {0.1, 0.0}
 
-bigwall.pictures.single.layers[1].filename = "__MoreUpgrades__/graphics/entity/bigwall/wall-single.png"
-bigwall.pictures.single.layers[1].width = 66
-bigwall.pictures.single.layers[1].height = 126
-bigwall.pictures.single.layers[2].filename = "__MoreUpgrades__/graphics/entity/bigwall/wall-single-shadow.png"
-bigwall.pictures.single.layers[2].width = 141
-bigwall.pictures.single.layers[2].height = 96
+bigwall.pictures.single.layers[1].filename = "__MoreUpgrades__/graphics/entity/bigwall/big-wall-single.png"
+bigwall.pictures.single.layers[1].width = 64
+bigwall.pictures.single.layers[1].height = 88
+bigwall.pictures.single.layers[2].filename = "__MoreUpgrades__/graphics/entity/bigwall/big-wall-single-shadow.png"
+bigwall.pictures.single.layers[2].width = 93
+bigwall.pictures.single.layers[2].height = 78
 for l=1,#bigwall.pictures.single.layers,1 do
 	bigwall.pictures.single.layers[l].scale = scale
 	if l==1 then

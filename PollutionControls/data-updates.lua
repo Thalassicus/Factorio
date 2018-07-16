@@ -1,3 +1,5 @@
+require "constants"
+
 -- The technology the barrel unlocks will be added to
 local technology_name = "fluid-handling"
 -- The base empty barrel item
@@ -19,7 +21,7 @@ local barrel_fill_top_mask = "__base__/graphics/icons/fluid/barreling/barrel-fil
 local side_alpha = 0.75
 local top_hoop_alpha = 0.75
 -- Fluid required per barrel recipe
-local fluid_per_barrel = 50
+local fluid_per_barrel = SLUDGE_PER_TOXIC_BARREL
 -- Crafting energy per barrel fill recipe
 local energy_per_fill = 1
 -- Crafting energy per barrel empty recipe
@@ -84,7 +86,7 @@ local function create_barrel_item(name, fluid, empty_barrel_item)
     stack_size = empty_barrel_item.stack_size,
 	fuel_category = "waste",
 	burnt_result = "empty-barrel",
-	fuel_value = "50MJ"
+	fuel_value = (SLUDGE_PER_TOXIC_BARREL * MJ_PER_TOXIC_SLUDGE) .. "MJ"
   }
 
   data:extend({result})
@@ -277,55 +279,58 @@ end
 
 process_fluid(data.raw["fluid"]["toxicsludge"], get_technology(technology_name), get_item(empty_barrel_name))
 
-local function addResistance(entityList, damagetype, percent)
-	if not entityList then
+local function addResistance(entityList, _DamageType, _Percent, _Decrease)
+	if not entityList or (not _Percent and not _Decrease) or (_Percent == 0 and _Decrease == 0)  then
 		log("Failed to make entity list immune.")
 	end
 	for name,entity in pairs(entityList) do
+		local resistTable = {
+			type = _DamageType,
+		}
+		if _Percent and _Percent ~= 0 then
+			resistTable.percent = _Percent
+		end
+		if _Decrease and _Decrease ~= 0 then
+			resistTable.decrease = _Decrease
+		end
 		if not entity.resistances then
-			entityList[name].resistances = {{
-				type = damagetype,
-				percent = percent,
-			}}
+			entityList[name].resistances = {resistTable}
 		else
-			table.insert(entityList[name].resistances,
-			{
-				type = damagetype,
-				percent = percent,
-			})
+			table.insert(entityList[name].resistances, resistTable)
 		end
 	end
 end
 
-addResistance(data.raw["wall"],					"poison", 100)
-addResistance(data.raw["gate"],					"poison", 100)
-addResistance(data.raw["transport-belt"],		"poison", 100)
-addResistance(data.raw["car"],					"poison", 100)
-addResistance(data.raw["electric-turret"],		"poison", 100)
-addResistance(data.raw["ammo-turret"],			"poison", 100)
-addResistance(data.raw["construction-robot"],	"poison", 100)
-addResistance(data.raw["combat-robot"],			"poison", 100)
-addResistance(data.raw["logistic-robot"],		"poison", 100)
-addResistance(data.raw["logistic-container"],	"poison", 100)
-addResistance(data.raw["container"],			"poison", 100)
-addResistance(data.raw["electric-pole"],		"poison", 100)
-addResistance(data.raw["heat-pipe"],			"poison", 100)
-addResistance(data.raw["pipe"],					"poison", 100)
-addResistance(data.raw["pipe-to-ground"],		"poison", 100)
-addResistance(data.raw["land-mine"],			"poison", 100)
-addResistance(data.raw["straight-rail"],		"poison", 100)
-addResistance(data.raw["curved-rail"],			"poison", 100)
-addResistance(data.raw["train-stop"],			"poison", 100)
-addResistance(data.raw["locomotive"],			"poison", 100)
-addResistance(data.raw["rail-signal"],			"poison", 100)
-addResistance(data.raw["rail-chain-signal"],	"poison", 100)
-addResistance(data.raw["underground-belt"],		"poison", 100)
-addResistance(data.raw["lamp"],					"poison", 100)
-addResistance(data.raw["cargo-wagon"],			"poison", 100)
-addResistance(data.raw["fluid-wagon"],			"poison", 100)
-addResistance(data.raw["artillery-wagon"],		"poison", 100)
-addResistance(data.raw["tree"],					"poison", 100)
-addResistance(data.raw["radar"],				"poison", 100)
+addResistance(data.raw["wall"],					POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["gate"],					POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["transport-belt"],		POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["car"],					POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["electric-turret"],		POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["ammo-turret"],			POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["construction-robot"],	POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["combat-robot"],			POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["logistic-robot"],		POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["logistic-container"],	POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["container"],			POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["electric-pole"],		POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["heat-pipe"],			POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["pipe"],					POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["pipe-to-ground"],		POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["land-mine"],			POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["straight-rail"],		POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["curved-rail"],			POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["train-stop"],			POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["locomotive"],			POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["rail-signal"],			POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["rail-chain-signal"],	POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["underground-belt"],		POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["lamp"],					POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["cargo-wagon"],			POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["fluid-wagon"],			POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["artillery-wagon"],		POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["tree"],					POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["radar"],				POLLUTION_DAMAGE_TYPE, 100)
+addResistance(data.raw["unit-spawner"],			POLLUTION_DAMAGE_TYPE, 100)
 
 addResistance(data.raw["pipe"],					"fire", 100)
 addResistance(data.raw["pipe-to-ground"],		"fire", 100)
@@ -340,8 +345,166 @@ addResistance(data.raw["construction-robot"],	"explosion", 100)
 addResistance(data.raw["combat-robot"],			"explosion", 100)
 addResistance(data.raw["logistic-robot"],		"explosion", 100)
 addResistance(data.raw["logistic-container"],	"explosion", 100)
+addResistance(data.raw["construction-robot"],	"poison", 100)
+addResistance(data.raw["combat-robot"],			"poison", 100)
+addResistance(data.raw["logistic-robot"],		"poison", 100)
+
+addResistance(data.raw["logistic-container"],	"explosion", 100)
+
+addResistance({data.raw["armor"]["modular-armor"]},		POLLUTION_DAMAGE_TYPE, 10, 5)
+addResistance({data.raw["armor"]["power-armor"]},		POLLUTION_DAMAGE_TYPE, 30, 10)
+addResistance({data.raw["armor"]["power-armor-mk2"]},	POLLUTION_DAMAGE_TYPE, 40, 15)
 
 
 
 --data.raw["pipe"].collision_mask = {"item-layer", "object-layer", "water-tile"}
 data.raw["pipe-to-ground"]["pipe-to-ground"].collision_mask = {"item-layer", "object-layer", "water-tile"}
+
+local function copyData( _Type, _Name, _args )
+	if( type(_args) == 'table' ) then
+		local data = data.raw[_Type][_Name]
+		for i=1, #_args, 1 do
+			data = data[_args[i]]
+		end
+		return util.table.deepcopy(data)
+	else
+		return util.table.deepcopy(data.raw[_Type][_Name][_args])
+	end
+end
+
+local packable_resources = {
+	{"item", "coal",		{r=8,   g=8,   b=8}},
+	{"item", "stone",		{r=192, g=192, b=192}},
+	{"item", "copper-ore",	{r=218, g=106, b=67}},
+	{"item", "iron-ore",	{r=127, g=169, b=194}},
+	{"item", "solid-fuel",	{r=64,  g=64,  b=64}},
+}
+
+local mask_alpha		= 128
+local crate_icon		= "__base__/graphics/icons/wooden-chest.png"
+local crate_top_mask	= "__PollutionControls__/graphics/icons/wooden-chest-mask.png"
+local crate_side_label	= "__base__/graphics/icons/wood.png"
+
+local function generatePackedCrateIcon( itemData )
+	local icons = {
+		{
+			icon = crate_icon,
+		},
+		{
+			icon = crate_top_mask,
+			tint = itemData[3]
+		},
+		--{
+		--	icon = crate_side_label,
+		--	scale = 0.4,
+		--	shift = {0, 8}
+		--},
+		{
+			icon = copyData(itemData[1],itemData[2],'icon'),
+			scale = 0.5,
+			shift = {0, 9}
+		}
+	}
+	icons[2].tint.a = mask_alpha
+	return icons
+end
+
+local function generateUnpackedCrateIcon( itemData )
+	local icons = {
+		{
+			icon = "__PollutionControls__/graphics/icons/unpack-chest.png",
+		},
+		--{
+		--	icon = crate_side_label,
+		--	scale = 0.4,
+		--	shift = {-8, 0}
+		--},
+		{
+			icon = copyData(itemData[1],itemData[2],'icon'),
+			scale = 0.4,
+			shift = {-8, 0}
+		}
+	}
+	--icons[2].tint.a = mask_alpha
+	return icons
+end
+
+
+for i=1, #packable_resources, 1 do
+	local item = {
+		type = "item",
+		name = "compressed-"..packable_resources[i][2],
+		localised_name = {"item-name.filled-crate", {"item-name." .. packable_resources[i][2]}},
+		icons = generatePackedCrateIcon(packable_resources[i]),
+		icon_size = 32,
+		flags = {"goes-to-main-inventory"},
+		subgroup = "intermediate-product",
+		order = "x["..packable_resources[i][2].."]",
+		stack_size = 10
+	}
+	
+	local packRecipe = {
+		type = "recipe",
+		name = "pack-"..packable_resources[i][2],
+		localised_name = {"recipe-name.pack-crate", {"item-name." .. packable_resources[i][2]}},
+		category = "advanced-crafting",
+		subgroup = "pack-crate",
+		order = "b[pack-" .. packable_resources[i][2] .. "]",
+		energy_required = 1,
+		enabled = true,
+		icons = generatePackedCrateIcon(packable_resources[i]),
+		icon_size = 32,
+		ingredients =
+		{
+			{type=packable_resources[i][1], name=packable_resources[i][2], amount=copyData(packable_resources[i][1],packable_resources[i][2],"stack_size")},
+			{type="item", name="wooden-chest", amount=1},
+		},
+		results=
+		{
+			{type="item", name="compressed-"..packable_resources[i][2], amount=1},
+		},
+	}
+	
+	local unpackRecipe = {
+		type = "recipe",
+		name = "unpack-"..packable_resources[i][2],
+		localised_name = {"recipe-name.unpack-crate", {"item-name." .. packable_resources[i][2]}},
+		category = "advanced-crafting",
+		subgroup = "empty-crate",
+		order = "c[unpack-" .. packable_resources[i][2] .. "]",
+		energy_required = 1,
+		enabled = true,
+		icons=generateUnpackedCrateIcon(packable_resources[i]),
+		icon_size = 32,
+		ingredients =
+		{
+			{type="item", name="compressed-"..packable_resources[i][2], amount=1},
+		},
+		results=
+		{
+			{type=packable_resources[i][1], name=packable_resources[i][2], amount=copyData(packable_resources[i][1],packable_resources[i][2],"stack_size")},
+			{type="item", name="wooden-chest", amount=1},
+		},
+	}
+	
+	data:extend({
+		item,
+		packRecipe,
+		unpackRecipe
+	})
+end
+
+data:extend({
+	{
+		type = "item-subgroup",
+		name = "empty-crate",
+		group = "intermediate-products",
+		order = "e"
+	},
+	{
+		type = "item-subgroup",
+		name = "pack-crate",
+		group = "intermediate-products",
+		order = "e"
+	},
+})

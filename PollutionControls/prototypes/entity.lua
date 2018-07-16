@@ -1,4 +1,4 @@
-local ratio_CollectorsToIncinerators = 4
+require "constants"
 
 local incinerator = util.table.deepcopy(data.raw['reactor']['nuclear-reactor'])
 incinerator.name = "incinerator"
@@ -7,7 +7,9 @@ incinerator.minable.result = "incinerator"
 incinerator.consumption = "10MW"
 incinerator.burner.fuel_category = "waste"
 incinerator.burner.effectivity = 1
-incinerator.burner.emissions = 100 / (10*1000)
+incinerator.burner.emissions = ((SLUDGE_PER_TOXIC_BARREL*POLLUTED_AIR_RATIO*TOXIC_SLUDGE_RATIO)*(1-TOXIC_SLUDGE_BURN_PERCENT) / (((SLUDGE_PER_TOXIC_BARREL * MJ_PER_TOXIC_SLUDGE) / 10)*60*10000))
+incinerator.picture.layers[1].filename = "__PollutionControls__/graphics/entity/incinerator/incinerator.png"
+incinerator.picture.layers[1].hr_version.filename = "__PollutionControls__/graphics/entity/incinerator/hr-incinerator.png"
 incinerator.burner.smoke =
 {
 	{
@@ -26,10 +28,10 @@ local inceneratorsmoke =
 	type = "trivial-smoke",
 	name = "incenerator-smoke",
 	flags = {"not-on-map"},
-	duration = 600,
+	duration = 10*TICKS_PER_SECOND,
 	fade_in_duration = 0,
-	fade_away_duration = 600,
-	spread_duration = 600,
+	fade_away_duration = 10*TICKS_PER_SECOND,
+	spread_duration = 10*TICKS_PER_SECOND,
 	start_scale = 1.5,
 	end_scale = 2,
 	color = {r = 0.2, g = 0.2, b = 0.2, a = 0.5},
@@ -55,7 +57,7 @@ local inceneratorsmoke =
 incinerator.working_light_picture.filename="__PollutionControls__/graphics/entity/incinerator/reactor-lights-color.png"
 incinerator.working_light_picture.hr_version.filename="__PollutionControls__/graphics/entity/incinerator/hr-reactor-lights-color.png"
 incinerator.light.color={r=0.744, g=0.275, b=0.867}
-incinerator.heat_buffer.max_temperature=200
+incinerator.heat_buffer.max_temperature=400
 
 local toxicturret = util.table.deepcopy(data.raw['fluid-turret']['flamethrower-turret'])
 toxicturret.name = "toxic-turret"
@@ -68,121 +70,10 @@ toxicturret.attack_parameters.fluid_consumption = 3.0
 toxicturret.attack_parameters.ammo_type.action.action_delivery.stream = "toxic-flame-stream"
 table.insert(toxicturret.resistances,
 {
-	type = "poison",
+	type = POLLUTION_DAMAGE_TYPE,
 	percent = 100,
 })
-toxicturret.attack_parameters.ammo_type.action.action_delivery.duration = 60
-
---
-local airfilter = util.table.deepcopy(data.raw['assembling-machine']['chemical-plant'])
-airfilter.name = "airfilter"
-airfilter.order = "z"
-airfilter.minable.result = "airfilter"
-airfilter.crafting_categories = {"pollution"}
-airfilter.energy_source.emissions = 0
-airfilter.energy_usage = "200kW"
-airfilter.crafting_speed = 1
-airfilter.ingredient_count = 1
-airfilter.allowed_effects = {"speed"}
-airfilter.animation.north.layers = util.table.deepcopy(data.raw["generator"]["steam-turbine"]["vertical_animation"].layers)
---airfilter.animation.south.layers = data.raw["generator"]["steam-turbine"]["vertical_animation"].layers
-airfilter.animation.east.layers = util.table.deepcopy(data.raw["generator"]["steam-turbine"]["horizontal_animation"].layers)
---airfilter.animation.west.layers = data.raw["generator"]["steam-turbine"]["horizontal_animation"].layers
-airfilter.animation.north.layers[1].tint = {r = 0.7, g = 0.6, b = 0.7, a = 1}
-airfilter.animation.north.layers[1].hr_version.tint = {r = 0.7, g = 0.6, b = 0.7, a = 1}
-airfilter.animation.east.layers[1].tint = {r = 0.7, g = 0.6, b = 0.7, a = 1}
-airfilter.animation.east.layers[1].hr_version.tint = {r = 0.7, g = 0.6, b = 0.7, a = 1}
-local copyStats = {
-	"icon",
-	"icon_size",
-	"corpse",
-	"dying_explosion",
-	"collision_box",
-	"selection_box",
-	"working_sound",
-}
-for _, v in pairs (copyStats) do
-	airfilter[v] = data.raw["generator"]["steam-turbine"][v]
-end
---airfilter.icon.tint = {r = 0.7, g = 0.6, b = 0.7, a = 1}
-airfilter.fluid_boxes =
-{
-	{
-		production_type = "input",
-		pipe_covers = pipecoverspictures(),
-		base_area = 10,
-		base_level = -1,
-		filter = "polluted-air",
-		pipe_connections = {}--{ type="input", position = {0, -2} }}
-	},
-	{
-		production_type = "output",
-		pipe_covers = pipecoverspictures(),
-		base_level = 1,
-		filter = "toxicsludge",
-		pipe_connections =
-		{
-			{ type = "input-output", position = {0, 3} },
-			{ type = "input-output", position = {0, -3} },
-		},
-	},
-}
-airfilter.smoke =
-{
-	{
-		name = "turbine-smoke",
-		north_position = {0.0, -1.0},
-		east_position = {0.75, -0.75},
-		frequency = 10 / 32,
-		starting_vertical_speed = 0.08,
-		slow_down_factor = 1,
-		starting_frame_deviation = 60
-	}
-}
---[[
-airfilter.smoke =
-{
-	{
-		name = "airfilter-smoke",
-		north_position = {0, 0},
-		east_position = {0, 0},
-		frequency = 10,
-		starting_vertical_speed = 0.05,
-		slow_down_factor = 1,
-		starting_frame_deviation = 60
-	}
-}
-
-local airfilterSmoke = 
-{
-	type = "trivial-smoke",
-	name = "airfilter-smoke",
-	flags = {"not-on-map"},
-	duration = 60,
-	fade_in_duration = 0,
-	fade_away_duration = 60,
-	spread_duration = 60,
-	start_scale = 0.5,
-	end_scale = 2,
-	color = {r = 0.5, g = 0.5, b = 0.5, a = 0.5},
-	cyclic = true,
-	affected_by_wind = false,
-	animation =
-	{
-		width = 152,
-		height = 120,
-		line_length = 5,
-		frame_count = 60,
-		axially_symmetrical = false,
-		direction_count = 1,
-		shift = {-0.53125, -0.4375},
-		priority = "high",
-		animation_speed = 0.25,
-		filename = "__base__/graphics/entity/smoke/smoke.png",
-		flags = { "smoke" }
-	}
-}
---]]
+toxicturret.attack_parameters.ammo_type.action.action_delivery.duration = 1*TICKS_PER_SECOND
 
 local lowheater = util.table.deepcopy(data.raw['boiler']['heat-exchanger'])
 lowheater.name = "low-heat-exchanger"
@@ -200,9 +91,9 @@ lowheater.structure.west.layers[1].filename 			=  "__PollutionControls__/graphic
 lowheater.structure.west.layers[1].hr_version.filename	=  "__PollutionControls__/graphics/entity/low-heat-exchanger/hr-lowheatex-W-idle.png"
 
 local emitter = util.table.deepcopy(data.raw['storage-tank']['storage-tank'])
-emitter.name = "emitter"
+emitter.name = "dump-site"
 emitter.order = "z"
-emitter.minable.result = "emitter"
+emitter.minable.result = "dump-site"
 emitter.flags = {"placeable-neutral", "player-creation"}
 emitter.corpse = "small-worm-corpse"
 emitter.dying_explosion = "blood-explosion-big"
@@ -220,32 +111,51 @@ emitter.fluid_box.pipe_connections ={
 	{ position = {2, 0} },
 	{ position = {0, -2} },
 }
-emitter.fluid_box.filter = "toxicsludge"
-emitter.fluid_box.base_area = 10
-emitter.render_layer = "decorative"
+--emitter.fluid_box.filter = "toxicsludge"
+emitter.fluid_box.base_area = 50
 emitter.pictures.picture.sheets = {
 	{
-		filename = "__PollutionControls__/graphics/entity/emitter/toxicdumpv2.png",
+		filename = "__PollutionControls__/graphics/entity/emitter/toxicdump.png",
 		frames = 1,
-		width = 110,
-		height = 108,
-		scale = 1.0,
+		width = 321,--110,
+		height = 321,--108,
+		scale = 0.5,
 		shift = util.by_pixel(0, 4),
 		priority = "extra-high",
 		hr_version = {
-			filename = "__PollutionControls__/graphics/entity/emitter/toxicdumpv2.png",
+			filename = "__PollutionControls__/graphics/entity/emitter/toxicdump.png",
 			frames = 1,
-			width = 110,
-			height = 108,
-			scale = 1.0,
+			width = 321,--110,
+			height = 321,--108,
+			scale = 0.5,
 			shift = util.by_pixel(-0.25, 3.75),
 			priority = "extra-high",
+		},
+	},
+	{
+		filename = "__PollutionControls__/graphics/entity/emitter/toxicdump_shadow.png",
+		frames = 1,
+		width = 321,--110,
+		height = 321,--108,
+		scale = 0.5,
+		shift = util.by_pixel(0, 12),
+		priority = "extra-high",
+		draw_as_shadow = true,
+		hr_version = {
+			filename = "__PollutionControls__/graphics/entity/emitter/toxicdump_shadow.png",
+			frames = 1,
+			width = 321,--110,
+			height = 321,--108,
+			scale = 0.5,
+			shift = util.by_pixel(0, 24),
+			priority = "extra-high",
+			draw_as_shadow = true,
 		},
 	},
 }
 emitter.resistances = {
 	{
-		type = "poison",
+		type = POLLUTION_DAMAGE_TYPE,
 		percent = 100,
 	},
 	{
@@ -261,16 +171,17 @@ emitter.collision_mask = { "item-layer", "object-layer", "water-tile"}
 
 local dumpsmoke = util.table.deepcopy(data.raw['trivial-smoke']['smoke'])
 dumpsmoke.name = "dump-smoke"
-dumpsmoke.duration = 30*60
+dumpsmoke.duration = 30*TICKS_PER_SECOND
 dumpsmoke.start_scale = 0.1
 dumpsmoke.end_scale = 6.0
-dumpsmoke.color = {r=0.744, g=0.275, b=0.867}
+dumpsmoke.color = {r=0.744, g=0.275, b=0.867, a=0.5}
 dumpsmoke.affected_by_wind = false
+dumpsmoke.render_layer = "higher-object-under"
 
 
 data:extend({
 	--airfilterSmoke,
-	airfilter,
+	--airfilter,
 	inceneratorsmoke,
 	incinerator,
 	toxicturret,
