@@ -12,6 +12,7 @@ require "constants"
 ----------
 local hev_item = makeNewDataFromData("armor","light-armor","hev-armor")
 hev_item.order = "a[hev-armor]"
+hev_item.durability = 500
 hev_item.resistances = {
 	{
         type = "fire",
@@ -49,11 +50,11 @@ data:extend({
 	{
 		type = "recipe",
 		name = "hev-armor",
-		enabled = true,
+		enabled = false,
 		energy_required = 3,
 		ingredients = {
 			{type="item", name="iron-plate", amount=10},
-			{type="item", name="xenovasi", amount=20},
+			{type="item", name="xenomeros", amount=100},
 		},
 		result = "hev-armor"
 	},

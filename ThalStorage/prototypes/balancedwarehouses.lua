@@ -201,15 +201,15 @@ data.raw["recipe"]["warehouse-requester"].expensive = {
 data.raw["technology"]["warehouse-research"].effects = { 
 	{
 		type = "unlock-recipe",
+		recipe = "rail-loading-yard",
+	},
+	{
+		type = "unlock-recipe",
 		recipe = "storehouse-basic",
 	},
 	{
 		type = "unlock-recipe",
 		recipe = "warehouse-basic",
-	},
-	{
-		type = "unlock-recipe",
-		recipe = "rail-loading-yard",
 	},
 }
 

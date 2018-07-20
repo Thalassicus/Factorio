@@ -36,13 +36,13 @@ railloadingyard.picture.layers[currentIndex].shift[2] = railloadingyard.picture.
 
 currentIndex=currentIndex+1
 railloadingyard.picture.layers[currentIndex].hr_version = copyData("container","wooden-chest","picture")
-railloadingyard.picture.layers[currentIndex].filename = "__MiscMods__/graphics/entity/rail_loading_yard.png"
+railloadingyard.picture.layers[currentIndex].filename = "__ThalStorage__/graphics/entity/rail_loading_yard.png"
 railloadingyard.picture.layers[currentIndex].width    = 192
 railloadingyard.picture.layers[currentIndex].height   = 192
 railloadingyard.picture.layers[currentIndex].scale    = 0.5
 railloadingyard.picture.layers[currentIndex].shift    = nil
 railloadingyard.picture.layers[currentIndex].draw_as_shadow = true
-railloadingyard.picture.layers[currentIndex].hr_version.filename = "__MiscMods__/graphics/entity/rail_loading_yard_hr.png"
+railloadingyard.picture.layers[currentIndex].hr_version.filename = "__ThalStorage__/graphics/entity/rail_loading_yard_hr.png"
 railloadingyard.picture.layers[currentIndex].hr_version.width    = 384
 railloadingyard.picture.layers[currentIndex].hr_version.height   = 384
 railloadingyard.picture.layers[currentIndex].hr_version.scale    = 0.25
@@ -56,7 +56,7 @@ railloadingyard.circuit_connector_sprites = circuit_connector_definitions["assem
 ----------
 local railloadingyard_item = makeNewItemFromData("item","wooden-chest","rail-loading-yard")
 railloadingyard_item.stack_size = 10
-railloadingyard_item.icon       = "__MiscMods__/graphics/icons/rail_loading_yard_icon.png"
+railloadingyard_item.icon       = "__ThalStorage__/graphics/icons/rail_loading_yard_icon.png"
 railloadingyard_item.icon_size   = 64
 
 --------------
@@ -69,7 +69,7 @@ data:extend({
 		type = "recipe",
 		name = "rail-loading-yard",
 		energy_required = 1,
-		enabled = true,
+		enabled = false,
 		ingredients =
 		{
 			{name="wooden-chest", amount=3},

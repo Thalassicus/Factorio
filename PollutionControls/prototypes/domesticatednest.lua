@@ -62,7 +62,6 @@ data:extend({
 		{
 			{type="item", name="xenovasi",			amount=10},
 			{type="item", name="advanced-circuit",	amount=5},
-			{type="item", name="processing-unit",	amount=1},
 			{type="item", name="pump",				amount=2},
 		},
 		result= "domesticated-nest"

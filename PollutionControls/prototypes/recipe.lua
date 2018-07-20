@@ -35,7 +35,8 @@ emitter_recipe.normal = {
 		{type="item", name="pipe-to-ground", amount=4},
 		{type="item", name="iron-axe", amount=1},
 	},
-	result = "dump-site"
+	enabled = false,
+	result = "dump-site",
 }
 emitter_recipe.expensive = {
 	energy_required = 6,
@@ -43,7 +44,8 @@ emitter_recipe.expensive = {
 		{type="item", name="pipe-to-ground", amount=4},
 		{type="item", name="steel-axe", amount=1},
 	},
-	result = "dump-site"
+	enabled = false,
+	result = "dump-site",
 }
 
 data:extend({
@@ -63,6 +65,22 @@ data:extend({
 		results=
 		{
 			{name="xenomeros", amount=XENOMEROS_PER_XENOVASI},
+		},
+	},
+	emitter_recipe,
+	{
+		type = "recipe",
+		name = "xenovasi",
+		category = "advanced-crafting",
+		energy_required = 0.5,
+		enabled = false,
+		ingredients =
+		{
+			{name="xenomeros", amount=2*XENOMEROS_PER_XENOVASI},
+		},
+		results=
+		{
+			{name="xenovasi", amount=1},
 		},
 	},
 	{

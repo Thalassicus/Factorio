@@ -1,5 +1,141 @@
 require "constants"
 
+
+------------------
+-- Technologies --
+------------------
+
+data:extend(
+{
+	{
+		type = "technology",
+		name = "pollution-controls",
+		icon = "__PollutionControls__/graphics/icons/pollution-collection.png",
+		icon_size = 128,
+		prerequisites = {"automation-2"},
+		unit =
+		{
+			count = 80,
+			ingredients =
+			{
+				{"science-pack-1", 1}
+			},
+			time = 30
+		},
+		effects =
+		{
+			{
+				type = "unlock-recipe",
+				recipe = "pollutioncollector"
+			},
+			{
+				type = "unlock-recipe",
+				recipe = "dump-site"
+			},
+			{
+				type = "unlock-recipe",
+				recipe = "hev-armor"
+			},
+			{
+				type = "unlock-recipe",
+				recipe = "xenomeros"
+			},
+			{
+				type = "unlock-recipe",
+				recipe = "xenovasi"
+			},
+		},
+		order = "c-a"
+	},
+})
+
+data:extend(
+{
+	{
+		type = "technology",
+		name = "inceneration",
+		icon = "__PollutionControls__/graphics/icons/incinerator.png",
+		icon_size = 32,
+		prerequisites = {"pollution-controls", "flammables","military-2"},
+		unit =
+		{
+			count = 100,
+			ingredients =
+			{
+				{"science-pack-1", 1},
+				{"science-pack-2", 1}
+			},
+			time = 30
+		},
+		effects =
+		{
+			{
+				type = "unlock-recipe",
+				recipe = "liquify-pollution"
+			},
+			{
+				type = "unlock-recipe",
+				recipe = "toxic-turret"
+			},
+			{
+				type = "unlock-recipe",
+				recipe = "waste-treatment"
+			},
+			{
+				type = "unlock-recipe",
+				recipe = "incinerator"
+			},
+			{
+				type = "unlock-recipe",
+				recipe = "low-heat-exchanger"
+			},
+			{
+				type = "unlock-recipe",
+				recipe = "heat-pipe"
+			},
+		},
+		order = "c-a"
+	},
+})
+
+data:extend(
+{
+	{
+		type = "technology",
+		name = "industrial-xenomass",
+		icon = "__base__/graphics/icons/biter-spawner.png",
+		icon_size = 32,
+		prerequisites = {"inceneration", "advanced-electronics"},
+		unit =
+		{
+			count = 100,
+			ingredients =
+			{
+				{"science-pack-1", 1},
+				{"science-pack-2", 1}
+			},
+			time = 30
+		},
+		effects =
+		{
+			{
+				type = "unlock-recipe",
+				recipe = "domesticated-nest"
+			},
+			{
+				type = "unlock-recipe",
+				recipe = "nest-pollution-xenomeros"
+			},
+			{
+				type = "unlock-recipe",
+				recipe = "nest-sludge-xenovasi"
+			},
+		},
+		order = "c-a"
+	},
+})
+
+
 -------------------
 -- Toxic Barrels --
 -------------------
@@ -475,7 +611,7 @@ for i=1, #packable_resources, 1 do
 		subgroup = "pack-crate",
 		order = "b[pack-" .. packable_resources[i][2] .. "]",
 		energy_required = 1,
-		enabled = true,
+		enabled = false,
 		icons = generatePackedCrateIcon(packable_resources[i]),
 		icon_size = 32,
 		ingredients =
@@ -497,7 +633,7 @@ for i=1, #packable_resources, 1 do
 		subgroup = "empty-crate",
 		order = "c[unpack-" .. packable_resources[i][2] .. "]",
 		energy_required = 1,
-		enabled = true,
+		enabled = false,
 		icons=generateUnpackedCrateIcon(packable_resources[i]),
 		icon_size = 32,
 		ingredients =
