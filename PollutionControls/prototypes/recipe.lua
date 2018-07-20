@@ -32,17 +32,17 @@ emitter_recipe.enabled = false
 emitter_recipe.normal = {
 	energy_required = 3,
 	ingredients = {
-		{type="item", name="pipe-to-ground", amount=4},
+		{type="item", name="pipe-to-ground", amount=2},
 		{type="item", name="iron-axe", amount=1},
 	},
 	enabled = false,
 	result = "dump-site",
 }
 emitter_recipe.expensive = {
-	energy_required = 6,
+	energy_required = 3,
 	ingredients = {
 		{type="item", name="pipe-to-ground", amount=4},
-		{type="item", name="steel-axe", amount=1},
+		{type="item", name="iron-axe", amount=1},
 	},
 	enabled = false,
 	result = "dump-site",

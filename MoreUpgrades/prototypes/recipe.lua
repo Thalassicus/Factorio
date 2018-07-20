@@ -24,6 +24,7 @@ local bigwall_recipe =  util.table.deepcopy(data.raw['recipe']['stone-wall'])
 bigwall_recipe.name = "big-stone-wall"
 bigwall_recipe.result = "big-stone-wall"
 bigwall_recipe.enabled = false
+bigwall_recipe.energy_required = 2
 bigwall_recipe.ingredients = {
 	{"stone-wall", 8},
 	{"steel-plate", 6},
