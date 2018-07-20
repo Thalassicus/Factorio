@@ -6,5 +6,5 @@
 	"title": "Balance Mod",
 	"homepage": "",
 	"description": "Balancing various features of the game",
-	"dependencies": ["base","Warehousing"]
+	"dependencies": ["base"]
 } 
