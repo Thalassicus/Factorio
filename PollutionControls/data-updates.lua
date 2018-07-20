@@ -1,5 +1,38 @@
 require "constants"
 
+
+------------------
+-- Technologies --
+------------------
+
+--[[
+Add techs to:
+- Circuit pipe: circuit network
+- Rail Loading Yard: Railway
+- Crate resource: Automation 2
+
+Balance mod
+- Move train stops to railway; remove automated rail transport.
+- Increase cost of Rail Signals tech.
+--]]
+
+table.insert(data.raw["technology"]["circuit-network"].effects,
+    {
+        type = "unlock-recipe",
+        ammo_category = "circuitpipe_recipe",
+    })
+
+
+
+
+
+
+
+
+-------------------
+-- Toxic Barrels --
+-------------------
+
 -- The technology the barrel unlocks will be added to
 local technology_name = "fluid-handling"
 -- The base empty barrel item
@@ -301,6 +334,17 @@ local function addResistance(entityList, _DamageType, _Percent, _Decrease)
 	end
 end
 
+
+
+
+
+
+
+
+-----------------
+-- Resistances --
+-----------------
+
 addResistance(data.raw["wall"],					POLLUTION_DAMAGE_TYPE, 100)
 addResistance(data.raw["gate"],					POLLUTION_DAMAGE_TYPE, 100)
 addResistance(data.raw["transport-belt"],		POLLUTION_DAMAGE_TYPE, 100)
@@ -356,6 +400,15 @@ addResistance({data.raw["armor"]["power-armor"]},		POLLUTION_DAMAGE_TYPE, 30, 10
 addResistance({data.raw["armor"]["power-armor-mk2"]},	POLLUTION_DAMAGE_TYPE, 40, 15)
 
 
+
+
+
+
+
+
+-----------
+-- Other --
+-----------
 
 --data.raw["pipe"].collision_mask = {"item-layer", "object-layer", "water-tile"}
 data.raw["pipe-to-ground"]["pipe-to-ground"].collision_mask = {"item-layer", "object-layer", "water-tile"}
