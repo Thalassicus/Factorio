@@ -1,4 +1,94 @@
 
+-------------
+--- TECHS ---
+-------------
+
+data.raw["technology"]["warehouse-research"].prerequisites = { }
+data.raw["technology"]["warehouse-research"].unit =
+		{
+			count = 30,
+			ingredients = {{ "science-pack-1", 1}},
+			time = 15
+		},
+data.raw["technology"]["warehouse-research"].effects = { 
+	{
+		type = "unlock-recipe",
+		recipe = "rail-loading-yard",
+	},
+	{
+		type = "unlock-recipe",
+		recipe = "storehouse-basic",
+	},
+	{
+		type = "unlock-recipe",
+		recipe = "warehouse-basic",
+	},
+}
+
+data:extend({
+	{
+		type = "technology",
+		name = "warehouse-robotics",
+		icon = "__Warehousing__/graphics/research/warehouse-logistics-research.png",
+		icon_size = 128,
+		effects = {
+			{
+				type = "unlock-recipe",
+				recipe = "storehouse-passive-provider",
+			},
+			{
+				type = "unlock-recipe",
+				recipe = "storehouse-storage",
+			},
+			{
+				type = "unlock-recipe",
+				recipe = "warehouse-passive-provider",
+			},
+			{
+				type = "unlock-recipe",
+				recipe = "warehouse-storage",
+			},
+		},
+		prerequisites = {"warehouse-research", "robotics", "flying"},
+		unit = {
+			count = 100,
+			ingredients = {
+				{"science-pack-1", 1},
+				{"science-pack-2", 1}
+			},
+			time = 30
+		},
+		order = "c-k-a",
+	},
+})
+
+data.raw["technology"]["warehouse-logistics-research"].prerequisites = { "warehouse-robotics", "logistic-system" }
+data.raw["technology"]["warehouse-logistics-research"].effects = { 
+	{
+		type = "unlock-recipe",
+		recipe = "storehouse-active-provider",
+	},
+	{
+		type = "unlock-recipe",
+		recipe = "storehouse-requester",
+	},
+	{
+		type = "unlock-recipe",
+		recipe = "warehouse-active-provider",
+	},
+	{
+		type = "unlock-recipe",
+		recipe = "warehouse-requester",
+	},
+}
+
+
+
+
+---------------
+--- PACKING ---
+---------------
+
 local packable_resources = {
 	{"item", "coal",		{r=8,   g=8,   b=8}},
 	{"item", "stone",		{r=192, g=192, b=192}},
