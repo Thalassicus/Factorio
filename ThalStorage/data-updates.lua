@@ -9,7 +9,7 @@ data.raw["technology"]["warehouse-research"].unit =
 			count = 30,
 			ingredients = {{ "science-pack-1", 1}},
 			time = 15
-		},
+		}
 data.raw["technology"]["warehouse-research"].effects = { 
 	{
 		type = "unlock-recipe",
