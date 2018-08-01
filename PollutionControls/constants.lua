@@ -31,7 +31,7 @@ TOXIC_SLUDGE_NAME				= "toxicsludge"
 TOXIC_SLUDGE_RATIO				= 10					-- amount of polluted-air per unit of toxic sludge
 
 SLUDGE_PER_TOXIC_BARREL			= 250
-MJ_PER_TOXIC_SLUDGE				= 0.2
+MJ_PER_TOXIC_SLUDGE				= 1
 TOXIC_SLUDGE_BURN_PERCENT		= 0.5					-- when burned, how much of the toxic sludge is completely burned - the rest ends up as pollution
 
 POLLUTION_DAMAGE_TYPE			= "toxic"
