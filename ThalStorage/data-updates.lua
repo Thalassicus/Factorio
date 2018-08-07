@@ -157,7 +157,7 @@ for i=1, #packable_resources, 1 do
 		flags = {"goes-to-main-inventory"},
 		subgroup = "intermediate-product",
 		order = "x["..packable_resources[i][2].."]",
-		stack_size = 10
+		stack_size = 50
 	}
 	
 	local packRecipe = {
