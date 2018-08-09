@@ -36,6 +36,8 @@ TOXIC_SLUDGE_BURN_PERCENT		= 0.5					-- when burned, how much of the toxic sludg
 
 POLLUTION_DAMAGE_TYPE			= "toxic"
 
+INCINERATOR_CONSUMPTION			= 20	-- in MW
+
 --=========--
 -- Recipes --
 --=========--
