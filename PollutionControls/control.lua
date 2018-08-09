@@ -280,6 +280,7 @@ function OnTick_ToxicDumps(_Event)
 						game.surfaces[v.surface].create_entity({
 							name=cloudToUse,
 							amount=1,
+							force=entity.force,
 							position={entity.position.x+0.01,entity.position.y+0.01},
 						})
 					end

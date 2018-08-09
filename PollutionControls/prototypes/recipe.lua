@@ -91,7 +91,7 @@ data:extend({
 		energy_required = 10,
 		ingredients = 
 		{
-			{type="item", name="xenomeros", amount=1},
+			{type="item", name="xenomeros", amount=FILTER_PER_LIQUIFY},
 			{type="fluid", name="polluted-air", amount=SLUDGE_PER_FILTER * TOXIC_SLUDGE_RATIO },
 			{type="fluid", name="water", amount=SLUDGE_PER_FILTER * WATER_PER_FILTER_PERCENT},
 		},
