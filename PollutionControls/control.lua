@@ -141,7 +141,7 @@ function EntityDied(event)
 	if event.entity.type == "unit" then
 		log(event.entity.prototype.name .. " died")
 		-- Scaling values result in too little early xenomass, and too much in late game
-		local quantity = 0.5
+		local quantity = 4*math.random()
 		--local quantity = data.raw["unit"]["small-biter"].pollution_to_join_attack
 		--local quantity = (max_health[event.entity.prototype.name] / 200) * 2*math.random()
 		
