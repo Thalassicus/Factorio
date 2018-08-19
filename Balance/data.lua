@@ -1,4 +1,4 @@
-require("prototypes.longerbelts")
+require("prototypes.betterbelts")
 require("prototypes.betterweapons")
 require("prototypes.betterenergy")
 require("prototypes.betterrobots")
