@@ -18,7 +18,7 @@ data:extend(
 			count = 80,
 			ingredients =
 			{
-				{"science-pack-1", 1}
+				{"automation-science-pack", 1}
 			},
 			time = 30
 		},
@@ -62,8 +62,8 @@ data:extend(
 			count = 100,
 			ingredients =
 			{
-				{"science-pack-1", 1},
-				{"science-pack-2", 1}
+				{"automation-science-pack", 1},
+				{"logistic-science-pack", 1}
 			},
 			time = 30
 		},
@@ -111,8 +111,8 @@ data:extend(
 			count = 100,
 			ingredients =
 			{
-				{"science-pack-1", 1},
-				{"science-pack-2", 1}
+				{"automation-science-pack", 1},
+				{"logistic-science-pack", 1}
 			},
 			time = 30
 		},
@@ -220,7 +220,6 @@ local function create_barrel_item(name, fluid, empty_barrel_item)
     localised_name = {"item-name.filled-barrel", {"fluid-name." .. fluid.name}},
     icons = generate_barrel_item_icons(name, fluid, empty_barrel_item),
     icon_size = 32,
-    flags = {"goes-to-main-inventory"},
     subgroup = "fill-barrel",
     order = "b[" .. name .. "]",
     stack_size = empty_barrel_item.stack_size,

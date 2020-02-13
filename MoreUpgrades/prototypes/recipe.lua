@@ -32,6 +32,6 @@ bigwall_recipe.ingredients = {
 
 data:extend({
 	tier2radar_recipe,
-	bigwall_recipe,
+	--bigwall_recipe,
 	circuitpipe_recipe,
 })

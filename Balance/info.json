@@ -2,9 +2,15 @@
 	"name": "Balance",
 	"author": "Zerahan",
 	"version": "1.0.0",
-	"factorio_version": "0.16",
+	"factorio_version": "0.17",
 	"title": "Balance Mod",
 	"homepage": "",
-	"description": "Balancing various features of the game",
+	"description": "Quality of life improvements:
+	- 200% solar panel and accumulator cost and output.
+	- 150% robot speed.
+	- 200% personal roboport charge speed (same energy usage).
+	- Cannot right-click robots out of the air.
+	- Shotguns requires 6 wood instead of 5, eliminating the odd wood count.
+	- Longer underground belts and pipes.",
 	"dependencies": ["base"]
 } 

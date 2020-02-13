@@ -7,7 +7,7 @@ data.raw["technology"]["warehouse-research"].prerequisites = { }
 data.raw["technology"]["warehouse-research"].unit =
 		{
 			count = 30,
-			ingredients = {{ "science-pack-1", 1}},
+			ingredients = {{ "automation-science-pack", 1}},
 			time = 15
 		}
 data.raw["technology"]["warehouse-research"].effects = { 
@@ -49,12 +49,12 @@ data:extend({
 				recipe = "warehouse-storage",
 			},
 		},
-		prerequisites = {"warehouse-research", "robotics", "flying"},
+		prerequisites = {"warehouse-research", "robotics"},
 		unit = {
 			count = 100,
 			ingredients = {
-				{"science-pack-1", 1},
-				{"science-pack-2", 1}
+				{"automation-science-pack", 1},
+				{"logistic-science-pack", 1}
 			},
 			time = 30
 		},
@@ -62,6 +62,7 @@ data:extend({
 	},
 })
 
+--[[
 data.raw["technology"]["warehouse-logistics-research"].prerequisites = { "warehouse-robotics", "logistic-system" }
 data.raw["technology"]["warehouse-logistics-research"].effects = { 
 	{
@@ -81,7 +82,7 @@ data.raw["technology"]["warehouse-logistics-research"].effects = {
 		recipe = "warehouse-requester",
 	},
 }
-
+--]]
 
 
 
@@ -99,7 +100,7 @@ local packable_resources = {
 
 local mask_alpha		= 128
 local crate_icon		= "__base__/graphics/icons/wooden-chest.png"
-local crate_top_mask	= "__PollutionControls__/graphics/icons/wooden-chest-mask.png"
+local crate_top_mask	= "__ThalStorage__/graphics/icons/wooden-chest-mask.png"
 local crate_side_label	= "__base__/graphics/icons/wood.png"
 
 local function generatePackedCrateIcon( itemData )
@@ -119,7 +120,7 @@ local function generatePackedCrateIcon( itemData )
 		{
 			icon = copyData(itemData[1],itemData[2],'icon'),
 			scale = 0.5,
-			shift = {0, 9}
+			--shift = {0, 9}
 		}
 	}
 	icons[2].tint.a = mask_alpha
@@ -129,7 +130,7 @@ end
 local function generateUnpackedCrateIcon( itemData )
 	local icons = {
 		{
-			icon = "__PollutionControls__/graphics/icons/unpack-chest.png",
+			icon = "__ThalStorage__/graphics/icons/unpack-chest.png",
 		},
 		--{
 		--	icon = crate_side_label,
@@ -139,7 +140,7 @@ local function generateUnpackedCrateIcon( itemData )
 		{
 			icon = copyData(itemData[1],itemData[2],'icon'),
 			scale = 0.4,
-			shift = {-8, 0}
+			--shift = {-8, 0}
 		}
 	}
 	--icons[2].tint.a = mask_alpha
@@ -154,7 +155,6 @@ for i=1, #packable_resources, 1 do
 		localised_name = {"item-name.filled-crate", {"item-name." .. packable_resources[i][2]}},
 		icons = generatePackedCrateIcon(packable_resources[i]),
 		icon_size = 32,
-		flags = {"goes-to-main-inventory"},
 		subgroup = "intermediate-product",
 		order = "x["..packable_resources[i][2].."]",
 		stack_size = 50

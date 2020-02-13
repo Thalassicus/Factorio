@@ -6,7 +6,7 @@ tier2radar.energy_per_sector = "33.3333333J" --"10MJ"
 tier2radar.energy_per_nearby_scan = "0.00000000001J" --"250kJ"
 tier2radar.energy_usage = "1W"
 tier2radar.energy_source.buffer_capacity = "10GJ"
-tier2radar.energy_source.usage_priority = "terciary"
+tier2radar.energy_source.usage_priority = "tertiary"
 tier2radar.energy_source.input_flow_limit = "0kW"
 tier2radar.energy_source.output_flow_limit = "0kW"
 tier2radar.energy_source.drain = "0kW"
@@ -22,7 +22,7 @@ tier2radar.pictures = {
 			height = 131,
 			direction_count = 64,
 			line_length = 8,
-			shift = util.by_pixel(12.5,0),
+			--shift = util.by_pixel(12.5,0), deprecated?
 			--scale = 0.8,
 		},
 				{
@@ -138,7 +138,7 @@ circuitpipe.working_sound =
 circuitpipe.circuit_wire_connection_points = circuit_connector_definitions["inserter"].points
 circuitpipe.circuit_connector_sprites = circuit_connector_definitions["inserter"].sprites
 
-
+--[[
 local bigwall = util.table.deepcopy(data.raw['wall']['stone-wall'])
 bigwall.name = "big-stone-wall"
 bigwall.order = "z"
@@ -250,30 +250,6 @@ bigwall.pictures.water_connection_patch.sheets[1].shift[2] = bigwall.pictures.wa
 bigwall.pictures.water_connection_patch.sheets[2].shift[1] = bigwall.pictures.water_connection_patch.sheets[2].shift[1] + shadowshift[1]
 bigwall.pictures.water_connection_patch.sheets[2].shift[2] = bigwall.pictures.water_connection_patch.sheets[2].shift[2] + shadowshift[2]
 
---[[
-bigwall.pictures.water_connection_patch.sheets = {
-	{
-		filename = "__base__/graphics/entity/stone-wall/wall-single.png",
-		priority = "extra-high",
-		width = 22,
-		height = 42,
-		shift = {0, -0.15625},
-		scale = scale,
-	},
-	{
-		filename = "__base__/graphics/entity/stone-wall/wall-single-shadow.png",
-		priority = "extra-high",
-		draw_as_shadow = true,
-		width = 47,
-		height = 32,
-		shift = {0.359375, 0.5},
-		scale = scale,
-	}
-}
-bigwall.pictures.water_connection_patch.sheets[1].shift[2] = bigwall.pictures.water_connection_patch.sheets[1].shift[2] + shift
-bigwall.pictures.water_connection_patch.sheets[2].shift[1] = bigwall.pictures.water_connection_patch.sheets[2].shift[1] + shadowshift[1]
-bigwall.pictures.water_connection_patch.sheets[2].shift[2] = bigwall.pictures.water_connection_patch.sheets[2].shift[2] + shadowshift[2]
---]]
 
 --for l=1,#bigwall.pictures.water_connection_patch.sheets,1 do
 	--bigwall.pictures.water_connection_patch.sheets[l] = bigwall.pictures.single.layers[l]
@@ -292,12 +268,12 @@ bigwall.wall_diode_red_light.shift[2] = bigwall.wall_diode_red_light.shift[2] + 
 --bigwall.pictures.single.layers[2].shift[1] = bigwall.pictures.single.layers[2].shift[1] + shadowshift[1]
 --bigwall.pictures.single.layers[2].shift[2] = bigwall.pictures.single.layers[2].shift[2] + shadowshift[2]
 
-
+--]]
 
 
 
 data:extend({
 	tier2radar,
-	bigwall,
+	--bigwall,
 	circuitpipe,
 })

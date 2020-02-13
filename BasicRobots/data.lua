@@ -18,7 +18,7 @@ data:extend({
 local basic_robot_item =  util.table.deepcopy(data.raw['item']['construction-robot'])
 basic_robot_item.name = "basic-construction-robot"
 basic_robot_item.place_result = "basic-construction-robot"
-basic_robot_item.icon = "__base__/graphics/technology/flying.png"
+basic_robot_item.icon = "__base__/graphics/technology/robotics.png"
 basic_robot_item.icon_size = 128
 data:extend({
     basic_robot_item
@@ -42,7 +42,7 @@ data:extend({
 		name = "recycle-basic-construction-robot",
 		category = "advanced-crafting",
 		subgroup = "recycle-military-equipment",
-		icon = "__base__/graphics/technology/flying.png",
+		icon = "__base__/graphics/technology/robotics.png",
 		icon_size = 128,
 		order = "a",
 		ingredients =
@@ -138,7 +138,6 @@ data:extend({
     icon = "__base__/graphics/technology/follower-robots.png",
 	icon_size = 128,
     placed_as_equipment_result = "robotcharger-equipment",
-    flags = {"goes-to-main-inventory"},
     subgroup = "equipment",
     order = "e[robotics]-a[personal-roboport-equipment]",
     stack_size = 1
@@ -212,7 +211,6 @@ data:extend({
     icon = "__base__/graphics/technology/electric-engine.png",
 	icon_size = 128,
     placed_as_equipment_result = "generator-equipment",
-    flags = {"goes-to-main-inventory"},
     subgroup = "equipment",
     order = "a[energy-source]-b[generator]",
     stack_size = 20
@@ -257,7 +255,6 @@ data:extend({
     name = "robot-pack",
     icon = "__base__/graphics/technology/follower-robots.png",
 	icon_size = 128,
-    flags = {"goes-to-main-inventory"},
     durability = 5000,
     subgroup = "armor",
     order = "b[heavy-armor]",
@@ -314,8 +311,8 @@ data:extend(
 {
 	{
 		type = "technology",
-		name = "drone-pack-research",
-		icon = "__base__/graphics/technology/flying.png",
+		name = "basic-robotics",
+		icon = "__base__/graphics/technology/robotics.png",
 		icon_size = 128,
 		prerequisites = {"engine"},
 		unit =
@@ -323,8 +320,8 @@ data:extend(
 			count = 100,
 			ingredients =
 			{
-				{"science-pack-1", 1},
-				{"science-pack-2", 1}
+				{"automation-science-pack", 1},
+				{"logistic-science-pack", 1}
 			},
 			time = 30
 		},

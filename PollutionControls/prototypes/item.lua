@@ -57,7 +57,6 @@ data:extend({
 		name = "xenomeros",
 		icon = "__PollutionControls__/graphics/icons/xenomeros.png",
 		icon_size = 128,
-		flags = {"goes-to-main-inventory"},
 		subgroup = "raw-material",
 		order = "x[xenomeros]",
 		stack_size = 200
@@ -67,7 +66,6 @@ data:extend({
 		name = "xenovasi",
 		icon = "__PollutionControls__/graphics/icons/xenovasi.png",
 		icon_size = 128,
-		flags = {"goes-to-main-inventory"},
 		subgroup = "raw-material",
 		order = "x[xenovasi]",
 		stack_size = 50

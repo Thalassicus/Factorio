@@ -40,6 +40,6 @@ bigwall_item.icon = "__MoreUpgrades__/graphics/icons/big-wall_icon.png"
 
 data:extend({
 	tier2radar_item,
-	bigwall_item,
+	--bigwall_item,
 	circuitpipe_item,
 })

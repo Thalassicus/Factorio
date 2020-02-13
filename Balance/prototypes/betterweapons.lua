@@ -1,4 +1,4 @@
-require "table"
+--require "table"
 
 data.raw["recipe"]["artillery-wagon"].ingredients = {
       {"engine-unit", 64},
@@ -84,6 +84,7 @@ data.raw["land-mine"]["land-mine"].resistances =
         percent = 100
 	}
 }
+--[[
 table.insert(data.raw["technology"]["laser-turret-damage-1"].effects,
 	{
 		type = "ammo-damage",
@@ -108,14 +109,12 @@ table.insert(data.raw["technology"]["laser-turret-damage-4"].effects,
 		ammo_category = "electric",
 		modifier = "0.4"
 	})
-
 table.insert(data.raw["technology"]["laser-turret-damage-5"].effects,
 	{
 		type = "ammo-damage",
 		ammo_category = "electric",
 		modifier = "0.4"
 	})
-
 table.insert(data.raw["technology"]["laser-turret-damage-6"].effects,
 	{
 		type = "ammo-damage",

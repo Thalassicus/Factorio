@@ -1,22 +1,20 @@
-require "table"
-
-data.raw["logistic-robot"]["logistic-robot"].speed = 0.075
+data.raw["logistic-robot"]["logistic-robot"].speed = 0.075 -- 0.05
 data.raw["logistic-robot"]["logistic-robot"].speed_multiplier_when_out_of_energy = 0.75
-data.raw["construction-robot"]["construction-robot"].speed = 0.09
+data.raw["construction-robot"]["construction-robot"].speed = 0.09 -- 0.06
 data.raw["construction-robot"]["construction-robot"].speed_multiplier_when_out_of_energy = 0.75
 
-data.raw["roboport-equipment"]["personal-roboport-equipment"].charge_approach_distance = 1
-data.raw["roboport-equipment"]["personal-roboport-equipment"].charging_distance = 0.5
+data.raw["roboport-equipment"]["personal-roboport-equipment"].charge_approach_distance = 1 -- 2.6
+data.raw["roboport-equipment"]["personal-roboport-equipment"].charging_distance = 0.5 -- 1.6
 
-data.raw["roboport-equipment"]["personal-roboport-mk2-equipment"].charge_approach_distance = 1
-data.raw["roboport-equipment"]["personal-roboport-mk2-equipment"].charging_distance = 0.5
-data.raw["roboport-equipment"]["personal-roboport-mk2-equipment"].charging_energy = "2000kW"
+data.raw["roboport-equipment"]["personal-roboport-mk2-equipment"].charge_approach_distance = 1 -- 2.6
+data.raw["roboport-equipment"]["personal-roboport-mk2-equipment"].charging_distance = 0.5 -- 1.6
+data.raw["roboport-equipment"]["personal-roboport-mk2-equipment"].charging_energy = "2000kW" -- 1000
 data.raw["roboport-equipment"]["personal-roboport-mk2-equipment"].energy_source = 
     {
       type = "electric",
-      buffer_capacity = "70MJ",
-      input_flow_limit = "6000KW",
-      usage_priority = "secondary-input"
+      buffer_capacity = "70MJ", -- 35
+      input_flow_limit = "6000KW", -- 3500
+      usage_priority = "secondary-input" -- secondary-input
     }	
 
 table.insert(data.raw["roboport"]["roboport"].charging_offsets,{-2.0, -1.0})

@@ -1,13 +1,13 @@
 ------------------
 -- Technologies --
 ------------------
-
+--[[
 table.insert(data.raw["technology"]["gates"].effects,
     {
         type = "unlock-recipe",
         recipe = "big-stone-wall",
     })
-
+--]]
 table.insert(data.raw["technology"]["circuit-network"].effects,
     {
         type = "unlock-recipe",

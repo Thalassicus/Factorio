@@ -1,5 +1,5 @@
 require "util"
-require "math"
+--require "math"
 
 script.on_init(function()
   if global.outposts == nil then

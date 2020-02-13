@@ -275,6 +275,7 @@ data:extend(
 		energy_required = 10,
 		enabled = true
 	},
+	--[[
 	{
 		type = "recipe",
 		name = "recycle-iron-axe",
@@ -295,6 +296,7 @@ data:extend(
 		energy_required = 1,
 		enabled = true
 	},
+	--]]
 	{
 		type = "recipe",
 		name = "recycle-small-electric-pole",

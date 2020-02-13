@@ -19,6 +19,7 @@ railloadingyard.picture = {
 	}
 }
 local currentIndex = 1
+--[[
 railloadingyard.picture.layers[currentIndex].shift[1] = railloadingyard.picture.layers[currentIndex].shift[1]-0.4+0.2
 railloadingyard.picture.layers[currentIndex].shift[2] = railloadingyard.picture.layers[currentIndex].shift[2]-0.4-0.6
 currentIndex=currentIndex+1
@@ -33,6 +34,7 @@ railloadingyard.picture.layers[currentIndex].shift[2] = railloadingyard.picture.
 currentIndex=currentIndex+1
 railloadingyard.picture.layers[currentIndex].shift[1] = railloadingyard.picture.layers[currentIndex].shift[1]+0.4+0.38
 railloadingyard.picture.layers[currentIndex].shift[2] = railloadingyard.picture.layers[currentIndex].shift[2]    +0.1
+--]]
 
 currentIndex=currentIndex+1
 railloadingyard.picture.layers[currentIndex].hr_version = copyData("container","wooden-chest","picture")
@@ -65,6 +67,7 @@ railloadingyard2x2.picture = {
 	}
 }
 currentIndex = 1
+--[[
 railloadingyard2x2.picture.layers[currentIndex].shift[1] = railloadingyard2x2.picture.layers[currentIndex].shift[1]-0.2
 railloadingyard2x2.picture.layers[currentIndex].shift[2] = railloadingyard2x2.picture.layers[currentIndex].shift[2]-0.4
 currentIndex=currentIndex+1
@@ -73,6 +76,7 @@ railloadingyard2x2.picture.layers[currentIndex].shift[2] = railloadingyard2x2.pi
 currentIndex=currentIndex+1
 railloadingyard2x2.picture.layers[currentIndex].shift[1] = railloadingyard2x2.picture.layers[currentIndex].shift[1]+0.45
 railloadingyard2x2.picture.layers[currentIndex].shift[2] = railloadingyard2x2.picture.layers[currentIndex].shift[2]+0.2
+--]]
 
 currentIndex=currentIndex+1
 railloadingyard2x2.picture.layers[currentIndex].hr_version = copyData("container","wooden-chest","picture")
