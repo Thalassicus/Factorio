@@ -180,7 +180,7 @@ function AttemptMarkForPickup(entity, force)
 		spilledLoot[entity] = nil
 		return
 	end
-	local nearestEnemy = entity.surface.find_nearest_enemy{position=entity.position, max_distance=settings.global["zpollution-pickup-safety-distance"]}
+	local nearestEnemy = entity.surface.find_nearest_enemy{position=entity.position, max_distance=settings.global["zpollution-pickup-safety-distance"].value}
 	if nearestEnemy then return end
 	--log("marking " .. entity.stack.name .. " for deconstruction")
 	if force == game.forces.neutral or force == game.forces.enemy then
