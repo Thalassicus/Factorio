@@ -12,8 +12,8 @@ incinerator.consumption = INCINERATOR_CONSUMPTION .. "MW"
 incinerator.energy_source.fuel_category = "waste"
 incinerator.energy_source.effectivity = 1
 incinerator.energy_source.emissions = ((SLUDGE_PER_BARREL*POLLUTED_AIR_RATIO*AIR_PER_SLUDGE)*(1-INCENERATOR_EFFICIENCY) / (((SLUDGE_PER_BARREL * MJ_PER_TOXIC_SLUDGE) / 10)*60*10000))
-incinerator.picture.layers[1].filename = "__PollutionSolution__/graphics/entity/incinerator/incinerator.png"
-incinerator.picture.layers[1].hr_version.filename = "__PollutionSolution__/graphics/entity/incinerator/hr-incinerator.png"
+incinerator.picture.layers[1].filename = "__PollutionSolutions__/graphics/entity/incinerator/incinerator.png"
+incinerator.picture.layers[1].hr_version.filename = "__PollutionSolutions__/graphics/entity/incinerator/hr-incinerator.png"
 incinerator.energy_source.smoke =
 {
 	{
@@ -58,8 +58,8 @@ local inceneratorsmoke =
 }
 
 
-incinerator.working_light_picture.filename="__PollutionSolution__/graphics/entity/incinerator/reactor-lights-color.png"
-incinerator.working_light_picture.hr_version.filename="__PollutionSolution__/graphics/entity/incinerator/hr-reactor-lights-color.png"
+incinerator.working_light_picture.filename="__PollutionSolutions__/graphics/entity/incinerator/reactor-lights-color.png"
+incinerator.working_light_picture.hr_version.filename="__PollutionSolutions__/graphics/entity/incinerator/hr-reactor-lights-color.png"
 incinerator.light.color={r=0.744, g=0.275, b=0.867}
 incinerator.heat_buffer.max_temperature=400
 
@@ -94,15 +94,15 @@ lowheater.name = "low-heat-exchanger"
 lowheater.order = "z"
 lowheater.minable.result = "low-heat-exchanger"
 lowheater.target_temperature = 165
-lowheater.icon = "__PollutionSolution__/graphics/icons/low-heat-boiler.png"
-lowheater.structure.north.layers[1].filename			=  "__PollutionSolution__/graphics/entity/low-heat-exchanger/lowheatex-N-idle.png"
-lowheater.structure.north.layers[1].hr_version.filename	=  "__PollutionSolution__/graphics/entity/low-heat-exchanger/hr-lowheatex-N-idle.png"
-lowheater.structure.east.layers[1].filename				=  "__PollutionSolution__/graphics/entity/low-heat-exchanger/lowheatex-E-idle.png"
-lowheater.structure.east.layers[1].hr_version.filename	=  "__PollutionSolution__/graphics/entity/low-heat-exchanger/hr-lowheatex-E-idle.png"
-lowheater.structure.south.layers[1].filename			=  "__PollutionSolution__/graphics/entity/low-heat-exchanger/lowheatex-S-idle.png"
-lowheater.structure.south.layers[1].hr_version.filename	=  "__PollutionSolution__/graphics/entity/low-heat-exchanger/hr-lowheatex-S-idle.png"
-lowheater.structure.west.layers[1].filename 			=  "__PollutionSolution__/graphics/entity/low-heat-exchanger/lowheatex-W-idle.png"
-lowheater.structure.west.layers[1].hr_version.filename	=  "__PollutionSolution__/graphics/entity/low-heat-exchanger/hr-lowheatex-W-idle.png"
+lowheater.icon = "__PollutionSolutions__/graphics/icons/low-heat-boiler.png"
+lowheater.structure.north.layers[1].filename			=  "__PollutionSolutions__/graphics/entity/low-heat-exchanger/lowheatex-N-idle.png"
+lowheater.structure.north.layers[1].hr_version.filename	=  "__PollutionSolutions__/graphics/entity/low-heat-exchanger/hr-lowheatex-N-idle.png"
+lowheater.structure.east.layers[1].filename				=  "__PollutionSolutions__/graphics/entity/low-heat-exchanger/lowheatex-E-idle.png"
+lowheater.structure.east.layers[1].hr_version.filename	=  "__PollutionSolutions__/graphics/entity/low-heat-exchanger/hr-lowheatex-E-idle.png"
+lowheater.structure.south.layers[1].filename			=  "__PollutionSolutions__/graphics/entity/low-heat-exchanger/lowheatex-S-idle.png"
+lowheater.structure.south.layers[1].hr_version.filename	=  "__PollutionSolutions__/graphics/entity/low-heat-exchanger/hr-lowheatex-S-idle.png"
+lowheater.structure.west.layers[1].filename 			=  "__PollutionSolutions__/graphics/entity/low-heat-exchanger/lowheatex-W-idle.png"
+lowheater.structure.west.layers[1].hr_version.filename	=  "__PollutionSolutions__/graphics/entity/low-heat-exchanger/hr-lowheatex-W-idle.png"
 lowheater.energy_source.min_working_temperature = 165
 lowheater.energy_source.max_temperature = 330
 lowheater.energy_source.minimum_glow_temperature = 100
@@ -120,7 +120,7 @@ emitter.flags = {"placeable-neutral", "player-creation"}
 emitter.corpse = "small-worm-corpse"
 emitter.dying_explosion = "blood-explosion-big"
 emitter.dying_sound = make_worm_dying_sounds(0.8)
-emitter.icon = "__PollutionSolution__/graphics/icons/toxicdump_icon.png"
+emitter.icon = "__PollutionSolutions__/graphics/icons/toxicdump_icon.png"
 emitter.light = {
 	minimum_darkness = 0.8,
 	intensity = 0.9,
@@ -137,7 +137,7 @@ emitter.fluid_box.pipe_connections ={
 emitter.fluid_box.base_area = 50
 emitter.pictures.picture.sheets = {
 	{
-		filename = "__PollutionSolution__/graphics/entity/emitter/toxicdump.png",
+		filename = "__PollutionSolutions__/graphics/entity/emitter/toxicdump.png",
 		frames = 1,
 		width = 321,--110,
 		height = 321,--108,
@@ -145,7 +145,7 @@ emitter.pictures.picture.sheets = {
 		shift = util.by_pixel(0, 4),
 		priority = "extra-high",
 		hr_version = {
-			filename = "__PollutionSolution__/graphics/entity/emitter/toxicdump.png",
+			filename = "__PollutionSolutions__/graphics/entity/emitter/toxicdump.png",
 			frames = 1,
 			width = 321,--110,
 			height = 321,--108,
@@ -155,7 +155,7 @@ emitter.pictures.picture.sheets = {
 		},
 	},
 	{
-		filename = "__PollutionSolution__/graphics/entity/emitter/toxicdump_shadow.png",
+		filename = "__PollutionSolutions__/graphics/entity/emitter/toxicdump_shadow.png",
 		frames = 1,
 		width = 321,--110,
 		height = 256,--108,
@@ -164,7 +164,7 @@ emitter.pictures.picture.sheets = {
 		priority = "extra-high",
 		draw_as_shadow = true,
 		hr_version = {
-			filename = "__PollutionSolution__/graphics/entity/emitter/toxicdump_shadow.png",
+			filename = "__PollutionSolutions__/graphics/entity/emitter/toxicdump_shadow.png",
 			frames = 1,
 			width = 321,--110,
 			height = 256,--108,
