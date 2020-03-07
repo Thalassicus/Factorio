@@ -3,7 +3,7 @@ data.raw["pipe-to-ground"]["pipe-to-ground"].fluid_box.pipe_connections[2].max_u
 local incinerator_item = util.table.deepcopy(data.raw['item']['nuclear-reactor'])
 incinerator_item.name = "incinerator"
 incinerator_item.place_result = "incinerator"
-incinerator_item.icon="__PollutionControls__/graphics/icons/incinerator.png"
+incinerator_item.icon="__PollutionSolution__/graphics/icons/incinerator.png"
 
 local toxicturret_item = util.table.deepcopy(data.raw['item']['flamethrower-turret'])
 toxicturret_item.name = "toxic-turret"
@@ -38,12 +38,12 @@ airfilter_item.icons={
 local lowheater_item = util.table.deepcopy(data.raw['item']['heat-exchanger'])
 lowheater_item.name = "low-heat-exchanger"
 lowheater_item.place_result = "low-heat-exchanger"
-lowheater_item.icon = "__PollutionControls__/graphics/icons/low-heat-boiler.png"
+lowheater_item.icon = "__PollutionSolution__/graphics/icons/low-heat-boiler.png"
 
 local emitter_item = util.table.deepcopy(data.raw['item']['storage-tank'])
 emitter_item.name = "dump-site"
 emitter_item.place_result = "dump-site"
-emitter_item.icon = "__PollutionControls__/graphics/icons/toxicdump_icon.png"
+emitter_item.icon = "__PollutionSolution__/graphics/icons/toxicdump_icon.png"
 emitter_item.subgroup = "defensive-structure"
 
 data:extend({
@@ -55,7 +55,7 @@ data:extend({
 	{
 		type = "item",
 		name = "xenomeros",
-		icon = "__PollutionControls__/graphics/icons/xenomeros.png",
+		icon = "__PollutionSolution__/graphics/icons/xenomeros.png",
 		icon_size = 128,
 		subgroup = "raw-material",
 		order = "x[xenomeros]",
@@ -64,7 +64,7 @@ data:extend({
 	{
 		type = "item",
 		name = "xenovasi",
-		icon = "__PollutionControls__/graphics/icons/xenovasi.png",
+		icon = "__PollutionSolution__/graphics/icons/xenovasi.png",
 		icon_size = 128,
 		subgroup = "raw-material",
 		order = "x[xenovasi]",

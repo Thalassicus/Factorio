@@ -16,8 +16,8 @@ local copyStats = {
 for _, v in pairs (copyStats) do
 	pollutioncollector[v] = copyData("generator", "steam-turbine", v) --util.table.deepcopy(data.raw["generator"]["steam-turbine"][v])
 end
-pollutioncollector.pictures.picture.sheets[1].filename = "__PollutionControls__/graphics/entity/pollution-collector/pollution-collector.png"
-pollutioncollector.pictures.picture.sheets[1].hr_version.filename = "__PollutionControls__/graphics/entity/pollution-collector/hr-pollution-collector.png"
+pollutioncollector.pictures.picture.sheets[1].filename = "__PollutionSolution__/graphics/entity/pollution-collector/pollution-collector.png"
+pollutioncollector.pictures.picture.sheets[1].hr_version.filename = "__PollutionSolution__/graphics/entity/pollution-collector/hr-pollution-collector.png"
 pollutioncollector.fluid_box.filter = "polluted-air"
 for i=1, #pollutioncollector.fluid_box.pipe_connections, 1 do
 	pollutioncollector.fluid_box.pipe_connections[i].type = "input-output"

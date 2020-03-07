@@ -76,7 +76,7 @@ data:extend({
 		enabled = false,
 		ingredients =
 		{
-			{name="xenomeros", amount=2*XENOMEROS_PER_XENOVASI},
+			{name="xenomeros", amount=BLUE_TO_RED_COST*XENOMEROS_PER_XENOVASI},
 		},
 		results=
 		{
@@ -92,7 +92,7 @@ data:extend({
 		ingredients = 
 		{
 			{type="item", name="xenomeros", amount=FILTER_PER_LIQUIFY},
-			{type="fluid", name="polluted-air", amount=SLUDGE_PER_FILTER * TOXIC_SLUDGE_RATIO },
+			{type="fluid", name="polluted-air", amount=SLUDGE_PER_FILTER * AIR_PER_SLUDGE },
 			{type="fluid", name="water", amount=SLUDGE_PER_FILTER * WATER_PER_FILTER_PERCENT},
 		},
 		results=
@@ -100,7 +100,7 @@ data:extend({
 			{type="fluid", name="toxicsludge", amount=SLUDGE_PER_FILTER},
 		},
 		main_product= "",
-		icon = "__PollutionControls__/graphics/icons/fluid/toxicsludge.png",
+		icon = "__PollutionSolution__/graphics/icons/fluid/toxicsludge.png",
 		icon_size = 32,
 		subgroup = "fluid-recipes",
 		order = "z",

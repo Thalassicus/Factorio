@@ -10,7 +10,7 @@ data:extend(
 	{
 		type = "technology",
 		name = "pollution-controls",
-		icon = "__PollutionControls__/graphics/icons/pollution-collection.png",
+		icon = "__PollutionSolution__/graphics/icons/pollution-collection.png",
 		icon_size = 128,
 		prerequisites = {"automation-2"},
 		unit =
@@ -54,7 +54,7 @@ data:extend(
 	{
 		type = "technology",
 		name = "inceneration",
-		icon = "__PollutionControls__/graphics/icons/incinerator.png",
+		icon = "__PollutionSolution__/graphics/icons/incinerator.png",
 		icon_size = 32,
 		prerequisites = {"pollution-controls", "flammables","military-2"},
 		unit =
@@ -163,7 +163,7 @@ local barrel_fill_top_mask = "__base__/graphics/icons/fluid/barreling/barrel-fil
 local side_alpha = 0.75
 local top_hoop_alpha = 0.75
 -- Fluid required per barrel recipe
-local fluid_per_barrel = SLUDGE_PER_TOXIC_BARREL
+local fluid_per_barrel = SLUDGE_PER_BARREL
 -- Crafting energy per barrel fill recipe
 local energy_per_fill = 1
 -- Crafting energy per barrel empty recipe
@@ -227,7 +227,7 @@ local function create_barrel_item(name, fluid, empty_barrel_item)
     stack_size = empty_barrel_item.stack_size,
 	fuel_category = "waste",
 	burnt_result = "empty-barrel",
-	fuel_value = (SLUDGE_PER_TOXIC_BARREL * MJ_PER_TOXIC_SLUDGE) .. "MJ"
+	fuel_value = (SLUDGE_PER_BARREL * MJ_PER_TOXIC_SLUDGE) .. "MJ"
   }
 
   data:extend({result})
@@ -519,7 +519,10 @@ addResistance({data.raw["armor"]["power-armor-mk2"]},	POLLUTION_DAMAGE_TYPE, 40,
 -----------
 
 --data.raw["pipe"].collision_mask = {"item-layer", "object-layer", "water-tile"}
-data.raw["pipe-to-ground"]["pipe-to-ground"].collision_mask = {"item-layer", "object-layer", "water-tile"}
+if settings.startup["zpollution-pipe-collision"].value == false then
+  data.raw["pipe-to-ground"]["pipe-to-ground"].collision_mask = {"item-layer", "object-layer", "water-tile"}
+end
+data.raw["pipe-to-ground"]["pipe-to-ground"].fluid_box.pipe_connections[2].max_underground_distance=settings.startup["zpollution-pipe-distance"].value
 
 local function copyData( _Type, _Name, _args )
 	if( type(_args) == 'table' ) then

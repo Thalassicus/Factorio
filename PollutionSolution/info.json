@@ -1,12 +1,12 @@
 {
-	"name": "Pollution Solution",
-	"author": "Zerahan",
+	"name": "PollutionSolution",
+	"author": "Zerahan, Thalassicus",
 	"version": "1.0.0",
 	"factorio_version": "0.17",
-	"title": "Pollution Solution",
-	"homepage": "",
-	"description": "This mod connects pollution to other systems in Factorio, similar to polluted oxygen & slime in Oxygen Not Included.
-	
-	The native life of the planet is capable of absorbing pollution and transforming it into biological organisms (such as biters and spitters). By harvesting the organs that make that possible, you can collect pollution, then change it into a toxic sludge.",
+	"title": "Pollution Solutions",
+	"homepage": "https://github.com/Thalassicus/Factorio",
+	"description": "This connects pollution with other systems to make Factorio a little more complex.
+    
+The native life is capable of absorbing pollution. By harvesting their organs, you can build collectors to gather and transport pollution. You can also mix pollution with alien xenomass to create a toxic organic sludge with many potential uses, including combat, power generation, and oil processing.",
 	"dependencies": ["base"]
 } 

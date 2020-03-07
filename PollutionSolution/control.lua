@@ -2,7 +2,7 @@ require "util"
 --require "math"
 require "constants"
 
---error("TOXIC_SLUDGE_RATIO = " .. TOXIC_SLUDGE_RATIO)
+--error("AIR_PER_SLUDGE = " .. AIR_PER_SLUDGE)
 
 --==============--
 -- Script Hooks --
@@ -51,8 +51,11 @@ function OnTick(_Event)
 	if game.tick % TOXIC_DUMP_INTERVAL == 0 then
 		OnTick_ToxicDumps(_Event)
 	end
-	if game.tick % POLLUTION_COLLECTOR_INTERVAL == 0 then
+	if game.tick % settings.global["zpollution-collection-interval"].value == 0 then
 		OnTick_PollutionCollectors(_Event)
+	end
+	if settings.global["zpollution-pickup-interval"].value ~= 0 and game.tick % settings.global["zpollution-pickup-interval"].value == 0 then
+		OnTick_PickupXenomass(_Event)
 	end
 end
 
@@ -104,76 +107,89 @@ function GetPollutionPerRecipe()
 end
 --]]
 
---================--
--- Loot Functions --
---================--
+--====================--
+-- Loot Functionality --
+--====================--
 
--- Can't access data directly?
-
-local pollution_to_join_attack = {}
-pollution_to_join_attack["small-biter"]			= 200
-pollution_to_join_attack["medium-biter"] 		= 1000
-pollution_to_join_attack["big-biter"]			= 4000
-pollution_to_join_attack["behemoth-biter"]		= 20000
-pollution_to_join_attack["small-spitter"]		= 200
-pollution_to_join_attack["medium-spitter"]		= 600
-pollution_to_join_attack["big-spitter"]			= 1500
-pollution_to_join_attack["behemoth-spitter"]	= 10000
-local max_health = {}
-max_health["small-biter"]			= 15
-max_health["medium-biter"] 			= 200
-max_health["big-biter"]				= 375
-max_health["behemoth-biter"]		= 3000
-max_health["small-spitter"]			= 10
-max_health["medium-spitter"]		= 50
-max_health["big-spitter"]			= 200
-max_health["behemoth-spitter"]		= 1500
-max_health["small-worm-turret"]		= 200
-max_health["medium-worm-turret"] 	= 400
-max_health["big-worm-turret"]		= 750
+local spilledLoot = {}
 
 function EntityDied(event)
 	if event.entity.force ~= game.forces.enemy or not event.force then return end
 	
 	local loot = {}
-	local isPlayerKiller = false
 	
 	if event.entity.type == "unit" then
-		log(event.entity.prototype.name .. " died")
-		-- Scaling values result in too little early xenomass, and too much in late game
-		local quantity = 4*math.random()
-		--local quantity = data.raw["unit"]["small-biter"].pollution_to_join_attack
-		--local quantity = (max_health[event.entity.prototype.name] / 200) * 2*math.random()
-		
+		-- units
+		local quantity = 2*math.random() * settings.global["zpollution-blue-per-alien"].value
+		log(event.entity.prototype.name .. " died; create " .. quantity .. " xenomass")		
 		if quantity >= 1 or quantity >= math.random() then
-			loot = {name="xenomeros", count=math.ceil(quantity)}
-			isPlayerKiller = event.cause and (event.cause.type == "player" or event.cause.type == "car" or event.cause.type == "capsule")
+			loot = {name="xenomeros", count=math.floor(quantity+0.5)}
 		else
 			return
 		end
 	elseif event.entity.type == "unit-spawner" then
-		loot = {name="xenovasi", count=math.ceil(5 * 2*math.random())}
-		isPlayerKiller = false
-	elseif event.entity.type == "turret" then
-		local quantity = (max_health[event.entity.prototype.name] / 200) * 2*math.random()
+		-- nests
+		local quantity = 2*math.random() * settings.global["zpollution-red-per-alien"].value		
 		if quantity >= 1 or quantity >= math.random() then
-			loot = {name="xenomeros", count=math.ceil(10 * 2*math.random())}
-			isPlayerKiller = false
+			loot = {name="xenovasi", count=math.floor(quantity+0.5)}
+		else
+			return
+		end
+	elseif event.entity.type == "turret" then
+		-- worms
+		local quantity = 5 * 2*math.random() * settings.global["zpollution-blue-per-alien"].value
+		if quantity >= 1 or quantity >= math.random() then
+			loot = {name="xenomeros", count=math.floor(quantity+0.5)}
 		else
 			return
 		end
 	end
 	
-	if loot == {} or loot == nil then return end
-	if event.force == game.forces.neutral or event.force == game.forces.enemy then
-		event.entity.surface.spill_item_stack(event.entity.position, loot, true)
-		return
+	if next(loot) == nil or loot.count == 0 then return end
+
+
+	event.entity.surface.spill_item_stack(event.entity.position, loot)
+
+	--
+	local nearbyLoot = event.entity.surface.find_entities_filtered{
+			position=event.entity.position,
+			radius=10,
+			name="item-on-ground"
+	}
+	for _,entity in ipairs(nearbyLoot) do
+		if entity.stack.name == loot.name then
+			--log("spilledLoot["..entity.name.."]=" .. (spilledLoot[entity] or "nil") .. " to_be_deconstructed = " .. tostring(entity.to_be_deconstructed(event.force)))
+			if spilledLoot[entity] == nil and entity.to_be_deconstructed(event.force) == false then
+				spilledLoot[entity] = event.force
+				entity.to_be_looted = true
+			end
+		end
 	end
-	event.entity.surface.spill_item_stack(event.entity.position, loot, true, event.force)
-	return
 end
 script.on_event(defines.events.on_entity_died, function(event) EntityDied(event) end)
 
+function OnTick_PickupXenomass(_Event)
+	for entity,force in pairs(spilledLoot) do
+		AttemptMarkForPickup(entity, force)
+	end
+end
+
+function AttemptMarkForPickup(entity, force)
+	if not entity.valid then
+		-- already looted
+		spilledLoot[entity] = nil
+		return
+	end
+	local nearestEnemy = entity.surface.find_nearest_enemy{position=entity.position, max_distance=settings.global["zpollution-pickup-safety-distance"]}
+	if nearestEnemy then return end
+	--log("marking " .. entity.stack.name .. " for deconstruction")
+	if force == game.forces.neutral or force == game.forces.enemy then
+		entity.order_deconstruction()
+	else
+		entity.order_deconstruction(force)
+	end
+	spilledLoot[entity] = nil
+end
 
 --=================================--
 -- Pollution Destruction Functions --
@@ -201,7 +217,7 @@ function ConvertFluidToPollution(_Surface, _Position, _Type, _Amount, _DoDispers
 	if _Type == POLLUTED_AIR_NAME then
 		convertedAmount = _Amount  * POLLUTED_AIR_RATIO
 	elseif _Type == TOXIC_SLUDGE_NAME then
-		convertedAmount = _Amount  * POLLUTED_AIR_RATIO * TOXIC_SLUDGE_RATIO
+		convertedAmount = _Amount  * POLLUTED_AIR_RATIO * AIR_PER_SLUDGE
 	else
 		_DoDisperse = false
 	end
@@ -244,7 +260,7 @@ function OnTick_ToxicDumps(_Event)
 				if fillPercent > TOXIC_DUMP_FILLPERCENT and storedFluid.amount > 1 then
 					local pollutionToDump = storedFluid.amount
 					if storedFluid.name == POLLUTED_AIR_NAME then
-						pollutionToDump = storedFluid.amount * (1-(TOXIC_DUMP_CONSUME_PERCENT/TOXIC_SLUDGE_RATIO))
+						pollutionToDump = storedFluid.amount * (1-(TOXIC_DUMP_CONSUME_PERCENT/AIR_PER_SLUDGE))
 					elseif storedFluid.name == TOXIC_SLUDGE_NAME then
 						pollutionToDump = storedFluid.amount * (1-(TOXIC_DUMP_CONSUME_PERCENT))
 					end
@@ -346,9 +362,9 @@ function CollectPollution(entity, surface)
 	local bonusAmount_Possible = 0
 	for k,v in pairs(nearbyPollution) do
 		local targetGatherAmount = v.pollution
-		local maxPercent = POLLUTION_COLLECTION_MAX_PERCENT/4.0
-		if( k == "center" ) then
-			maxPercent = POLLUTION_COLLECTION_MAX_PERCENT
+		local maxPercent = settings.global["zpollution-collection-max-percent"].value
+		if( k ~= "center" ) then
+			maxPercent = maxPercent/4.0
 		end
 		----[[
 		--if( v.pollution < POLLUTION_COLLECTION_MIN ) then
