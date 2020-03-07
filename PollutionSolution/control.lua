@@ -179,23 +179,16 @@ script.on_event(defines.events.on_entity_died, function(event) EntityDied(event)
 -- Pollution Destruction Functions --
 --=================================--
 
--- WIP. Converts stored pollution into air pollution when entities are destroyed, to prevent manual destruction of pollution. Needs to be implemented on destruction of pipes?, storage tanks, fluid wagons, etc
+-- Converts stored pollution into air pollution when entities are destroyed, to prevent manual destruction of pollution. Needs to be implemented on destruction of pipes?, storage tanks, fluid wagons, etc
 function DisperseCollectedPollution(_Entity, _Surface, _Position)
 	if _Entity.fluidbox then
 		for k=1, #_Entity.fluidbox, 1 do
-		--for k,v in pairs(_Entity.fluidbox) do
 			if _Entity.fluidbox[k] then
 				local storedFluid = _Entity.fluidbox[k]
 				--error("Fluid Name: "..tostring(_Entity.fluidbox[k].name))
 				--error("Fluid Name: "..tostring(storedFluid.name))
 				ConvertFluidToPollution(_Surface, _Position, storedFluid.name, storedFluid.amount, true)
-				--[[
-				if storedFluid.name == POLLUTED_AIR_NAME then
-					game.surfaces[_Surface].pollute(_Position, storedFluid.amount * POLLUTED_AIR_RATIO);
-				elseif storedFluid.name == TOXIC_SLUDGE_NAME then
-					game.surfaces[_Surface].pollute(_Position, storedFluid.amount * POLLUTED_AIR_RATIO * TOXIC_SLUDGE_RATIO);
-				end--]]
-				storedFluid.amount = 0
+				storedFluid.amount = 0.0001
 				_Entity.fluidbox[k] = storedFluid
 			end
 		end
@@ -248,7 +241,7 @@ function OnTick_ToxicDumps(_Event)
 				local capacity = entity.fluidbox.get_capacity(1)
 				local storedFluid = entity.fluidbox[1]
 				local fillPercent = storedFluid.amount / capacity
-				if fillPercent > TOXIC_DUMP_FILLPERCENT then
+				if fillPercent > TOXIC_DUMP_FILLPERCENT and storedFluid.amount > 1 then
 					local pollutionToDump = storedFluid.amount
 					if storedFluid.name == POLLUTED_AIR_NAME then
 						pollutionToDump = storedFluid.amount * (1-(TOXIC_DUMP_CONSUME_PERCENT/TOXIC_SLUDGE_RATIO))
@@ -256,15 +249,9 @@ function OnTick_ToxicDumps(_Event)
 						pollutionToDump = storedFluid.amount * (1-(TOXIC_DUMP_CONSUME_PERCENT))
 					end
 					ConvertFluidToPollution(v.surface, entity.position, storedFluid.name, pollutionToDump, true)
-					storedFluid.amount = 0
+					storedFluid.amount = 0.0001
 					entity.fluidbox[1] = storedFluid
 					
-					--local percentCapacity = entity.fluidbox[1].amount / capacity
-					--local pollutionMultiplier = 4 * (percentCapacity) - 1.9
-					--local current = entity.fluidbox[1]
-					--current.amount = current.amount - pollutionMultiplier * TOXIC_DUMP_SLUDGE_PER_SEC/60 * TOXIC_DUMP_INTERVAL
-					--entity.fluidbox[1] = current
-					--game.surfaces[v.surface].pollute({entity.position.x,entity.position.y}, pollutionMultiplier * TOXIC_DUMP_POLLUTION_RELEASED);
 					local smokeNum = math.max(math.random(TOXIC_DUMP_SMOKE_MIN, TOXIC_DUMP_SMOKE_MAX),1)
 					for i=1,smokeNum,1 do
 						game.surfaces[v.surface].create_trivial_smoke{

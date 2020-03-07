@@ -11,10 +11,11 @@ data.raw["technology"]["warehouse-research"].unit =
 			time = 15
 		}
 data.raw["technology"]["warehouse-research"].effects = { 
+	--[[
 	{
 		type = "unlock-recipe",
 		recipe = "rail-loading-yard",
-	},
+	},]]
 	{
 		type = "unlock-recipe",
 		recipe = "storehouse-basic",

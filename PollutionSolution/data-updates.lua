@@ -98,6 +98,7 @@ data:extend(
 	},
 })
 
+--[[
 data:extend(
 {
 	{
@@ -121,7 +122,7 @@ data:extend(
 			{
 				type = "unlock-recipe",
 				recipe = "domesticated-nest"
-			},
+      },
 			{
 				type = "unlock-recipe",
 				recipe = "nest-pollution-xenomeros"
@@ -134,6 +135,7 @@ data:extend(
 		order = "c-a"
 	},
 })
+--]]
 
 
 -------------------

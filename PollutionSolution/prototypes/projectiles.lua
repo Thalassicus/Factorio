@@ -330,9 +330,9 @@ local toxicflame = util.table.deepcopy(data.raw['stream']['flamethrower-fire-str
 toxicflame.name = "toxic-flame-stream"
 toxicflame.spine_animation.filename = "__PollutionControls__/graphics/entity/flamethrower-fire-stream/flamethrower-fire-stream-spine.png"
 toxicflame.particle.filename = "__PollutionControls__/graphics/entity/flamethrower-fire-stream/flamethrower-explosion.png"
-toxicflame.action[1].action_delivery.target_effects[1].entity_name = "toxic-fire"
-toxicflame.action[2].action_delivery.target_effects[1].sticker = "toxic-sticker"
-toxicflame.action[2].action_delivery.target_effects[2].damage.type = POLLUTION_DAMAGE_TYPE
+toxicflame.action[2].action_delivery.target_effects[1].entity_name = "toxic-fire"
+toxicflame.action[1].action_delivery.target_effects[1].sticker = "toxic-sticker"
+toxicflame.action[1].action_delivery.target_effects[2].damage.type = POLLUTION_DAMAGE_TYPE
 toxicflame.particle_horizontal_speed = data.raw['stream']['flamethrower-fire-stream'].particle_horizontal_speed * 1.75
 
 local firetoxic = util.table.deepcopy(data.raw['fire']['fire-flame'])
@@ -350,7 +350,7 @@ toxicsticker.name = "toxic-sticker"
 toxicsticker.color = {r=0.333, g=0.063, b=0.451, a=0.001}
 toxicsticker.damage_per_tick.type = POLLUTION_DAMAGE_TYPE
 toxicsticker.spread_fire_entity = "toxic-flame-on-tree"
-toxicsticker.fire_spread_cooldown=10*TICKS_PER_SECOND
+toxicsticker.fire_spread_cooldown=10--*TICKS_PER_SECOND
 toxicsticker.fire_spread_radius=0
 
 local firetoxicontree = util.table.deepcopy(data.raw['fire']['fire-flame-on-tree'])

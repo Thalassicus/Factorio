@@ -30,13 +30,13 @@ POLLUTED_AIR_RATIO				= 4						-- amount of actual air pollution per unit of pol
 TOXIC_SLUDGE_NAME				= "toxicsludge"
 TOXIC_SLUDGE_RATIO				= 10					-- amount of polluted-air per unit of toxic sludge
 
-SLUDGE_PER_TOXIC_BARREL			= 250
-MJ_PER_TOXIC_SLUDGE				= 1
+SLUDGE_PER_TOXIC_BARREL			= 50
+MJ_PER_TOXIC_SLUDGE				= 2
 TOXIC_SLUDGE_BURN_PERCENT		= 0.5					-- when burned, how much of the toxic sludge is completely burned - the rest ends up as pollution
 
 POLLUTION_DAMAGE_TYPE			= "toxic"
 
-INCINERATOR_CONSUMPTION			= 20	-- in MW
+INCINERATOR_CONSUMPTION			= 2	-- in MW
 
 --=========--
 -- Recipes --

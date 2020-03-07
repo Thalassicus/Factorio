@@ -21,9 +21,9 @@ data.raw["recipe"]["artillery-shell"].ingredients = {
 }
 
 --[""][""]
---data.raw["projectile"]["rocket"].action.action_delivery.target_effects[2].damage.amount = 100
---data.raw["projectile"]["explosive-rocket"].action.action_delivery.target_effects[2].action.action_delivery.target_effects[1].damage.amount = 60
---data.raw["projectile"]["grenade"].action[2].action_delivery.target_effects[1].damage.amount = 40
+data.raw["projectile"]["rocket"].action.action_delivery.target_effects[2].damage.amount = 100
+data.raw["projectile"]["explosive-rocket"].action.action_delivery.target_effects[4].action.action_delivery.target_effects[1].damage.amount = 60
+data.raw["projectile"]["grenade"].action[2].action_delivery.target_effects[1].damage.amount = 40
 data.raw["gun"]["rocket-launcher"].attack_parameters.range = 80
 data.raw["gun"]["tank-cannon"].attack_parameters.range = 80 -- 25
 data.raw["ammo"]["cannon-shell"].ammo_type.action.action_delivery.max_range = 60 					-- 30

@@ -7,5 +7,5 @@
 	"contact": "",
 	"homepage": "",
 	"description": "Adds early basic construction robots.",
-	"dependencies": ["base","Recycling"]
+	"dependencies": ["base"]
 }

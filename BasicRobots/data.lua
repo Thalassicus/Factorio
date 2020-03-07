@@ -6,11 +6,11 @@ local basic_robot = util.table.deepcopy(data.raw['construction-robot']['construc
 basic_robot.name = "basic-construction-robot"
 basic_robot.minable = nil
 basic_robot.order = "z"
-basic_robot.speed = 0.06
+basic_robot.speed = 0.08
 basic_robot.max_energy = "0.4MJ"
-basic_robot.energy_per_tick = "0.04kJ"
+basic_robot.energy_per_tick = "0.03kJ"
 basic_robot.speed_multiplier_when_out_of_energy = 0.75
-basic_robot.energy_per_move = "4kJ"
+basic_robot.energy_per_move = "3kJ"
 data:extend({
     basic_robot
 })
@@ -18,7 +18,7 @@ data:extend({
 local basic_robot_item =  util.table.deepcopy(data.raw['item']['construction-robot'])
 basic_robot_item.name = "basic-construction-robot"
 basic_robot_item.place_result = "basic-construction-robot"
-basic_robot_item.icon = "__base__/graphics/technology/robotics.png"
+basic_robot_item.icon = "__base__/graphics/technology/combat-robotics.png"
 basic_robot_item.icon_size = 128
 data:extend({
     basic_robot_item
@@ -36,27 +36,6 @@ data:extend({
 			{"electronic-circuit", 5}
 		},
 		result = "basic-construction-robot"
-	},
-	{
-		type = "recipe",
-		name = "recycle-basic-construction-robot",
-		category = "advanced-crafting",
-		subgroup = "recycle-military-equipment",
-		icon = "__base__/graphics/technology/robotics.png",
-		icon_size = 128,
-		order = "a",
-		ingredients =
-		{
-			{type="item", name="basic-construction-robot", amount=1}
-		},
-		results=
-		{
-			{"engine-unit", 1},
-			{"steel-plate", 1},
-			{"electronic-circuit", 5}
-		},
-		energy_required = 1,
-		enabled = true
 	},
 })
 
@@ -87,8 +66,8 @@ data:extend({
     energy_source =
     {
       type = "electric",
-      buffer_capacity = "5MJ",
-      input_flow_limit = "1MW",
+      buffer_capacity = "20MJ",
+      input_flow_limit = "2000KW",
       usage_priority = "secondary-input"
     },
     charging_energy = "500kW",
@@ -142,27 +121,6 @@ data:extend({
     order = "e[robotics]-a[personal-roboport-equipment]",
     stack_size = 1
   },
-	{
-		type = "recipe",
-		name = "recycle-robotcharger-equipment",
-		category = "advanced-crafting",
-		subgroup = "recycle-military-equipment",
-		icon = "__base__/graphics/technology/follower-robots.png",
-		icon_size = 128,
-		order = "a",
-		ingredients =
-		{
-			{type="item", name="robotcharger-equipment", amount=1}
-		},
-		results=
-		{
-			{"electronic-circuit", 10},
-			{"iron-gear-wheel", 40},
-			{"steel-plate", 20}
-		},
-		energy_required = 1,
-		enabled = true
-	},
 })
 
 --
@@ -191,7 +149,7 @@ data:extend({
       type = "electric",
       usage_priority = "primary-output"
     },
-    power = "2kW",
+    power = "3kW",
     categories = {"armor"}
   },
   {
@@ -215,25 +173,6 @@ data:extend({
     order = "a[energy-source]-b[generator]",
     stack_size = 20
   },
-	{
-		type = "recipe",
-		name = "recycle-generator-equipment",
-		category = "advanced-crafting",
-		subgroup = "recycle-military-equipment",
-		icon = "__base__/graphics/technology/electric-engine.png",
-		icon_size = 128,
-		order = "a",
-		ingredients =
-		{
-			{type="item", name="generator-equipment", amount=1}
-		},
-		results=
-		{
-			{"electronic-circuit", 25}
-		},
-		energy_required = 1,
-		enabled = true
-	},
 })
 
 
@@ -279,26 +218,6 @@ data:extend({
     },
     result = "robot-pack"
   },
-	{
-		type = "recipe",
-		name = "recycle-robot-pack",
-		category = "advanced-crafting",
-		subgroup = "recycle-military",
-		icon = "__base__/graphics/technology/follower-robots.png",
-		icon_size = 128,
-		order = "e",
-		ingredients =
-		{
-			{type="item", name="robot-pack", amount=1}
-		},
-		results=
-		{
-			{"electronic-circuit", 30},
-			{"iron-plate", 40}
-		},
-		energy_required = 1,
-		enabled = true
-	},
 })
 
 

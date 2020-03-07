@@ -33,7 +33,7 @@ emitter_recipe.normal = {
 	energy_required = 3,
 	ingredients = {
 		{type="item", name="pipe-to-ground", amount=2},
-		{type="item", name="iron-axe", amount=1},
+		--{type="item", name="iron-axe", amount=1},
 	},
 	enabled = false,
 	result = "dump-site",
@@ -42,7 +42,7 @@ emitter_recipe.expensive = {
 	energy_required = 3,
 	ingredients = {
 		{type="item", name="pipe-to-ground", amount=4},
-		{type="item", name="iron-axe", amount=1},
+		--{type="item", name="iron-axe", amount=1},
 	},
 	enabled = false,
 	result = "dump-site",
@@ -106,9 +106,10 @@ data:extend({
 		order = "z",
 		crafting_machine_tint =
 		{
-			primary = {r = 0.290, g = 0.027, b = 0.000, a = 0.000}, -- #49060000
-			secondary = {r = 0.722, g = 0.465, b = 0.190, a = 0.000}, -- #b8763000
-			tertiary = {r = 0.870, g = 0.365, b = 0.000, a = 0.000}, -- #dd5d0000
+      primary = {r = 0.768, g = 0.300, b = 0.768, a = 1.000}, -- #c3a0c3ff
+      secondary = {r = 0.659, g = 0.300, b = 0.678, a = 1.000}, -- #a896acff
+      tertiary = {r = 0.774, g = 0.300, b = 0.766, a = 1.000}, -- #c5a0c3ff
+      quaternary = {r = 0.564, g = 0.180, b = 0.564, a = 1.000}, -- #8f5c8fff
 		}
 	},
 	{

@@ -7,6 +7,6 @@ require("prototypes.recipe")
 require("prototypes.technology")
 
 require("prototypes.pollutioncollector")
-require("prototypes.domesticatednest")
+--require("prototypes.domesticatednest")
 require("prototypes.hevsuit")
 
