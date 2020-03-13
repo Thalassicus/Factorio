@@ -55,32 +55,32 @@ data:extend({
 	emitter_recipe,
 	{
 		type = "recipe",
-		name = "xenomeros",
+		name = "blue-xenomass",
 		energy_required = 0.5,
 		enabled = false,
 		ingredients =
 		{
-			{name="xenovasi", amount=1},
+			{name="red-xenomass", amount=1},
 		},
 		results=
 		{
-			{name="xenomeros", amount=XENOMEROS_PER_XENOVASI},
+			{name="blue-xenomass", amount=BLUE_XENOMASS_PER_RED_XENOMASS},
 		},
 	},
 	emitter_recipe,
 	{
 		type = "recipe",
-		name = "xenovasi",
+		name = "red-xenomass",
 		category = "advanced-crafting",
 		energy_required = 0.5,
 		enabled = false,
 		ingredients =
 		{
-			{name="xenomeros", amount=BLUE_TO_RED_COST*XENOMEROS_PER_XENOVASI},
+			{name="blue-xenomass", amount=BLUE_TO_RED_COST*BLUE_XENOMASS_PER_RED_XENOMASS},
 		},
 		results=
 		{
-			{name="xenovasi", amount=1},
+			{name="red-xenomass", amount=1},
 		},
 	},
 	{
@@ -91,7 +91,7 @@ data:extend({
 		energy_required = 10,
 		ingredients = 
 		{
-			{type="item", name="xenomeros", amount=FILTER_PER_LIQUIFY},
+			{type="item", name="blue-xenomass", amount=FILTER_PER_LIQUIFY},
 			{type="fluid", name="polluted-air", amount=SLUDGE_PER_FILTER * AIR_PER_SLUDGE },
 			{type="fluid", name="water", amount=SLUDGE_PER_FILTER * WATER_PER_FILTER_PERCENT},
 		},
@@ -101,7 +101,7 @@ data:extend({
 		},
 		main_product= "",
 		icon = "__PollutionSolutions__/graphics/icons/fluid/toxicsludge.png",
-		icon_size = 32,
+		icon_size = 64,
 		subgroup = "fluid-recipes",
 		order = "z",
 		crafting_machine_tint =
@@ -129,7 +129,7 @@ data:extend({
 			{type="fluid", name="heavy-oil", amount=25},
 		},
 		icon = "__base__/graphics/icons/fluid/coal-liquefaction.png",
-		icon_size = 32,
+		icon_size = 64,
 		subgroup = "fluid-recipes",
 		order = "a[oil-processing]-c[coal-liquefaction]",
 		allow_decomposition = false,
@@ -146,7 +146,7 @@ data:extend({
 local newProducts = {
 	"waste-treatment",
 	"liquify-pollution",
-	"xenomeros",
+	"blue-xenomass",
 }
 
 for k,v in pairs(newProducts) do

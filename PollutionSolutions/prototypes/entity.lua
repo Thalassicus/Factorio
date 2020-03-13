@@ -10,7 +10,7 @@ incinerator.order = "z"
 incinerator.minable.result = "incinerator"
 incinerator.consumption = INCINERATOR_CONSUMPTION .. "MW"
 incinerator.energy_source.fuel_category = "waste"
-incinerator.energy_source.effectivity = 1
+incinerator.energy_source.effectivity = INCENERATOR_EFFICIENCY
 incinerator.energy_source.emissions = ((SLUDGE_PER_BARREL*POLLUTED_AIR_RATIO*AIR_PER_SLUDGE)*(1-INCENERATOR_EFFICIENCY) / (((SLUDGE_PER_BARREL * MJ_PER_TOXIC_SLUDGE) / 10)*60*10000))
 incinerator.picture.layers[1].filename = "__PollutionSolutions__/graphics/entity/incinerator/incinerator.png"
 incinerator.picture.layers[1].hr_version.filename = "__PollutionSolutions__/graphics/entity/incinerator/hr-incinerator.png"
@@ -65,6 +65,30 @@ incinerator.heat_buffer.max_temperature=400
 
 
 --
+-- Heat exchanger
+--
+
+local lowheater = util.table.deepcopy(data.raw['boiler']['heat-exchanger'])
+lowheater.name = "low-heat-exchanger"
+lowheater.order = "z"
+lowheater.minable.result = "low-heat-exchanger"
+lowheater.target_temperature = 165
+lowheater.icon = "__PollutionSolutions__/graphics/icons/low-heat-boiler.png"
+lowheater.structure.north.layers[1].filename			=  "__PollutionSolutions__/graphics/entity/low-heat-exchanger/lowheatex-N-idle.png"
+lowheater.structure.north.layers[1].hr_version.filename	=  "__PollutionSolutions__/graphics/entity/low-heat-exchanger/hr-lowheatex-N-idle.png"
+lowheater.structure.east.layers[1].filename				=  "__PollutionSolutions__/graphics/entity/low-heat-exchanger/lowheatex-E-idle.png"
+lowheater.structure.east.layers[1].hr_version.filename	=  "__PollutionSolutions__/graphics/entity/low-heat-exchanger/hr-lowheatex-E-idle.png"
+lowheater.structure.south.layers[1].filename			=  "__PollutionSolutions__/graphics/entity/low-heat-exchanger/lowheatex-S-idle.png"
+lowheater.structure.south.layers[1].hr_version.filename	=  "__PollutionSolutions__/graphics/entity/low-heat-exchanger/hr-lowheatex-S-idle.png"
+lowheater.structure.west.layers[1].filename 			=  "__PollutionSolutions__/graphics/entity/low-heat-exchanger/lowheatex-W-idle.png"
+lowheater.structure.west.layers[1].hr_version.filename	=  "__PollutionSolutions__/graphics/entity/low-heat-exchanger/hr-lowheatex-W-idle.png"
+lowheater.energy_source.min_working_temperature = 165
+lowheater.energy_source.max_temperature = 330
+lowheater.energy_source.minimum_glow_temperature = 100
+lowheater.energy_consumption = "8MW"
+
+
+--
 -- Turret
 --
 
@@ -86,29 +110,6 @@ toxicturret.attack_parameters.ammo_type.action.action_delivery.duration = 1*TICK
 
 
 --
--- Heat exchanger
---
-
-local lowheater = util.table.deepcopy(data.raw['boiler']['heat-exchanger'])
-lowheater.name = "low-heat-exchanger"
-lowheater.order = "z"
-lowheater.minable.result = "low-heat-exchanger"
-lowheater.target_temperature = 165
-lowheater.icon = "__PollutionSolutions__/graphics/icons/low-heat-boiler.png"
-lowheater.structure.north.layers[1].filename			=  "__PollutionSolutions__/graphics/entity/low-heat-exchanger/lowheatex-N-idle.png"
-lowheater.structure.north.layers[1].hr_version.filename	=  "__PollutionSolutions__/graphics/entity/low-heat-exchanger/hr-lowheatex-N-idle.png"
-lowheater.structure.east.layers[1].filename				=  "__PollutionSolutions__/graphics/entity/low-heat-exchanger/lowheatex-E-idle.png"
-lowheater.structure.east.layers[1].hr_version.filename	=  "__PollutionSolutions__/graphics/entity/low-heat-exchanger/hr-lowheatex-E-idle.png"
-lowheater.structure.south.layers[1].filename			=  "__PollutionSolutions__/graphics/entity/low-heat-exchanger/lowheatex-S-idle.png"
-lowheater.structure.south.layers[1].hr_version.filename	=  "__PollutionSolutions__/graphics/entity/low-heat-exchanger/hr-lowheatex-S-idle.png"
-lowheater.structure.west.layers[1].filename 			=  "__PollutionSolutions__/graphics/entity/low-heat-exchanger/lowheatex-W-idle.png"
-lowheater.structure.west.layers[1].hr_version.filename	=  "__PollutionSolutions__/graphics/entity/low-heat-exchanger/hr-lowheatex-W-idle.png"
-lowheater.energy_source.min_working_temperature = 165
-lowheater.energy_source.max_temperature = 330
-lowheater.energy_source.minimum_glow_temperature = 100
-
-
---
 -- Dump site
 --
 
@@ -119,8 +120,8 @@ emitter.minable.result = "dump-site"
 emitter.flags = {"placeable-neutral", "player-creation"}
 emitter.corpse = "small-worm-corpse"
 emitter.dying_explosion = "blood-explosion-big"
-emitter.dying_sound = make_worm_dying_sounds(0.8)
 emitter.icon = "__PollutionSolutions__/graphics/icons/toxicdump_icon.png"
+emitter.icon_size=64
 emitter.light = {
 	minimum_darkness = 0.8,
 	intensity = 0.9,

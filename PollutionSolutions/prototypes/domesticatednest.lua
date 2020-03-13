@@ -60,7 +60,7 @@ data:extend({
 		enabled = false,
 		ingredients =
 		{
-			{type="item", name="xenovasi",			amount=10},
+			{type="item", name="red-xenomass",			amount=10},
 			{type="item", name="advanced-circuit",	amount=5},
 			{type="item", name="pump",				amount=2},
 		},
@@ -68,21 +68,21 @@ data:extend({
 	},
 	{
 		type = "recipe",
-		name = "nest-pollution-xenomeros",
+		name = "nest-pollution-blue-xenomass",
 		category = "alien-crafting",
 		enabled = false,
 		energy_required = 30,
 		ingredients = 
 		{
-			{type="fluid", name=POLLUTED_AIR_NAME, amount=POLLUTION_PER_XENOMEROS },
+			{type="fluid", name=POLLUTED_AIR_NAME, amount=POLLUTION_PER_BLUE_XENOMASS },
 		},
 		results=
 		{
-			{type="item", name="xenomeros", amount=1},
+			{type="item", name="blue-xenomass", amount=1},
 		},
 		main_product= "",
-		icon = "__PollutionSolutions__/graphics/icons/xenomeros.png",
-		icon_size = 128,
+		icon = "__PollutionSolutions__/graphics/icons/blue-xenomass.png",
+		icon_size = 64,
 		subgroup = "fluid-recipes",
 		order = "z",
 		crafting_machine_tint =
@@ -94,21 +94,21 @@ data:extend({
 	},
 	{
 		type = "recipe",
-		name = "nest-sludge-xenovasi",
+		name = "nest-sludge-red-xenomass",
 		category = "alien-crafting",
 		enabled = false,
 		energy_required = 30,
 		ingredients = 
 		{
-			{type="fluid", name=TOXIC_SLUDGE_NAME, amount=SLUDGE_PER_XENOVASI },
+			{type="fluid", name=TOXIC_SLUDGE_NAME, amount=SLUDGE_PER_RED_XENOMASS },
 		},
 		results=
 		{
-			{type="item", name="xenovasi", amount=1},
+			{type="item", name="red-xenomass", amount=1},
 		},
 		main_product= "",
-		icon = "__PollutionSolutions__/graphics/icons/xenovasi.png",
-		icon_size = 128,
+		icon = "__PollutionSolutions__/graphics/icons/red-xenomass.png",
+		icon_size = 64,
 		subgroup = "fluid-recipes",
 		order = "z",
 		crafting_machine_tint =

@@ -22,7 +22,7 @@ pollutioncollector.fluid_box.filter = "polluted-air"
 for i=1, #pollutioncollector.fluid_box.pipe_connections, 1 do
 	pollutioncollector.fluid_box.pipe_connections[i].type = "input-output"
 end
-pollutioncollector.fluid_box.base_area = 100
+pollutioncollector.fluid_box.base_area = 10
 
 ----------
 -- Item --
@@ -59,7 +59,7 @@ data:extend({
 		enabled = false,
 		ingredients =
 		{
-			{name="xenovasi",			amount=5},
+			{name="red-xenomass",			amount=5},
 			{name="electronic-circuit",	amount=5},
 			{name="iron-gear-wheel",	amount=50},
 			{name="pipe", 				amount=50},

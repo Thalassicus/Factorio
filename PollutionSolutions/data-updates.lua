@@ -38,11 +38,11 @@ data:extend(
 			},
 			{
 				type = "unlock-recipe",
-				recipe = "xenomeros"
+				recipe = "blue-xenomass"
 			},
 			{
 				type = "unlock-recipe",
-				recipe = "xenovasi"
+				recipe = "red-xenomass"
 			},
 		},
 		order = "c-a"
@@ -55,7 +55,7 @@ data:extend(
 		type = "technology",
 		name = "inceneration",
 		icon = "__PollutionSolutions__/graphics/icons/incinerator.png",
-		icon_size = 32,
+		icon_size = 64,
 		prerequisites = {"pollution-controls", "flammables","military-2"},
 		unit =
 		{
@@ -105,7 +105,7 @@ data:extend(
 		type = "technology",
 		name = "industrial-xenomass",
 		icon = "__base__/graphics/icons/biter-spawner.png",
-		icon_size = 32,
+		icon_size = 64,
 		prerequisites = {"inceneration", "advanced-electronics"},
 		unit =
 		{
@@ -125,11 +125,11 @@ data:extend(
       },
 			{
 				type = "unlock-recipe",
-				recipe = "nest-pollution-xenomeros"
+				recipe = "nest-pollution-blue-xenomass"
 			},
 			{
 				type = "unlock-recipe",
-				recipe = "nest-sludge-xenovasi"
+				recipe = "nest-sludge-red-xenomass"
 			},
 		},
 		order = "c-a"
@@ -221,7 +221,7 @@ local function create_barrel_item(name, fluid, empty_barrel_item)
     name = name,
     localised_name = {"item-name.filled-barrel", {"fluid-name." .. fluid.name}},
     icons = generate_barrel_item_icons(name, fluid, empty_barrel_item),
-    icon_size = 32,
+    icon_size = 64,
     subgroup = "fill-barrel",
     order = "b[" .. name .. "]",
     stack_size = empty_barrel_item.stack_size,
@@ -307,7 +307,7 @@ local function create_fill_barrel_recipe(item, fluid)
     order = "b[fill-" .. item.name .. "]",
     enabled = false,
     icons = generate_fill_barrel_icons(item, fluid),
-    icon_size = 32,
+    icon_size = 64,
     ingredients =
     {
       {type = "fluid", name = fluid.name, amount = fluid_per_barrel},
@@ -338,7 +338,7 @@ local function create_empty_barrel_recipe(item, fluid)
     order = "c[empty-" .. item.name .. "]",
     enabled = false,
     icons = generate_empty_barrel_icons(item, fluid),
-    icon_size = 32,
+    icon_size = 64,
     ingredients =
     {
       {type = "item", name = item.name, amount = 1}

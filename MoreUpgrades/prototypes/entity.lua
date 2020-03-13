@@ -67,7 +67,7 @@ circuitpipe.window_bounding_box = {{-0.28125, -0.5}, {0.03125, 0.125}}
 local circuitpipe = util.table.deepcopy(data.raw['storage-tank']['storage-tank'])
 circuitpipe.name = "circuit-pipe"
 circuitpipe.icon = "__base__/graphics/icons/pipe.png"
-circuitpipe.icon_size = 32
+circuitpipe.icon_size = 64
 circuitpipe.flags = {"placeable-neutral", "player-creation"}
 circuitpipe.minable = {hardness = 0.2, mining_time = 0.5, result = "circuit-pipe"}
 circuitpipe.max_health = 100

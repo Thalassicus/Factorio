@@ -28,7 +28,7 @@ data:extend{
     name = "zpollution-mj-per-sludge",
     setting_type = "startup",
     minimum_value = 0.001,
-    default_value = 2,
+    default_value = 4,
 		order = "a-d"
   },
   {
@@ -45,7 +45,7 @@ data:extend{
     name = "zpollution-incenerator-consumption",
     setting_type = "startup",
     minimum_value = 0.001,
-    default_value = 2.0,
+    default_value = 4.0,
 		order = "a-f"
   },
   {
@@ -102,7 +102,7 @@ data:extend{
     name = "zpollution-blue-per-alien",
     setting_type = "runtime-global",
     minimum_value = 0.01,
-    default_value = 2,
+    default_value = 1,
 		order = "b-a"
   },
   {

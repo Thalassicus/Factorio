@@ -7,8 +7,8 @@ require "constants"
 --==============--
 -- Script Hooks --
 --==============--
-script.on_init( function() OnInit() end )
-script.on_load( function() OnLoad() end )
+script.on_init(OnInit)
+script.on_load(OnLoad)
 script.on_event(defines.events.on_tick, function(_Event) OnTick(_Event) end)
 script.on_event(defines.events.on_built_entity, function(_Event) OnBuiltEntity(_Event) end)
 script.on_event(defines.events.on_robot_built_entity, function(_Event) OnBuiltEntity(_Event) end)
@@ -17,13 +17,11 @@ script.on_event(defines.events.on_robot_pre_mined, function(event) OnEntityPreRe
 script.on_event(defines.events.on_entity_died, function(event) OnEntityPreRemoved(event) end)
 
 function OnInit()
-	InitTables()
-	--ScanAll()
+	FindDumps()
 end
 
 function OnLoad()
-	InitTables()
-	--ScanAll()
+	FindCollectors()
 end
 
 function OnBuiltEntity(_Event)
@@ -48,6 +46,10 @@ function OnEntityPreRemoved(_Event)
 end
 
 function OnTick(_Event)
+	if game.tick % 300 == 0 then
+		FindDumps()
+		FindCollectors()
+	end
 	if game.tick % TOXIC_DUMP_INTERVAL == 0 then
 		OnTick_ToxicDumps(_Event)
 	end
@@ -68,28 +70,22 @@ function IsPositionEqual(_Entity, _DatabaseEntity)
 	return _Entity.surface.name == _DatabaseEntity.surface and _Entity.position.x == _DatabaseEntity.position.x and _Entity.position.y == _DatabaseEntity.position.y
 end
 
-function InitTables()
-	if global.toxicDumps == nil then
-		global.toxicDumps = {}
-	end
-	if global.collectors == nil then
-		global.collectors = {}
+function FindDumps()
+	if next(global.toxicDumps) then return end
+	global.toxicDumps = {}
+	for _,surface in pairs(game.surfaces) do
+		for _,entity in pairs(surface.find_entities_filtered{name=TOXIC_DUMP_NAME}) do
+			AddToxicDump(entity)
+		end
 	end
 end
 
-function ScanAll()
-	for k in pairs(global.toxicDumps) do
-		global.toxicDumps[k] = nil
-	end
-	for k in pairs(global.collectors) do
-		global.collectors[k] = nil
-	end
-	for k,v in pairs(game.surfaces) do
-		for key,_Entity in pairs(v.find_entities_filtered{name=TOXIC_DUMP_NAME}) do
-			AddToxicDump(_Entity)
-		end
-		for key,_Entity in pairs(v.find_entities_filtered{name=POLLUTION_COLLECTOR_NAME}) do
-			AddPollutionCollector(_Entity)
+function FindCollectors()
+	if next(global.collectors) then return end
+	global.collectors = {}
+	for _,surface in pairs(game.surfaces) do
+		for _,entity in pairs(surface.find_entities_filtered{name=POLLUTION_COLLECTOR_NAME}) do
+			AddPollutionCollector(entity)
 		end
 	end
 end
@@ -123,7 +119,7 @@ function EntityDied(event)
 		local quantity = 2*math.random() * settings.global["zpollution-blue-per-alien"].value
 		log(event.entity.prototype.name .. " died; create " .. quantity .. " xenomass")		
 		if quantity >= 1 or quantity >= math.random() then
-			loot = {name="xenomeros", count=math.floor(quantity+0.5)}
+			loot = {name="blue-xenomass", count=math.floor(quantity+0.5)}
 		else
 			return
 		end
@@ -131,7 +127,7 @@ function EntityDied(event)
 		-- nests
 		local quantity = 2*math.random() * settings.global["zpollution-red-per-alien"].value		
 		if quantity >= 1 or quantity >= math.random() then
-			loot = {name="xenovasi", count=math.floor(quantity+0.5)}
+			loot = {name="red-xenomass", count=math.floor(quantity+0.5)}
 		else
 			return
 		end
@@ -139,7 +135,7 @@ function EntityDied(event)
 		-- worms
 		local quantity = 5 * 2*math.random() * settings.global["zpollution-blue-per-alien"].value
 		if quantity >= 1 or quantity >= math.random() then
-			loot = {name="xenomeros", count=math.floor(quantity+0.5)}
+			loot = {name="blue-xenomass", count=math.floor(quantity+0.5)}
 		else
 			return
 		end

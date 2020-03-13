@@ -45,8 +45,8 @@ SLUDGE_PER_FILTER                = settings.startup["zpollution-sludge-per-filte
 -- Recipes --
 --=========--
 FILTER_PER_LIQUIFY               = 1
-WATER_PER_FILTER_PERCENT         = 10
-XENOMEROS_PER_XENOVASI           = settings.startup["zpollution-blue-per-red"].value
+WATER_PER_FILTER_PERCENT         = 1
+BLUE_XENOMASS_PER_RED_XENOMASS           = settings.startup["zpollution-blue-per-red"].value
 BLUE_TO_RED_COST                 = settings.startup["zpollution-blue-to-red-cost"].value
-POLLUTION_PER_XENOMEROS          = 500 -- for domesticated nests
-SLUDGE_PER_XENOVASI              = 1000 -- for domesticated nests
+POLLUTION_PER_BLUE_XENOMASS          = 500 -- for domesticated nests
+SLUDGE_PER_RED_XENOMASS              = 1000 -- for domesticated nests

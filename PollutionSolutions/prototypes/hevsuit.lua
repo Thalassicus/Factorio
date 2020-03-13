@@ -54,7 +54,7 @@ data:extend({
 		energy_required = 3,
 		ingredients = {
 			{type="item", name="iron-plate", amount=10},
-			{type="item", name="xenomeros", amount=100},
+			{type="item", name="blue-xenomass", amount=100},
 		},
 		result = "hev-armor"
 	},

@@ -2,7 +2,7 @@
 	"name": "PollutionSolutions",
 	"author": "Zerahan, Thalassicus",
 	"version": "1.0.0",
-	"factorio_version": "0.17",
+	"factorio_version": "0.18",
 	"title": "Pollution Solutions",
 	"homepage": "https://github.com/Thalassicus/Factorio",
 	"description": "This connects pollution with other systems to make Factorio a little more complex.

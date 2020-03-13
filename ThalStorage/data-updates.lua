@@ -108,20 +108,16 @@ local function generatePackedCrateIcon( itemData )
 	local icons = {
 		{
 			icon = crate_icon,
+			icon_size = 64,
 		},
 		{
 			icon = crate_top_mask,
+			icon_size = 32,
 			tint = itemData[3]
 		},
-		--{
-		--	icon = crate_side_label,
-		--	scale = 0.4,
-		--	shift = {0, 8}
-		--},
 		{
 			icon = copyData(itemData[1],itemData[2],'icon'),
 			scale = 0.5,
-			--shift = {0, 9}
 		}
 	}
 	icons[2].tint.a = mask_alpha
@@ -132,19 +128,14 @@ local function generateUnpackedCrateIcon( itemData )
 	local icons = {
 		{
 			icon = "__ThalStorage__/graphics/icons/unpack-chest.png",
+			icon_size = 32,
 		},
-		--{
-		--	icon = crate_side_label,
-		--	scale = 0.4,
-		--	shift = {-8, 0}
-		--},
 		{
 			icon = copyData(itemData[1],itemData[2],'icon'),
+			icon_size = 32,
 			scale = 0.4,
-			--shift = {-8, 0}
 		}
 	}
-	--icons[2].tint.a = mask_alpha
 	return icons
 end
 
@@ -155,7 +146,7 @@ for i=1, #packable_resources, 1 do
 		name = "compressed-"..packable_resources[i][2],
 		localised_name = {"item-name.filled-crate", {"item-name." .. packable_resources[i][2]}},
 		icons = generatePackedCrateIcon(packable_resources[i]),
-		icon_size = 32,
+		icon_size = 64,
 		subgroup = "intermediate-product",
 		order = "x["..packable_resources[i][2].."]",
 		stack_size = 50
@@ -171,7 +162,7 @@ for i=1, #packable_resources, 1 do
 		energy_required = 1,
 		enabled = false,
 		icons = generatePackedCrateIcon(packable_resources[i]),
-		icon_size = 32,
+		icon_size = 64,
 		ingredients =
 		{
 			{type=packable_resources[i][1], name=packable_resources[i][2], amount=copyData(packable_resources[i][1],packable_resources[i][2],"stack_size")},
