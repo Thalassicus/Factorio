@@ -14,6 +14,11 @@ incinerator.energy_source.effectivity = INCENERATOR_EFFICIENCY
 incinerator.energy_source.emissions = ((SLUDGE_PER_BARREL*POLLUTED_AIR_RATIO*AIR_PER_SLUDGE)*(1-INCENERATOR_EFFICIENCY) / (((SLUDGE_PER_BARREL * MJ_PER_TOXIC_SLUDGE) / 10)*60*10000))
 incinerator.picture.layers[1].filename = "__PollutionSolutions__/graphics/entity/incinerator/incinerator.png"
 incinerator.picture.layers[1].hr_version.filename = "__PollutionSolutions__/graphics/entity/incinerator/hr-incinerator.png"
+incinerator.working_light_picture.filename="__PollutionSolutions__/graphics/entity/incinerator/reactor-lights-color.png"
+incinerator.working_light_picture.hr_version.filename="__PollutionSolutions__/graphics/entity/incinerator/hr-reactor-lights-color.png"
+incinerator.light.color={r=0.744, g=0.275, b=0.867}
+incinerator.heat_buffer.max_temperature=400
+
 incinerator.energy_source.smoke =
 {
 	{
@@ -57,11 +62,6 @@ local inceneratorsmoke =
 	}
 }
 
-
-incinerator.working_light_picture.filename="__PollutionSolutions__/graphics/entity/incinerator/reactor-lights-color.png"
-incinerator.working_light_picture.hr_version.filename="__PollutionSolutions__/graphics/entity/incinerator/hr-reactor-lights-color.png"
-incinerator.light.color={r=0.744, g=0.275, b=0.867}
-incinerator.heat_buffer.max_temperature=400
 
 
 --

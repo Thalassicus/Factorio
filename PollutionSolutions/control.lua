@@ -54,9 +54,11 @@ function OnTick(_Event)
 		OnTick_ToxicDumps(_Event)
 	end
 	if game.tick % settings.global["zpollution-collection-interval"].value == 0 then
+		if not global.toxicDumps then return end
 		OnTick_PollutionCollectors(_Event)
 	end
 	if settings.global["zpollution-pickup-interval"].value ~= 0 and game.tick % settings.global["zpollution-pickup-interval"].value == 0 then
+		if not global.toxicDumps then return end
 		OnTick_PickupXenomass(_Event)
 	end
 end
@@ -71,7 +73,7 @@ function IsPositionEqual(_Entity, _DatabaseEntity)
 end
 
 function FindDumps()
-	if next(global.toxicDumps) then return end
+	if global.toxicDumps and next(global.toxicDumps) then return end
 	global.toxicDumps = {}
 	for _,surface in pairs(game.surfaces) do
 		for _,entity in pairs(surface.find_entities_filtered{name=TOXIC_DUMP_NAME}) do
@@ -81,7 +83,7 @@ function FindDumps()
 end
 
 function FindCollectors()
-	if next(global.collectors) then return end
+	if global.collectors and next(global.collectors) then return end
 	global.collectors = {}
 	for _,surface in pairs(game.surfaces) do
 		for _,entity in pairs(surface.find_entities_filtered{name=POLLUTION_COLLECTOR_NAME}) do

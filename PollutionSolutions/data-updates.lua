@@ -89,10 +89,6 @@ data:extend(
 				type = "unlock-recipe",
 				recipe = "low-heat-exchanger"
 			},
-			{
-				type = "unlock-recipe",
-				recipe = "heat-pipe"
-			},
 		},
 		order = "c-a"
 	},

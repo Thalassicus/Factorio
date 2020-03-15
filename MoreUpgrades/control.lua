@@ -5,7 +5,7 @@ script.on_init(CreateTables)
 script.on_load(CreateTables)
 
 function FindOutposts()
-	if next(global.outposts) then return end
+	if global.outposts and next(global.outposts) then return end
 	global.outposts = {}
 	for k in pairs(global.outposts) do
 		global.outposts[k] = nil
