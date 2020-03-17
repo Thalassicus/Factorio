@@ -7,12 +7,12 @@ tier2radar_item.icons={
 	},
     {
       icon = data.raw['item']['solar-panel'].icon,
-      scale = 0.5,
+      scale = 0.25,
       shift = {-8, 8}
     },
     {
       icon = data.raw['item']['accumulator'].icon,
-      scale = 0.5,
+      scale = 0.25,
       shift = {8, 8}
     }
 }
@@ -27,7 +27,7 @@ circuitpipe_item.icons = {
 	},
 	{
 		icon  = util.table.deepcopy(data.raw['item']['electronic-circuit'].icon),
-		scale = 0.5,
+		scale = 0.25,
 		--shift = {4, -8}
 	}
 }

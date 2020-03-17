@@ -30,7 +30,7 @@ domesticatednest.animation.layers[1].shift	= {0,0}
 domesticatednest.animation.layers[2].shift	= {0,0}
 domesticatednest.animation.layers[1].animation_speed = 0.36
 domesticatednest.animation.layers[2].animation_speed = 0.36
-domesticatednest.animation.layers[2].tint	= copyData("fluid","toxicsludge","flow_color")
+domesticatednest.animation.layers[2].tint	= copyData("fluid","toxic-sludge","flow_color")
 
 
 ----------

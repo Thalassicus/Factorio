@@ -26,6 +26,7 @@ data.raw["technology"]["warehouse-research"].effects = {
 	},
 }
 
+--[[
 data:extend({
 	{
 		type = "technology",
@@ -62,6 +63,7 @@ data:extend({
 		order = "c-k-a",
 	},
 })
+--]]
 
 --[[
 data.raw["technology"]["warehouse-logistics-research"].prerequisites = { "warehouse-robotics", "logistic-system" }
@@ -117,7 +119,7 @@ local function generatePackedCrateIcon( itemData )
 		},
 		{
 			icon = copyData(itemData[1],itemData[2],'icon'),
-			scale = 0.5,
+			scale = 0.25,
 		}
 	}
 	icons[2].tint.a = mask_alpha

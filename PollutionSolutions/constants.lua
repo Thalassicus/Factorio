@@ -24,8 +24,8 @@ POLLUTION_COLLECTOR_NAME         = 'pollutioncollector'
 POLLUTION_COLLECTION_MIN         = 50                     -- minimum amount of pollution required for the collector to operate
 
 POLLUTED_AIR_NAME                = "polluted-air"
-POLLUTED_AIR_RATIO               = 4                      -- amount of actual air pollution per unit of polluted-air
-TOXIC_SLUDGE_NAME                = "toxicsludge"
+EMISSIONS_PER_AIR         = 4                      -- amount of actual air pollution per unit of polluted-air
+TOXIC_SLUDGE_NAME                = "toxic-sludge"
 
 SLUDGE_PER_BARREL                = settings.startup["zpollution-sludge-per-barrel"].value
 MJ_PER_TOXIC_SLUDGE              = settings.startup["zpollution-mj-per-sludge"].value
@@ -35,7 +35,7 @@ POLLUTION_DAMAGE_TYPE            = "toxic"
 INCENERATOR_EFFICIENCY           = settings.startup["zpollution-incenerator-efficiency"].value
 
 -- speed of the incenerator, in MW
-INCINERATOR_CONSUMPTION          = settings.startup["zpollution-incenerator-consumption"].value
+INCINERATOR_OUTPUT          		 = settings.startup["zpollution-incenerator-output"].value
 
 -- amount of polluted-air per unit of toxic sludge
 AIR_PER_SLUDGE                   = settings.startup["zpollution-air-per-sludge"].value

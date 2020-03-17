@@ -18,9 +18,11 @@ script.on_event(defines.events.on_entity_died, function(event) OnEntityPreRemove
 
 function OnInit()
 	FindDumps()
+	FindCollectors()
 end
 
 function OnLoad()
+	FindDumps()
 	FindCollectors()
 end
 
@@ -213,9 +215,9 @@ function ConvertFluidToPollution(_Surface, _Position, _Type, _Amount, _DoDispers
 	_DoDisperse = _DoDisperse or false
 	local convertedAmount = _Amount
 	if _Type == POLLUTED_AIR_NAME then
-		convertedAmount = _Amount  * POLLUTED_AIR_RATIO
+		convertedAmount = _Amount  * EMISSIONS_PER_AIR
 	elseif _Type == TOXIC_SLUDGE_NAME then
-		convertedAmount = _Amount  * POLLUTED_AIR_RATIO * AIR_PER_SLUDGE
+		convertedAmount = _Amount  * EMISSIONS_PER_AIR * AIR_PER_SLUDGE
 	else
 		_DoDisperse = false
 	end
@@ -381,7 +383,7 @@ function CollectPollution(entity, surface)
 		end
 	end
 	
-	local capacityRemaining = (entity.fluidbox.get_capacity(1) - contents.amount) * POLLUTED_AIR_RATIO
+	local capacityRemaining = (entity.fluidbox.get_capacity(1) - contents.amount) * EMISSIONS_PER_AIR
 	local pollution 		= 0
 	local bonusMultiplier	= 0.0
 	if( (nearbyPollution.center.pollution + bonusAmount_Possible) <= capacityRemaining ) then
@@ -404,7 +406,7 @@ function CollectPollution(entity, surface)
 	
 	if (pollution <= 0) then return end
 	
-	contents.amount = contents.amount + (pollution / POLLUTED_AIR_RATIO)
+	contents.amount = contents.amount + (pollution / EMISSIONS_PER_AIR)
 	DecreaseNearbyPollution(surface, entity.position, nearbyPollution)
 	entity.fluidbox[1] = contents
 end

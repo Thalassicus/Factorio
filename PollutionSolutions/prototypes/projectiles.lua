@@ -338,7 +338,7 @@ toxicflame.particle_horizontal_speed = data.raw['stream']['flamethrower-fire-str
 local firetoxic = util.table.deepcopy(data.raw['fire']['fire-flame'])
 firetoxic.name = "toxic-fire"
 firetoxic.damage_per_tick.type = POLLUTION_DAMAGE_TYPE
-firetoxic.pictures = fireutil.create_fire_pictures({ blend_mode = "normal", animation_speed = 1, scale = 0.5})
+firetoxic.pictures = fireutil.create_fire_pictures({ blend_mode = "normal", animation_speed = 1, scale = 0.25})
 firetoxic.spawn_entity = "toxic-flame-on-tree"
 firetoxic.emissions_per_tick = 0.5 -- default: 0.005
 firetoxic.maximum_spread_count=0
@@ -358,7 +358,7 @@ firetoxicontree.name = "toxic-flame-on-tree"
 firetoxicontree.damage_per_tick.type = POLLUTION_DAMAGE_TYPE
 firetoxicontree.spawn_entity = "toxic-flame-on-tree"
 firetoxicontree.small_tree_fire_pictures = fireutil.create_small_tree_flame_animations({ blend_mode = "additive", animation_speed = 0.5, scale = 0.7 * 0.75 })
-firetoxicontree.pictures = fireutil.create_fire_pictures({ blend_mode = "additive", animation_speed = 1, scale = 0.5 * 1.25})
+firetoxicontree.pictures = fireutil.create_fire_pictures({ blend_mode = "additive", animation_speed = 1, scale = 0.25 * 1.25})
 firetoxicontree.tree_dying_factor=0
 firetoxicontree.maximum_spread_count = 0
 firetoxicontree.fade_in_duration = 0

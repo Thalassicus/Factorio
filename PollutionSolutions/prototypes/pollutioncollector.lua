@@ -32,16 +32,8 @@ local pollutioncollector_item = util.table.deepcopy(data.raw['item']['steam-turb
 pollutioncollector_item.name = "pollutioncollector"
 pollutioncollector_item.place_result = "pollutioncollector"
 pollutioncollector_item.stack_size = 50
-pollutioncollector_item.icons={
-	{
-		icon = copyData("item", "steam-turbine", "icon")
-	},
-    {
-		icon = copyData("fluid", "toxicsludge", "icon"),
-		scale = 0.5,
-		shift = {4, -8}
-    }
-}
+pollutioncollector_item.icon = "__PollutionSolutions__/graphics/icons/pollution-collector.png"
+pollutioncollector_item.icon_size = 64
 
 
 

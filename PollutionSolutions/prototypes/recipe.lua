@@ -97,7 +97,7 @@ data:extend({
 		},
 		results=
 		{
-			{type="fluid", name="toxicsludge", amount=SLUDGE_PER_FILTER},
+			{type="fluid", name="toxic-sludge", amount=SLUDGE_PER_FILTER},
 		},
 		main_product= "",
 		icon = "__PollutionSolutions__/graphics/icons/fluid/toxicsludge.png",
@@ -120,7 +120,7 @@ data:extend({
 		enabled = false,
 		ingredients =
 		{
-			{type="fluid", name="toxicsludge", amount=1000},
+			{type="fluid", name="toxic-sludge", amount=1000},
 		},
 		results=
 		{

@@ -1,47 +1,4 @@
 --
--- Basic Robot
---
-
-local basic_robot = util.table.deepcopy(data.raw['construction-robot']['construction-robot'])
-basic_robot.name = "basic-construction-robot"
-basic_robot.minable = nil
-basic_robot.order = "z"
-basic_robot.speed = 0.08
-basic_robot.max_energy = "0.4MJ"
-basic_robot.energy_per_tick = "0.03kJ"
-basic_robot.speed_multiplier_when_out_of_energy = 0.75
-basic_robot.energy_per_move = "3kJ"
-data:extend({
-    basic_robot
-})
-
-local basic_robot_item =  util.table.deepcopy(data.raw['item']['construction-robot'])
-basic_robot_item.name = "basic-construction-robot"
-basic_robot_item.place_result = "basic-construction-robot"
-basic_robot_item.icon = "__base__/graphics/technology/combat-robotics.png"
-basic_robot_item.icon_size = 128
-data:extend({
-    basic_robot_item
-})
-
-data:extend({
-	{
-		type = "recipe",
-		name = "basic-construction-robot",
-		enabled = false,
-		ingredients =
-		{
-			{"engine-unit", 1},
-			{"steel-plate", 1},
-			{"electronic-circuit", 5}
-		},
-		result = "basic-construction-robot"
-	},
-})
-
-
-
---
 -- Charger
 --
 
@@ -102,12 +59,12 @@ data:extend({
     type = "recipe",
     name = "robotcharger-equipment",
     enabled = false,
-    energy_required = 10,
+    energy_required = 5,
     ingredients =
     {
-      {"electronic-circuit", 10},
-      {"iron-gear-wheel", 40},
-      {"steel-plate", 20}
+      {"iron-plate", 5},
+      {"electronic-circuit", 2},
+      {"iron-gear-wheel", 10},
     },
     result = "robotcharger-equipment"
   },
@@ -159,7 +116,8 @@ data:extend({
     energy_required = 10,
     ingredients =
     {
-      {"electronic-circuit", 25}
+      {"engine-unit", 1},
+      {"electronic-circuit", 2},
     },
     result = "generator-equipment"
   },
@@ -218,51 +176,4 @@ data:extend({
     },
     result = "robot-pack"
   },
-})
-
-
-
---
--- Technology
---
-
-data:extend(
-{
-	{
-		type = "technology",
-		name = "basic-robotics",
-		icon = "__base__/graphics/technology/robotics.png",
-		icon_size = 128,
-		prerequisites = {"engine"},
-		unit =
-		{
-			count = 100,
-			ingredients =
-			{
-				{"automation-science-pack", 1},
-				{"logistic-science-pack", 1}
-			},
-			time = 30
-		},
-		effects =
-		{
-			{
-				type = "unlock-recipe",
-				recipe = "robot-pack"
-			},
-			{
-				type = "unlock-recipe",
-				recipe = "robotcharger-equipment"
-			},
-			{
-				type = "unlock-recipe",
-				recipe = "generator-equipment"
-			},
-			{
-				type = "unlock-recipe",
-				recipe = "basic-construction-robot"
-			},
-		},
-		order = "c-a"
-	},
 })

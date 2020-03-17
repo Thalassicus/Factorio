@@ -8,10 +8,16 @@ local incinerator = util.table.deepcopy(data.raw['reactor']['nuclear-reactor'])
 incinerator.name = "incinerator"
 incinerator.order = "z"
 incinerator.minable.result = "incinerator"
-incinerator.consumption = INCINERATOR_CONSUMPTION .. "MW"
+incinerator.consumption = INCINERATOR_OUTPUT .. "MW" -- the game divides this by efficiency to get true consumption
 incinerator.energy_source.fuel_category = "waste"
 incinerator.energy_source.effectivity = INCENERATOR_EFFICIENCY
-incinerator.energy_source.emissions = ((SLUDGE_PER_BARREL*POLLUTED_AIR_RATIO*AIR_PER_SLUDGE)*(1-INCENERATOR_EFFICIENCY) / (((SLUDGE_PER_BARREL * MJ_PER_TOXIC_SLUDGE) / 10)*60*10000))
+incinerator.meltdown_action = nil
+
+local emissionsPerSludge = EMISSIONS_PER_AIR * AIR_PER_SLUDGE * (1-INCENERATOR_EFFICIENCY)
+local sludgePerMinute = 60 * (INCINERATOR_OUTPUT / INCENERATOR_EFFICIENCY) / MJ_PER_TOXIC_SLUDGE
+
+incinerator.energy_source.emissions_per_minute = emissionsPerSludge * sludgePerMinute
+
 incinerator.picture.layers[1].filename = "__PollutionSolutions__/graphics/entity/incinerator/incinerator.png"
 incinerator.picture.layers[1].hr_version.filename = "__PollutionSolutions__/graphics/entity/incinerator/hr-incinerator.png"
 incinerator.working_light_picture.filename="__PollutionSolutions__/graphics/entity/incinerator/reactor-lights-color.png"
@@ -23,9 +29,9 @@ incinerator.energy_source.smoke =
 {
 	{
 		name = "incenerator-smoke",
-		north_position = {0, 0},
-		east_position = {0, 0},
-		frequency = 10,
+		north_position = {-0.1, -2},
+		east_position = {-0.1, -2},
+		frequency = 20,
 		starting_vertical_speed = 0.05,
 		slow_down_factor = 1,
 		starting_frame_deviation = 60,
@@ -41,8 +47,8 @@ local inceneratorsmoke =
 	fade_in_duration = 0,
 	fade_away_duration = 10*TICKS_PER_SECOND,
 	spread_duration = 10*TICKS_PER_SECOND,
-	start_scale = 1.5,
-	end_scale = 2,
+	start_scale = 0.25,
+	end_scale = 1.5,
 	color = {r = 0.2, g = 0.2, b = 0.2, a = 0.5},
 	cyclic = true,
 	affected_by_wind = true,
@@ -97,7 +103,7 @@ toxicturret.name = "toxic-turret"
 toxicturret.order = "z"
 toxicturret.minable.result = "toxic-turret"
 toxicturret.attack_parameters.fluids = {
-    {type = "toxicsludge"}
+    {type = "toxic-sludge"}
 }
 toxicturret.attack_parameters.fluid_consumption = 3.0
 toxicturret.attack_parameters.ammo_type.action.action_delivery.stream = "toxic-flame-stream"
@@ -142,7 +148,7 @@ emitter.pictures.picture.sheets = {
 		frames = 1,
 		width = 321,--110,
 		height = 321,--108,
-		scale = 0.5,
+		scale = 0.25,
 		shift = util.by_pixel(0, 4),
 		priority = "extra-high",
 		hr_version = {
@@ -150,7 +156,7 @@ emitter.pictures.picture.sheets = {
 			frames = 1,
 			width = 321,--110,
 			height = 321,--108,
-			scale = 0.5,
+			scale = 0.25,
 			shift = util.by_pixel(-0.25, 3.75),
 			priority = "extra-high",
 		},
@@ -160,7 +166,7 @@ emitter.pictures.picture.sheets = {
 		frames = 1,
 		width = 321,--110,
 		height = 256,--108,
-		scale = 0.5,
+		scale = 0.25,
 		shift = util.by_pixel(0, 12),
 		priority = "extra-high",
 		draw_as_shadow = true,
@@ -169,7 +175,7 @@ emitter.pictures.picture.sheets = {
 			frames = 1,
 			width = 321,--110,
 			height = 256,--108,
-			scale = 0.5,
+			scale = 0.25,
 			shift = util.by_pixel(0, 24),
 			priority = "extra-high",
 			draw_as_shadow = true,

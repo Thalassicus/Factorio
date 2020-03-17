@@ -9,13 +9,14 @@ incinerator_item.icon_size=64
 local toxicturret_item = util.table.deepcopy(data.raw['item']['flamethrower-turret'])
 toxicturret_item.name = "toxic-turret"
 toxicturret_item.place_result = "toxic-turret"
+incinerator_item.icon_size=64
 toxicturret_item.icons={
 	{
-		icon = data.raw['item']['flamethrower-turret'].icon
+		icon = "__PollutionSolutions__/graphics/icons/toxic-turret.png"
 	},
     {
-		icon = data.raw['fluid']['toxicsludge'].icon,
-		scale = 0.5,
+		icon = data.raw['fluid']['toxic-sludge'].icon,
+		scale = 0.25,
 		shift = {4, -8}
     }
 }
@@ -29,8 +30,8 @@ airfilter_item.icons={
 		icon = data.raw['item']['steam-turbine'].icon
 	},
     {
-		icon = data.raw['fluid']['toxicsludge'].icon,
-		scale = 0.5,
+		icon = data.raw['fluid']['toxic-sludge'].icon,
+		scale = 0.25,
 		shift = {4, -8}
     }
 }

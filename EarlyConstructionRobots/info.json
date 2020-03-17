@@ -1,0 +1,11 @@
+{
+	"name": "EarlyConstructionRobots",
+	"version": "1.0",
+	"factorio_version": "0.18",
+	"title": "Early Construction Robots",
+	"author": "Thalassicus",
+	"contact": "",
+	"homepage": "https://github.com/Thalassicus/Factorio",
+	"description": "Unlocks construction robots before oil, with a simple drone backpack to power them.",
+	"dependencies": ["base"]
+}

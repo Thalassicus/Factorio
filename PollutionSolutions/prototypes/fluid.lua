@@ -1,5 +1,5 @@
 local toxicsludge = util.table.deepcopy(data.raw['fluid']['crude-oil'])
-toxicsludge.name = "toxicsludge"
+toxicsludge.name = "toxic-sludge"
 toxicsludge.base_color = {r=0.333, g=0.063, b=0.451}
 toxicsludge.flow_color = {r=0.744, g=0.275, b=0.867}
 toxicsludge.icon = "__PollutionSolutions__/graphics/icons/fluid/toxicsludge.png"

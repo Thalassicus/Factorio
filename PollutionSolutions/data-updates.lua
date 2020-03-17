@@ -1,5 +1,10 @@
 require "constants"
 
+for _, tree in pairs(data.raw["tree"]) do
+	if tree.max_health == 50 then
+		tree.emissions_per_second = -settings.startup["zpollution-tree-absorption"].value
+	end
+end
 
 ------------------
 -- Technologies --
@@ -54,8 +59,8 @@ data:extend(
 	{
 		type = "technology",
 		name = "inceneration",
-		icon = "__PollutionSolutions__/graphics/icons/incinerator.png",
-		icon_size = 64,
+		icon = "__PollutionSolutions__/graphics/icons/inceneration.png",
+		icon_size = 128,
 		prerequisites = {"pollution-controls", "flammables","military-2"},
 		unit =
 		{
@@ -139,7 +144,7 @@ data:extend(
 -------------------
 
 -- The technology the barrel unlocks will be added to
-local technology_name = "fluid-handling"
+local technology_name = "inceneration"
 -- The base empty barrel item
 local empty_barrel_name = "empty-barrel"
 
@@ -256,7 +261,7 @@ local function generate_fill_barrel_icons(name, fluid)
     },
     {
       icon = fluid.icon,
-      scale = 0.5,
+      scale = 0.25,
       shift = {4, -8}
     }
   }
@@ -284,7 +289,7 @@ local function generate_empty_barrel_icons(name, fluid)
     },
     {
       icon = fluid.icon,
-      scale = 0.5,
+      scale = 0.25,
       shift = {7, 8}
     }
   }
@@ -306,12 +311,12 @@ local function create_fill_barrel_recipe(item, fluid)
     icon_size = 64,
     ingredients =
     {
-      {type = "fluid", name = fluid.name, amount = fluid_per_barrel},
-      {type = "item", name = empty_barrel_name, amount = 1},
+      {type = "fluid", name = fluid.name, amount = 2*fluid_per_barrel},
+      {type = "item", name = empty_barrel_name, amount = 2},
     },
     results=
     {
-      {type = "item", name = item.name, amount = 1}
+      {type = "item", name = item.name, amount = 2}
     },
     hide_from_stats = hide_barreling_from_production_stats,
     allow_decomposition = allow_barreling_decomposition
@@ -414,7 +419,7 @@ local function process_fluid(fluid, technology, empty_barrel_item)
   --add_barrel_to_technology(barrel_item, barrel_fill_recipe, barrel_empty_recipe, technology)
 end
 
-process_fluid(data.raw["fluid"]["toxicsludge"], get_technology(technology_name), get_item(empty_barrel_name))
+process_fluid(data.raw["fluid"]["toxic-sludge"], get_technology(technology_name), get_item(empty_barrel_name))
 
 local function addResistance(entityList, _DamageType, _Percent, _Decrease)
 	if not entityList or (not _Percent and not _Decrease) or (_Percent == 0 and _Decrease == 0)  then

@@ -28,7 +28,7 @@ data:extend{
     name = "zpollution-mj-per-sludge",
     setting_type = "startup",
     minimum_value = 0.001,
-    default_value = 4,
+    default_value = 10,
 		order = "a-d"
   },
   {
@@ -36,16 +36,16 @@ data:extend{
     name = "zpollution-incenerator-efficiency",
     setting_type = "startup",
     minimum_value = 0.01,
-    default_value = 0.5,
+    default_value = 0.1,
     maximum_value = 1.0,
 		order = "a-e"
   },
   {
     type = "double-setting",
-    name = "zpollution-incenerator-consumption",
+    name = "zpollution-incenerator-output",
     setting_type = "startup",
     minimum_value = 0.001,
-    default_value = 4.0,
+    default_value = 2.0,
 		order = "a-f"
   },
   {
@@ -77,6 +77,14 @@ data:extend{
     setting_type = "startup",
     minimum_value = 5,
     default_value = 20,
+		order = "c-b"
+  },
+  {
+    type = "double-setting",
+    name = "zpollution-tree-absorption",
+    setting_type = "startup",
+    minimum_value = 0,
+    default_value = 0.01,
 		order = "c-b"
   },
   
