@@ -29,7 +29,7 @@ script.on_event(defines.events.on_player_created, function(event)
     ["pipe-to-ground"] = "50",
     ["steel-furnace"] = "50",
     ["electric-mining-drill"] = "50",
-    ["assembling-machine"] = "50",
+    ["assembling-machine-1"] = "50",
 
     ["transport-belt"] = "400",
     ["fast-transport-belt"] = "400",
