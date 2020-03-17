@@ -1,21 +1,7 @@
 local tier2radar_item =  util.table.deepcopy(data.raw['item']['radar'])
 tier2radar_item.name = "radar-outpost"
 tier2radar_item.place_result = "radar-outpost"
-tier2radar_item.icons={
-	{
-		icon = data.raw['item']['radar'].icon
-	},
-    {
-      icon = data.raw['item']['solar-panel'].icon,
-      scale = 0.25,
-      shift = {-8, 8}
-    },
-    {
-      icon = data.raw['item']['accumulator'].icon,
-      scale = 0.25,
-      shift = {8, 8}
-    }
-}
+tier2radar_item.icon = "__MoreUpgrades__/graphics/icons/radaroutpost_icon.png"
 
 local circuitpipe_item = util.table.deepcopy(data.raw['item']['pipe'])
 circuitpipe_item.name = "circuit-pipe"
@@ -27,7 +13,7 @@ circuitpipe_item.icons = {
 	},
 	{
 		icon  = util.table.deepcopy(data.raw['item']['electronic-circuit'].icon),
-		scale = 0.25,
+		scale = 0.3,
 		--shift = {4, -8}
 	}
 }
