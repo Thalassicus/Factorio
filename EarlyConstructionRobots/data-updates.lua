@@ -47,6 +47,9 @@ data.raw["recipe"]["construction-robot"].ingredients =
 	{"steel-plate", 2},
 }
 
+data.raw["construction-robot"]["construction-robot"].speed = 0.08 -- 0.06
+data.raw["construction-robot"]["construction-robot"].speed_multiplier_when_out_of_energy = 0.9 --0.2
+
 
 --
 -- Technology

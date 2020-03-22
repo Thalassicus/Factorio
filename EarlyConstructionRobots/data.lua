@@ -76,7 +76,7 @@ data:extend({
     placed_as_equipment_result = "robotcharger-equipment",
     subgroup = "equipment",
     order = "e[robotics]-a[personal-roboport-equipment]",
-    stack_size = 1
+    stack_size = 20
   },
 })
 
@@ -151,7 +151,7 @@ data:extend({
     type = "armor",
     name = "robot-pack",
     icon = "__base__/graphics/technology/follower-robots.png",
-	icon_size = 128,
+	  icon_size = 128,
     durability = 5000,
     subgroup = "armor",
     order = "b[heavy-armor]",

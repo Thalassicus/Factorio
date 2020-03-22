@@ -9,13 +9,8 @@ pollutioncollector.name = "pollutioncollector"
 pollutioncollector.order = "z"
 pollutioncollector.minable.result = "pollutioncollector"
 pollutioncollector.crafting_categories = {"pollution"}
-local copyStats = {
-	"icon",
-	"icon_size",
-}
-for _, v in pairs (copyStats) do
-	pollutioncollector[v] = copyData("generator", "steam-turbine", v) --util.table.deepcopy(data.raw["generator"]["steam-turbine"][v])
-end
+pollutioncollector.icon = "__PollutionSolutions__/graphics/icons/pollution-collector.png"
+pollutioncollector.icon_size = 64
 pollutioncollector.pictures.picture.sheets[1].filename = "__PollutionSolutions__/graphics/entity/pollution-collector/pollution-collector.png"
 pollutioncollector.pictures.picture.sheets[1].hr_version.filename = "__PollutionSolutions__/graphics/entity/pollution-collector/hr-pollution-collector.png"
 pollutioncollector.fluid_box.filter = "polluted-air"
@@ -51,7 +46,7 @@ data:extend({
 		enabled = false,
 		ingredients =
 		{
-			{name="red-xenomass",			amount=5},
+			{name="red-xenomass",			amount=10},
 			{name="electronic-circuit",	amount=5},
 			{name="iron-gear-wheel",	amount=50},
 			{name="pipe", 				amount=50},

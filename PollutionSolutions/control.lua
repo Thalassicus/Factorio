@@ -9,9 +9,9 @@ require "constants"
 --==============--
 script.on_init(OnInit)
 script.on_load(OnLoad)
-script.on_event(defines.events.on_tick, function(_Event) OnTick(_Event) end)
-script.on_event(defines.events.on_built_entity, function(_Event) OnBuiltEntity(_Event) end)
-script.on_event(defines.events.on_robot_built_entity, function(_Event) OnBuiltEntity(_Event) end)
+script.on_event(defines.events.on_tick, function(event) OnTick(event) end)
+script.on_event(defines.events.on_built_entity, function(event) OnBuiltEntity(event) end)
+script.on_event(defines.events.on_robot_built_entity, function(event) OnBuiltEntity(event) end)
 script.on_event(defines.events.on_pre_player_mined_item, function(event) OnEntityPreRemoved(event) end)
 script.on_event(defines.events.on_robot_pre_mined, function(event) OnEntityPreRemoved(event) end)
 script.on_event(defines.events.on_entity_died, function(event) OnEntityPreRemoved(event) end)
@@ -26,42 +26,37 @@ function OnLoad()
 	FindCollectors()
 end
 
-function OnBuiltEntity(_Event)
-	if IsToxicDump(_Event.created_entity) then
-		AddToxicDump(_Event.created_entity)
+function OnBuiltEntity(event)
+	if IsToxicDump(event.created_entity) then
+		AddToxicDump(event.created_entity)
 	end
-	if IsPollutionCollector(_Event.created_entity) then
-		AddPollutionCollector(_Event.created_entity)
+	if IsPollutionCollector(event.created_entity) then
+		AddPollutionCollector(event.created_entity)
 	end
 end
 
-function OnEntityPreRemoved(_Event)
-	if _Event.entity then
-		if IsToxicDump(_Event.entity) then
-			RemoveToxicDump(_Event.entity)
-		elseif IsPollutionCollector(_Event.entity) then
-			RemovePollutionCollector(_Event.entity)
+function OnEntityPreRemoved(event)
+	if event.entity then
+		if IsToxicDump(event.entity) then
+			RemoveToxicDump(event.entity)
+		elseif IsPollutionCollector(event.entity) then
+			RemovePollutionCollector(event.entity)
 		else
-			DisperseCollectedPollution(_Event.entity, _Event.entity.surface.name, _Event.entity.position)
+			DisperseCollectedPollution(event.entity, event.entity.surface, event.entity.position)
 		end
 	end
 end
 
-function OnTick(_Event)
+function OnTick(event)
 	if game.tick % 300 == 0 then
 		FindDumps()
 		FindCollectors()
 	end
 	if game.tick % TOXIC_DUMP_INTERVAL == 0 then
-		OnTick_ToxicDumps(_Event)
+		OnTick_ToxicDumps(event)
 	end
 	if game.tick % settings.global["zpollution-collection-interval"].value == 0 then
-		if not global.toxicDumps then return end
-		OnTick_PollutionCollectors(_Event)
-	end
-	if settings.global["zpollution-pickup-interval"].value ~= 0 and game.tick % settings.global["zpollution-pickup-interval"].value == 0 then
-		if not global.toxicDumps then return end
-		OnTick_PickupXenomass(_Event)
+		OnTick_PollutionCollectors(event)
 	end
 end
 
@@ -69,9 +64,9 @@ end
 --===================--
 -- Utility Functions --
 --===================--
-function IsPositionEqual(_Entity, _DatabaseEntity)
-	--error("Is surface equal: "..tostring(_Entity.surface.name == _DatabaseEntity.surface).."\nIs Xpos equal: "..tostring(_Entity.position.x == _DatabaseEntity.position.x).."\nIs Ypos equal: "..tostring(_Entity.position.y == _DatabaseEntity.position.y).."\n\nSurface: "..tostring(_Entity.surface.name).." == "..tostring(_DatabaseEntity.surface).." ("..tostring(_Entity.position.x)..", "..tostring(_Entity.position.y)..") == ("..tostring(_DatabaseEntity.position.x)..", "..tostring(_DatabaseEntity.position.y)..")")
-	return _Entity.surface.name == _DatabaseEntity.surface and _Entity.position.x == _DatabaseEntity.position.x and _Entity.position.y == _DatabaseEntity.position.y
+function IsPositionEqual(entity, _DatabaseEntity)
+	--error("Is surface equal: "..tostring(entity.surface == _DatabaseEntity.surface).."\nIs Xpos equal: "..tostring(entity.position.x == _DatabaseEntity.position.x).."\nIs Ypos equal: "..tostring(entity.position.y == _DatabaseEntity.position.y).."\n\nSurface: "..tostring(entity.surface).." == "..tostring(_DatabaseEntity.surface).." ("..tostring(entity.position.x)..", "..tostring(entity.position.y)..") == ("..tostring(_DatabaseEntity.position.x)..", "..tostring(_DatabaseEntity.position.y)..")")
+	return entity.surface == _DatabaseEntity.surface and entity.position.x == _DatabaseEntity.position.x and entity.position.y == _DatabaseEntity.position.y
 end
 
 function FindDumps()
@@ -112,106 +107,168 @@ end
 --====================--
 
 local spilledLoot = {}
+local lootToCheck = {}
 
 function EntityDied(event)
-	if event.entity.force ~= game.forces.enemy or not event.force then return end
+	local alien = event.entity
+	if alien.force ~= game.forces.enemy or not event.force then return end
 	
-	local loot = {}
-	
-	if event.entity.type == "unit" then
-		-- units
-		local quantity = 2*math.random() * settings.global["zpollution-blue-per-alien"].value
-		log(event.entity.prototype.name .. " died; create " .. quantity .. " xenomass")		
-		if quantity >= 1 or quantity >= math.random() then
-			loot = {name="blue-xenomass", count=math.floor(quantity+0.5)}
-		else
-			return
-		end
-	elseif event.entity.type == "unit-spawner" then
-		-- nests
-		local quantity = 2*math.random() * settings.global["zpollution-red-per-alien"].value		
-		if quantity >= 1 or quantity >= math.random() then
-			loot = {name="red-xenomass", count=math.floor(quantity+0.5)}
-		else
-			return
-		end
-	elseif event.entity.type == "turret" then
-		-- worms
-		local quantity = 5 * 2*math.random() * settings.global["zpollution-blue-per-alien"].value
-		if quantity >= 1 or quantity >= math.random() then
-			loot = {name="blue-xenomass", count=math.floor(quantity+0.5)}
-		else
-			return
-		end
+	local loot = {}	
+	local quantity = 0
+	if alien.type == "unit" then
+		quantity = 2*math.random() * settings.global["zpollution-blue-per-alien"].value
+		loot = {name="blue-xenomass", count=math.floor(quantity+0.5)}
+	elseif alien.type == "turret" then
+		quantity = 2*math.random() * settings.global["zpollution-blue-per-alien"].value * 5
+		loot = {name="blue-xenomass", count=math.floor(quantity+0.5)}
+	elseif alien.type == "unit-spawner" then
+		quantity = 2*math.random() * settings.global["zpollution-red-per-alien"].value
+		loot = {name="red-xenomass", count=math.floor(quantity+0.5)}
 	end
-	
-	if next(loot) == nil or loot.count == 0 then return end
+	--log(alien.name .. " died; create " .. quantity .. " xenomass")
+	if next(loot) and loot.count >= 1 then 
+		alien.surface.spill_item_stack(alien.position, loot)
+	end
 
-
-	event.entity.surface.spill_item_stack(event.entity.position, loot)
-
-	--
-	local nearbyLoot = event.entity.surface.find_entities_filtered{
-			position=event.entity.position,
-			radius=10,
-			name="item-on-ground"
-	}
-	for _,entity in ipairs(nearbyLoot) do
-		if entity.stack.name == loot.name then
-			--log("spilledLoot["..entity.name.."]=" .. (spilledLoot[entity] or "nil") .. " to_be_deconstructed = " .. tostring(entity.to_be_deconstructed(event.force)))
-			if spilledLoot[entity] == nil and entity.to_be_deconstructed(event.force) == false then
-				spilledLoot[entity] = event.force
-				entity.to_be_looted = true
+	local safetyRadius = settings.global["zpollution-pickup-safety-radius"].value
+	if safetyRadius > 0 and not IsEnemyNear(alien, 2 * safetyRadius) then
+		-- I was the last survivor
+		--log(alien.name .. " died as last survivor.")
+		for checkLoot,info in pairs(spilledLoot) do
+			if not checkLoot.valid then
+				-- manually looted
+				--log("manually looted")
+				spilledLoot[checkLoot] = nil
+			else
+				--log(Distance(alien, checkLoot))
+				if Distance(alien, checkLoot) < safetyRadius then
+					checkLoot.to_be_looted = true
+					checkLoot.order_deconstruction(info.force)
+					spilledLoot[checkLoot] = nil
+				end
+			end
+		end
+		-- check loot spilled outside my safety-radius
+		lootToCheck = {}
+		for checkLoot,_ in pairs(spilledLoot) do
+			lootToCheck[checkLoot] = true
+		end
+		for checkLoot,_ in pairs(lootToCheck) do
+			if lootToCheck[checkLoot] == true then
+				AttemptMarkForPickup(checkLoot, safetyRadius)
+			end
+		end
+	elseif settings.global["zpollution-pickup-interval"].value > 0 then
+		-- remember my own loot for later pickup
+		local nearItems = alien.surface.find_entities_filtered{
+				position=alien.position,
+				radius=5,
+				name="item-on-ground"
+		}
+		for _,checkLoot in pairs(nearItems) do
+			if checkLoot.stack.name == loot.name and checkLoot.to_be_deconstructed(event.force) == false then
+				if spilledLoot[checkLoot] == nil then
+					--checkLoot.to_be_looted = true
+					spilledLoot[checkLoot] = {force=event.force}
+				end
 			end
 		end
 	end
 end
 script.on_event(defines.events.on_entity_died, function(event) EntityDied(event) end)
 
-function OnTick_PickupXenomass(_Event)
-	for entity,force in pairs(spilledLoot) do
-		AttemptMarkForPickup(entity, force)
+function GetPositionString(entity)
+	return math.floor(entity.position.x) ..",".. math.floor(entity.position.y)
+end
+
+function AttemptMarkForPickup(thisLoot, safetyRadius)
+	local enemyNear = IsEnemyNear(thisLoot, safetyRadius)
+	-- remove myself and neighbors from lootToCheck
+	local halfRadius = safetyRadius / 2
+	local stillToCheck = {}
+	--log("checking loot at ".. GetPositionString(thisLoot) .. " enemyNear="..tostring(enemyNear) .. " halfRadius="..halfRadius)
+	for checkLoot,v in pairs(lootToCheck) do
+		--log("A        loot at ".. GetPositionString(checkLoot) .. " " .. tostring(v))
+	end
+	for checkLoot,v in pairs(lootToCheck) do
+		if lootToCheck[checkLoot] == true then
+			--log("B        loot at ".. GetPositionString(checkLoot) .. " " .. tostring(v))
+			if Distance(thisLoot, checkLoot) < halfRadius then
+				--log("                 is near")
+				if not enemyNear then
+					MarkForPickup(checkLoot)
+				end
+				lootToCheck[checkLoot] = nil
+			end
+		end
+	end
+	for checkLoot,v in pairs(lootToCheck) do
+		--log("C        loot at ".. GetPositionString(checkLoot) .. " " .. tostring(v))
 	end
 end
 
-function AttemptMarkForPickup(entity, force)
-	if not entity.valid then
-		-- already looted
-		spilledLoot[entity] = nil
+function MarkForPickup(thisLoot)
+	if not thisLoot.valid then
+		lootToCheck[thisLoot] = nil
+		spilledLoot[thisLoot] = nil
 		return
 	end
-	local nearestEnemy = entity.surface.find_nearest_enemy{position=entity.position, max_distance=settings.global["zpollution-pickup-safety-distance"].value}
-	if nearestEnemy then return end
-	--log("marking " .. entity.stack.name .. " for deconstruction")
-	if force == game.forces.neutral or force == game.forces.enemy then
-		entity.order_deconstruction()
-	else
-		entity.order_deconstruction(force)
+	if spilledLoot[thisLoot] == nil then
+		--log("Loot at " .. math.floor(checkLoot.position.x) ..",".. math.floor(checkLoot.position.y) .. " is not in spilledLoot")
+		return
 	end
-	spilledLoot[entity] = nil
+	local force = spilledLoot[thisLoot].force
+	if force == game.forces.neutral or force == game.forces.enemy then
+		thisLoot.order_deconstruction()
+	else
+		thisLoot.order_deconstruction(force)
+	end
+	spilledLoot[thisLoot] = nil
+end
+
+function Distance(a, b)
+  local dx = a.position.x - b.position.x
+  local dy = a.position.y - b.position.y
+  return math.sqrt(dx * dx + dy * dy)
+end
+
+function IsEnemyNear(entity, radius)
+	local entities = entity.surface.find_entities_filtered{
+		position=entity.position,
+		radius=radius,
+		type={"unit", "turret"},
+		force="enemy",
+	}
+	for _, nearby in pairs(entities) do
+		--log(nearby.name .. ".health=" .. nearby.health)
+		if nearby.health > 0 then
+			return true
+		end
+	end	
+	return false
 end
 
 --=================================--
 -- Pollution Destruction Functions --
 --=================================--
 
--- Converts stored pollution into air pollution when entities are destroyed, to prevent manual destruction of pollution. Needs to be implemented on destruction of pipes?, storage tanks, fluid wagons, etc
-function DisperseCollectedPollution(_Entity, _Surface, _Position)
-	if _Entity.fluidbox then
-		for k=1, #_Entity.fluidbox, 1 do
-			if _Entity.fluidbox[k] then
-				local storedFluid = _Entity.fluidbox[k]
-				--error("Fluid Name: "..tostring(_Entity.fluidbox[k].name))
+-- Converts stored pollution into air pollution when entities are destroyed, to prevent manual destruction of pollution.
+function DisperseCollectedPollution(entity, surface, position)
+	if entity.fluidbox then
+		for k=1, #entity.fluidbox, 1 do
+			if entity.fluidbox[k] then
+				local storedFluid = entity.fluidbox[k]
+				--error("Fluid Name: "..tostring(entity.fluidbox[k].name))
 				--error("Fluid Name: "..tostring(storedFluid.name))
-				ConvertFluidToPollution(_Surface, _Position, storedFluid.name, storedFluid.amount, true)
+				ConvertFluidToPollution(surface, position, storedFluid.name, storedFluid.amount, true)
 				storedFluid.amount = 0.0001
-				_Entity.fluidbox[k] = storedFluid
+				entity.fluidbox[k] = storedFluid
 			end
 		end
 	end
 end
 
-function ConvertFluidToPollution(_Surface, _Position, _Type, _Amount, _DoDisperse)
+function ConvertFluidToPollution(surface, position, _Type, _Amount, _DoDisperse)
 	_DoDisperse = _DoDisperse or false
 	local convertedAmount = _Amount
 	if _Type == POLLUTED_AIR_NAME then
@@ -221,7 +278,7 @@ function ConvertFluidToPollution(_Surface, _Position, _Type, _Amount, _DoDispers
 	else
 		_DoDisperse = false
 	end
-	if _DoDisperse then game.surfaces[_Surface].pollute(_Position, convertedAmount) end
+	if _DoDisperse then surface.pollute(position, convertedAmount) end
 	return convertedAmount
 end
 
@@ -229,29 +286,28 @@ end
 --======================--
 -- Toxic Dump Functions --
 --======================--
-function AddToxicDump(_Entity)
-	local _Position = _Entity.position
-	local _Surface = _Entity.surface.name
-	table.insert( global.toxicDumps, {position = _Position, surface = _Surface} )
+function AddToxicDump(entity)
+	table.insert( global.toxicDumps, {position = entity.position, surface = entity.surface} )
 end
 
-function RemoveToxicDump(_Entity)
+function RemoveToxicDump(entity)
 	for key, _DatabaseEntity in pairs(global.toxicDumps) do
-		if IsPositionEqual(_Entity, _DatabaseEntity) then
-			DisperseCollectedPollution(_Entity, _DatabaseEntity.surface, _Entity.position)
+		if IsPositionEqual(entity, _DatabaseEntity) then
+			DisperseCollectedPollution(entity, _DatabaseEntity.surface, entity.position)
 			table.remove(global.toxicDumps, key)
 			break
 		end
 	end
 end
 
-function IsToxicDump(_Entity)
-	return _Entity.name == TOXIC_DUMP_NAME
+function IsToxicDump(entity)
+	return entity.name == TOXIC_DUMP_NAME
 end
 
-function OnTick_ToxicDumps(_Event)
+function OnTick_ToxicDumps(event)
+	if global.toxicDumps == nil or not next(global.toxicDumps) then return end
 	for k, v in pairs(global.toxicDumps) do
-		local entities = game.surfaces[v.surface].find_entities_filtered{area = {{v.position.x - .25, v.position.y - .25}, {v.position.x + .25, v.position.y + .25}}, name = TOXIC_DUMP_NAME}
+		local entities = v.surface.find_entities_filtered{area = {{v.position.x - .25, v.position.y - .25}, {v.position.x + .25, v.position.y + .25}}, name = TOXIC_DUMP_NAME}
 		for _,entity in pairs(entities) do
 			if entity and entity.fluidbox and entity.fluidbox[1] and (entity.fluidbox[1].name == POLLUTED_AIR_NAME or entity.fluidbox[1].name == TOXIC_SLUDGE_NAME) then
 				local capacity = entity.fluidbox.get_capacity(1)
@@ -270,7 +326,7 @@ function OnTick_ToxicDumps(_Event)
 					
 					local smokeNum = math.max(math.random(TOXIC_DUMP_SMOKE_MIN, TOXIC_DUMP_SMOKE_MAX),1)
 					for i=1,smokeNum,1 do
-						game.surfaces[v.surface].create_trivial_smoke{
+						v.surface.create_trivial_smoke{
 							name = 'dump-smoke',
 							position = {entity.position.x+math.random(-0.75,0.75),entity.position.y+math.random(-0.75,0.75)},
 						}
@@ -282,7 +338,7 @@ function OnTick_ToxicDumps(_Event)
 						cloudToUse = TOXIC_DUMP_CLOUD_MEDIUM
 					end
 					for i = 1,math.max(math.ceil(fillPercent * TOXIC_DUMP_CLOUDS),1),1 do
-						game.surfaces[v.surface].create_entity({
+						v.surface.create_entity({
 							name=cloudToUse,
 							amount=1,
 							force=entity.force,
@@ -299,53 +355,18 @@ end
 --===============================--
 -- Pollution Collector Functions --
 --===============================--
-function AddPollutionCollector(_Entity)
-	local _Position = _Entity.position
-	local _Surface = _Entity.surface.name
-	table.insert( global.collectors, {position = _Position, surface = _Surface} )
+
+function IsPollutionCollector(entity)
+	return entity.name == POLLUTION_COLLECTOR_NAME
 end
 
-function RemovePollutionCollector(_Entity)
-	for key, _DatabaseEntity in pairs(global.collectors) do
-		if IsPositionEqual(_Entity, _DatabaseEntity) then
-			DisperseCollectedPollution(_Entity, _DatabaseEntity.surface, _Entity.position)
-			table.remove(global.collectors, key)
-			break
-		end
-	end
+function AddPollutionCollector(entity)
+	global.collectors[entity] = true
 end
 
-function IsPollutionCollector(_Entity)
-	return _Entity.name == POLLUTION_COLLECTOR_NAME
-end
-
-function GetNearbyPollution(_Surface, _Position)
-	local totalPollution = {}
-	totalPollution.center	= {pollution = game.surfaces[_Surface].get_pollution(_Position), position = _Position}
-	totalPollution.left		= {pollution = game.surfaces[_Surface].get_pollution({x=_Position.x+32,y=_Position.y}), position = {x=_Position.x+32,y=_Position.y}}
-	totalPollution.right	= {pollution = game.surfaces[_Surface].get_pollution({x=_Position.x-32,y=_Position.y}), position = {x=_Position.x-32,y=_Position.y}}
-	totalPollution.up		= {pollution = game.surfaces[_Surface].get_pollution({x=_Position.x,y=_Position.y+32}), position = {x=_Position.x,y=_Position.y+32}}
-	totalPollution.down		= {pollution = game.surfaces[_Surface].get_pollution({x=_Position.x,y=_Position.y-32}), position = {x=_Position.x,y=_Position.y-32}}
-	return totalPollution--game.surfaces[_Surface].get_pollution(_Position)
-end
-
-function DecreaseNearbyPollution(_Surface, _Position, _Amounts)
-	for k,v in pairs(_Amounts) do
-		game.surfaces[_Surface].pollute(v.position, -1 * v.pollution);
-	end
-end
-
-function OnTick_PollutionCollectors(_Event)
-	for k, collector in pairs(global.collectors) do
-		--if POLLUTION_COLLECTION_MIN < game.surfaces[collector.surface].get_pollution(collector.position) then
-			local entities = game.surfaces[collector.surface].find_entities_filtered{area = {{collector.position.x - .25, collector.position.y - .25}, {collector.position.x + .25, collector.position.y + .25}}, name = POLLUTION_COLLECTOR_NAME}
-			for _,entity in pairs(entities) do
-				if entity then
-					CollectPollution(entity, collector.surface)
-				end
-			end
-		--end
-	end
+function RemovePollutionCollector(entity)
+	DisperseCollectedPollution(entity, entity.surface, entity.position)
+	global.collectors[entity] = nil
 end
 
 function CollectPollution(entity, surface)
@@ -353,71 +374,59 @@ function CollectPollution(entity, surface)
 	if contents == nil then
 		contents = {
 			name = POLLUTED_AIR_NAME,
-			amount = 0,
+			amount = 0.0000001,
 		}
 	end
-	
-	local nearbyPollution = GetNearbyPollution(surface, entity.position)
-	--local targetPollution = nearbyPollution.center
-	local bonusAmount_Possible = 0
-	for k,v in pairs(nearbyPollution) do
-		local targetGatherAmount = v.pollution
-		local maxPercent = settings.global["zpollution-collection-max-percent"].value
-		if( k ~= "center" ) then
-			maxPercent = maxPercent/4.0
-		end
-		----[[
-		--if( v.pollution < POLLUTION_COLLECTION_MIN ) then
-		--	targetGatherAmount = 0
-		--end
-		if( v.pollution >= POLLUTION_COLLECTION_MIN) then
-			targetGatherAmount = POLLUTION_COLLECTION_MIN
-		end
-		if( v.pollution * maxPercent >= POLLUTION_COLLECTION_MIN ) then
-			targetGatherAmount = v.pollution * maxPercent
-		end
-		--]]
-		nearbyPollution[k].pollution = targetGatherAmount
-		if( k ~= "center" ) then
-			bonusAmount_Possible = bonusAmount_Possible + targetGatherAmount
+
+	local capacityRemaining = (entity.fluidbox.get_capacity(1) - contents.amount) * EMISSIONS_PER_AIR		
+	if capacityRemaining <= 0 then return end
+
+	local neighbors = GetPollutionNeighbors(surface, entity.position)
+	local maxCollection = 0
+	for x = -1,1 do
+		for y = -1,1 do
+			maxCollection = maxCollection + neighbors[x][y].maxCollection
 		end
 	end
-	
-	local capacityRemaining = (entity.fluidbox.get_capacity(1) - contents.amount) * EMISSIONS_PER_AIR
-	local pollution 		= 0
-	local bonusMultiplier	= 0.0
-	if( (nearbyPollution.center.pollution + bonusAmount_Possible) <= capacityRemaining ) then
-		bonusMultiplier = 1.0
-	elseif( nearbyPollution.center.pollution < capacityRemaining ) then
-		capacityRemaining = capacityRemaining - nearbyPollution.center.pollution
-		bonusMultiplier   = capacityRemaining / bonusAmount_Possible
-		bonusAmount_Possible = bonusAmount_Possible * bonusMultiplier
-	else
-		nearbyPollution.center.pollution = capacityRemaining
-		bonusMultiplier = 0.0
+	if maxCollection <= 0 then return end
+
+	local collectionMultiplier = 1
+	if capacityRemaining < maxCollection then
+		collectionMultiplier = capacityRemaining / maxCollection
 	end
-	
-	pollution = nearbyPollution.center.pollution + bonusAmount_Possible
-	for k,v in pairs(nearbyPollution) do
-		if( k ~= "center" ) then
-			nearbyPollution[k].pollution = nearbyPollution[k].pollution * bonusMultiplier
+
+	for x = -1,1 do
+		for y = -1,1 do
+			local emissionChange = collectionMultiplier * neighbors[x][y].maxCollection
+			surface.pollute(neighbors[x][y].position, -1 * emissionChange)
+			contents.amount = contents.amount + (emissionChange / EMISSIONS_PER_AIR)
 		end
 	end
-	
-	if (pollution <= 0) then return end
-	
-	contents.amount = contents.amount + (pollution / EMISSIONS_PER_AIR)
-	DecreaseNearbyPollution(surface, entity.position, nearbyPollution)
+
 	entity.fluidbox[1] = contents
 end
 
-function ReplaceEntities(original, replacement)
-	local s = game.local_player.surface
-	for chunk in s.get_chunks() do
-		local entities = s.find_entities_filtered{name=original, area={{chunk.x*32, chunk.y*32}, {(chunk.x+1)*32, (chunk.y+1)*32}}}
-		for _, entity in pairs(entities) do
-			s.create_entity{name=replacement, position=entity.position, force=game.local_player.force}
-			entity.destroy()
+function GetPollutionNeighbors(surface, position)
+	local neighbors = {}
+	for nearX = -1,1 do
+		neighbors[nearX] = {}
+		for nearY = -1,1 do
+			neighbors[nearX][nearY] = {}
+			neighbors[nearX][nearY].position = {x = position.x + 32*nearX, y = position.y + 32*nearY}
+			neighbors[nearX][nearY].pollution = surface.get_pollution(neighbors[nearX][nearY].position)
+			neighbors[nearX][nearY].maxCollection = (neighbors[nearX][nearY].pollution - settings.global["zpollution-pollution-remaining"].value) / settings.global["zpollution-collectors-required"].value
+		end
+	end
+	return neighbors
+end
+
+function OnTick_PollutionCollectors(event)
+	if global.collectors == nil or not next(global.collectors) then return end
+	for entity,_ in pairs(global.collectors) do
+		if entity.valid then
+			CollectPollution(entity, entity.surface)
+		else
+			global.collectors[entity] = nil
 		end
 	end
 end

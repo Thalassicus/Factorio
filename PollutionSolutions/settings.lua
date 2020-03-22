@@ -61,7 +61,7 @@ data:extend{
     name = "zpollution-blue-to-red-cost",
     setting_type = "startup",
     minimum_value = 1,
-    default_value = 2.0,
+    default_value = 10.0,
 		order = "b-b"
   },
   {
@@ -84,7 +84,7 @@ data:extend{
     name = "zpollution-tree-absorption",
     setting_type = "startup",
     minimum_value = 0,
-    default_value = 0.01,
+    default_value = 0.001,
 		order = "c-b"
   },
   
@@ -98,12 +98,20 @@ data:extend{
   },
   {
     type = "double-setting",
-    name = "zpollution-collection-max-percent",
+    name = "zpollution-collectors-required",
     setting_type = "runtime-global",
-    minimum_value = 0.01,
-    default_value = 0.10,
-    maximum_value = 1.00,
+    minimum_value = 1,
+    default_value = 8,
+    maximum_value = 100,
 		order = "a-b"
+  },
+  {
+    type = "double-setting",
+    name = "zpollution-pollution-remaining",
+    setting_type = "runtime-global",
+    minimum_value = 0,
+    default_value = 50,
+		order = "a-c"
   },
   {
     type = "double-setting",
@@ -123,18 +131,26 @@ data:extend{
   },
   {
     type = "int-setting",
-    name = "zpollution-pickup-interval",
+    name = "zpollution-pickup-safety-radius",
     setting_type = "runtime-global",
     minimum_value = 0,
-    default_value = 60,
+    default_value = 32,
 		order = "b-c"
   },
   {
     type = "int-setting",
-    name = "zpollution-pickup-safety-distance",
+    name = "zpollution-pickup-interval",
     setting_type = "runtime-global",
     minimum_value = 0,
-    default_value = 32,
+    default_value = 10,
 		order = "b-d"
+  },
+  {
+    type = "int-setting",
+    name = "zpollution-pickup-attempts",
+    setting_type = "runtime-global",
+    minimum_value = 0,
+    default_value = 60,
+		order = "b-e"
   },
 }

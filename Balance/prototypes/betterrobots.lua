@@ -1,8 +1,5 @@
 data.raw["combat-robot"]["defender"].time_to_live = 30 * 60*60 -- 60 * 45
 
-data.raw["construction-robot"]["construction-robot"].speed = 0.09 -- 0.06
-data.raw["construction-robot"]["construction-robot"].speed_multiplier_when_out_of_energy = 0.9 --0.2
-
 data.raw["roboport-equipment"]["personal-roboport-equipment"].charge_approach_distance = 1 -- 2.6
 data.raw["roboport-equipment"]["personal-roboport-equipment"].charging_distance = 0.5 -- 1.6
 

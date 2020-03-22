@@ -21,10 +21,9 @@ TOXIC_DUMP_CLOUD_LARGE_PERCENT   = 0.20                   -- As a percentage of 
 TOXIC_DUMP_CONSUME_PERCENT       = 0.5                    -- Destroys this percentage of the potential output when dumping toxic sludge, divided by toxic sludge ratio for concentrated pollution
 
 POLLUTION_COLLECTOR_NAME         = 'pollutioncollector' 
-POLLUTION_COLLECTION_MIN         = 50                     -- minimum amount of pollution required for the collector to operate
 
 POLLUTED_AIR_NAME                = "polluted-air"
-EMISSIONS_PER_AIR         = 4                      -- amount of actual air pollution per unit of polluted-air
+EMISSIONS_PER_AIR                = 1                      -- amount of actual air pollution per unit of polluted-air
 TOXIC_SLUDGE_NAME                = "toxic-sludge"
 
 SLUDGE_PER_BARREL                = settings.startup["zpollution-sludge-per-barrel"].value

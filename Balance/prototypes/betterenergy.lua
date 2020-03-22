@@ -1,3 +1,5 @@
+--[[
+
 -- increase cost and output
 data.raw["solar-panel"]["solar-panel"].production = "120kW" -- was 60
 data.raw["recipe"]["solar-panel"].ingredients = {
@@ -23,3 +25,4 @@ data.raw["recipe"]["satellite"].ingredients = {
 	{"processing-unit", 100},
 	{"rocket-fuel", 50}
 }
+--]]
