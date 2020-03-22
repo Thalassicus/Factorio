@@ -126,7 +126,7 @@ data:extend{
     name = "zpollution-red-per-alien",
     setting_type = "runtime-global",
     minimum_value = 0.01,
-    default_value = 5,
+    default_value = 10,
 		order = "b-b"
   },
   {
@@ -136,21 +136,5 @@ data:extend{
     minimum_value = 0,
     default_value = 32,
 		order = "b-c"
-  },
-  {
-    type = "int-setting",
-    name = "zpollution-pickup-interval",
-    setting_type = "runtime-global",
-    minimum_value = 0,
-    default_value = 10,
-		order = "b-d"
-  },
-  {
-    type = "int-setting",
-    name = "zpollution-pickup-attempts",
-    setting_type = "runtime-global",
-    minimum_value = 0,
-    default_value = 60,
-		order = "b-e"
   },
 }

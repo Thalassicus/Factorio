@@ -108,6 +108,7 @@ end
 
 local spilledLoot = {}
 local lootToCheck = {}
+local nestsKilled = 0
 
 function EntityDied(event)
 	local alien = event.entity
@@ -122,25 +123,46 @@ function EntityDied(event)
 		quantity = 2*math.random() * settings.global["zpollution-blue-per-alien"].value * 5
 		loot = {name="blue-xenomass", count=math.floor(quantity+0.5)}
 	elseif alien.type == "unit-spawner" then
-		quantity = 2*math.random() * settings.global["zpollution-red-per-alien"].value
-		loot = {name="red-xenomass", count=math.floor(quantity+0.5)}
+		nestsKilled = nestsKilled + 1
+		log("nestsKilled=" .. nestsKilled)
+		quantity = math.ceil(settings.global["zpollution-red-per-alien"].value / nestsKilled)
+		loot = {name="red-xenomass", count=quantity}
+		log(alien.name .. " died; create " .. quantity .. " xenomass")
 	end
 	--log(alien.name .. " died; create " .. quantity .. " xenomass")
-	if next(loot) and loot.count >= 1 then 
-		alien.surface.spill_item_stack(alien.position, loot)
+	local safetyRadius = settings.global["zpollution-pickup-safety-radius"].value
+	if next(loot) and loot.count >= 1 then
+		local isArtillery = event.cause.type == "artillery-wagon" or event.cause.type == "artillery-turret" or event.cause.type == "artillery-projectile"
+		if safetyRadius == 0 or isArtillery then
+			alien.surface.spill_item_stack(alien.position, loot, event.force)
+			return
+		else
+			alien.surface.spill_item_stack(alien.position, loot)
+		end
 	end
 
-	local safetyRadius = settings.global["zpollution-pickup-safety-radius"].value
-	if safetyRadius > 0 and not IsEnemyNear(alien, 2 * safetyRadius) then
-		-- I was the last survivor
+	if IsEnemyNear(alien, 2 * safetyRadius) then
+		-- remember my loot for later pickup
+		local nearItems = alien.surface.find_entities_filtered{
+				position=alien.position,
+				radius=5,
+				name="item-on-ground"
+		}
+		for _,checkLoot in pairs(nearItems) do
+			if checkLoot.stack.name == loot.name and checkLoot.to_be_deconstructed(event.force) == false then
+				if spilledLoot[checkLoot] == nil then
+					checkLoot.to_be_looted = true
+					spilledLoot[checkLoot] = {force=event.force}
+				end
+			end
+		end
+	else
 		--log(alien.name .. " died as last survivor.")
 		for checkLoot,info in pairs(spilledLoot) do
 			if not checkLoot.valid then
-				-- manually looted
 				--log("manually looted")
 				spilledLoot[checkLoot] = nil
 			else
-				--log(Distance(alien, checkLoot))
 				if Distance(alien, checkLoot) < safetyRadius then
 					checkLoot.to_be_looted = true
 					checkLoot.order_deconstruction(info.force)
@@ -158,21 +180,6 @@ function EntityDied(event)
 				AttemptMarkForPickup(checkLoot, safetyRadius)
 			end
 		end
-	elseif settings.global["zpollution-pickup-interval"].value > 0 then
-		-- remember my own loot for later pickup
-		local nearItems = alien.surface.find_entities_filtered{
-				position=alien.position,
-				radius=5,
-				name="item-on-ground"
-		}
-		for _,checkLoot in pairs(nearItems) do
-			if checkLoot.stack.name == loot.name and checkLoot.to_be_deconstructed(event.force) == false then
-				if spilledLoot[checkLoot] == nil then
-					--checkLoot.to_be_looted = true
-					spilledLoot[checkLoot] = {force=event.force}
-				end
-			end
-		end
 	end
 end
 script.on_event(defines.events.on_entity_died, function(event) EntityDied(event) end)
@@ -186,24 +193,15 @@ function AttemptMarkForPickup(thisLoot, safetyRadius)
 	-- remove myself and neighbors from lootToCheck
 	local halfRadius = safetyRadius / 2
 	local stillToCheck = {}
-	--log("checking loot at ".. GetPositionString(thisLoot) .. " enemyNear="..tostring(enemyNear) .. " halfRadius="..halfRadius)
-	for checkLoot,v in pairs(lootToCheck) do
-		--log("A        loot at ".. GetPositionString(checkLoot) .. " " .. tostring(v))
-	end
 	for checkLoot,v in pairs(lootToCheck) do
 		if lootToCheck[checkLoot] == true then
-			--log("B        loot at ".. GetPositionString(checkLoot) .. " " .. tostring(v))
 			if Distance(thisLoot, checkLoot) < halfRadius then
-				--log("                 is near")
 				if not enemyNear then
 					MarkForPickup(checkLoot)
 				end
 				lootToCheck[checkLoot] = nil
 			end
 		end
-	end
-	for checkLoot,v in pairs(lootToCheck) do
-		--log("C        loot at ".. GetPositionString(checkLoot) .. " " .. tostring(v))
 	end
 end
 

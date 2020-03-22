@@ -25,10 +25,11 @@ data:extend(
 		prerequisites = {"automation-2"},
 		unit =
 		{
-			count = 80,
+			count = 100,
 			ingredients =
 			{
-				{"automation-science-pack", 1}
+				{"automation-science-pack", 1},
+				{"logistic-science-pack", 1}
 			},
 			time = 30
 		},
