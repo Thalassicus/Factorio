@@ -7,24 +7,13 @@ require "constants"
 --==============--
 -- Script Hooks --
 --==============--
-script.on_init(OnInit)
-script.on_load(OnLoad)
 script.on_event(defines.events.on_tick, function(event) OnTick(event) end)
 script.on_event(defines.events.on_built_entity, function(event) OnBuiltEntity(event) end)
 script.on_event(defines.events.on_robot_built_entity, function(event) OnBuiltEntity(event) end)
 script.on_event(defines.events.on_pre_player_mined_item, function(event) OnEntityPreRemoved(event) end)
 script.on_event(defines.events.on_robot_pre_mined, function(event) OnEntityPreRemoved(event) end)
 script.on_event(defines.events.on_entity_died, function(event) OnEntityPreRemoved(event) end)
-
-function OnInit()
-	FindDumps()
-	FindCollectors()
-end
-
-function OnLoad()
-	FindDumps()
-	FindCollectors()
-end
+script.on_event(defines.events.on_entity_died, function(event) EntityDied(event) end)
 
 function OnBuiltEntity(event)
 	if IsToxicDump(event.created_entity) then
@@ -48,9 +37,12 @@ function OnEntityPreRemoved(event)
 end
 
 function OnTick(event)
+	--ResetGlobals()
 	if game.tick % 300 == 0 then
 		FindDumps()
 		FindCollectors()
+		--game.players[1].insert{name="red-xenomass", count=50}
+		--game.players[1].insert{name="blue-xenomass", count=1000}
 	end
 	if game.tick % TOXIC_DUMP_INTERVAL == 0 then
 		OnTick_ToxicDumps(event)
@@ -58,6 +50,14 @@ function OnTick(event)
 	if game.tick % settings.global["zpollution-collection-interval"].value == 0 then
 		OnTick_PollutionCollectors(event)
 	end
+end
+
+function ResetGlobals()
+	global.toxicDumps = nil
+	global.collectors = nil
+	global.nestsKilled = nil
+	global.spilledLoot = nil
+	global.lootToCheck = nil
 end
 
 
@@ -106,13 +106,12 @@ end
 -- Loot Functionality --
 --====================--
 
-local spilledLoot = {}
-local lootToCheck = {}
-local nestsKilled = 0
-
 function EntityDied(event)
 	local alien = event.entity
 	if alien.force ~= game.forces.enemy or not event.force then return end
+	if global.nestsKilled == nil then global.nestsKilled = 0 end
+	if global.spilledLoot == nil then global.spilledLoot = {} end
+	if global.lootToCheck == nil then global.lootToCheck = {} end
 	
 	local loot = {}	
 	local quantity = 0
@@ -123,11 +122,11 @@ function EntityDied(event)
 		quantity = 2*math.random() * settings.global["zpollution-blue-per-alien"].value * 5
 		loot = {name="blue-xenomass", count=math.floor(quantity+0.5)}
 	elseif alien.type == "unit-spawner" then
-		nestsKilled = nestsKilled + 1
-		log("nestsKilled=" .. nestsKilled)
-		quantity = math.ceil(settings.global["zpollution-red-per-alien"].value / nestsKilled)
+		global.nestsKilled = global.nestsKilled + 1
+		--log("global.nestsKilled=" .. global.nestsKilled)
+		quantity = math.ceil(settings.global["zpollution-red-per-alien"].value / global.nestsKilled)
 		loot = {name="red-xenomass", count=quantity}
-		log(alien.name .. " died; create " .. quantity .. " xenomass")
+		--log(alien.name .. " died; create " .. quantity .. " xenomass")
 	end
 	--log(alien.name .. " died; create " .. quantity .. " xenomass")
 	local safetyRadius = settings.global["zpollution-pickup-safety-radius"].value
@@ -150,39 +149,38 @@ function EntityDied(event)
 		}
 		for _,checkLoot in pairs(nearItems) do
 			if checkLoot.stack.name == loot.name and checkLoot.to_be_deconstructed(event.force) == false then
-				if spilledLoot[checkLoot] == nil then
+				if global.spilledLoot[checkLoot] == nil then
 					checkLoot.to_be_looted = true
-					spilledLoot[checkLoot] = {force=event.force}
+					global.spilledLoot[checkLoot] = {force=event.force}
 				end
 			end
 		end
 	else
 		--log(alien.name .. " died as last survivor.")
-		for checkLoot,info in pairs(spilledLoot) do
+		for checkLoot,info in pairs(global.spilledLoot) do
 			if not checkLoot.valid then
 				--log("manually looted")
-				spilledLoot[checkLoot] = nil
+				global.spilledLoot[checkLoot] = nil
 			else
 				if Distance(alien, checkLoot) < safetyRadius then
 					checkLoot.to_be_looted = true
 					checkLoot.order_deconstruction(info.force)
-					spilledLoot[checkLoot] = nil
+					global.spilledLoot[checkLoot] = nil
 				end
 			end
 		end
 		-- check loot spilled outside my safety-radius
-		lootToCheck = {}
-		for checkLoot,_ in pairs(spilledLoot) do
-			lootToCheck[checkLoot] = true
+		global.lootToCheck = {}
+		for checkLoot,_ in pairs(global.spilledLoot) do
+			global.lootToCheck[checkLoot] = true
 		end
-		for checkLoot,_ in pairs(lootToCheck) do
-			if lootToCheck[checkLoot] == true then
+		for checkLoot,_ in pairs(global.lootToCheck) do
+			if global.lootToCheck[checkLoot] == true then
 				AttemptMarkForPickup(checkLoot, safetyRadius)
 			end
 		end
 	end
 end
-script.on_event(defines.events.on_entity_died, function(event) EntityDied(event) end)
 
 function GetPositionString(entity)
 	return math.floor(entity.position.x) ..",".. math.floor(entity.position.y)
@@ -190,16 +188,16 @@ end
 
 function AttemptMarkForPickup(thisLoot, safetyRadius)
 	local enemyNear = IsEnemyNear(thisLoot, safetyRadius)
-	-- remove myself and neighbors from lootToCheck
+	-- remove myself and neighbors from global.lootToCheck
 	local halfRadius = safetyRadius / 2
 	local stillToCheck = {}
-	for checkLoot,v in pairs(lootToCheck) do
-		if lootToCheck[checkLoot] == true then
+	for checkLoot,v in pairs(global.lootToCheck) do
+		if global.lootToCheck[checkLoot] == true then
 			if Distance(thisLoot, checkLoot) < halfRadius then
 				if not enemyNear then
 					MarkForPickup(checkLoot)
 				end
-				lootToCheck[checkLoot] = nil
+				global.lootToCheck[checkLoot] = nil
 			end
 		end
 	end
@@ -207,21 +205,21 @@ end
 
 function MarkForPickup(thisLoot)
 	if not thisLoot.valid then
-		lootToCheck[thisLoot] = nil
-		spilledLoot[thisLoot] = nil
+		global.lootToCheck[thisLoot] = nil
+		global.spilledLoot[thisLoot] = nil
 		return
 	end
-	if spilledLoot[thisLoot] == nil then
-		--log("Loot at " .. math.floor(checkLoot.position.x) ..",".. math.floor(checkLoot.position.y) .. " is not in spilledLoot")
+	if global.spilledLoot[thisLoot] == nil then
+		--log("Loot at " .. math.floor(checkLoot.position.x) ..",".. math.floor(checkLoot.position.y) .. " is not in global.spilledLoot")
 		return
 	end
-	local force = spilledLoot[thisLoot].force
+	local force = global.spilledLoot[thisLoot].force
 	if force == game.forces.neutral or force == game.forces.enemy then
 		thisLoot.order_deconstruction()
 	else
 		thisLoot.order_deconstruction(force)
 	end
-	spilledLoot[thisLoot] = nil
+	global.spilledLoot[thisLoot] = nil
 end
 
 function Distance(a, b)
@@ -359,12 +357,12 @@ function IsPollutionCollector(entity)
 end
 
 function AddPollutionCollector(entity)
-	global.collectors[entity] = true
+	global.collectors[entity.unit_number] = entity
 end
 
 function RemovePollutionCollector(entity)
 	DisperseCollectedPollution(entity, entity.surface, entity.position)
-	global.collectors[entity] = nil
+	global.collectors[entity.unit_number] = nil
 end
 
 function CollectPollution(entity, surface)
@@ -375,7 +373,7 @@ function CollectPollution(entity, surface)
 			amount = 0.0000001,
 		}
 	end
-
+	--log("collecting at " .. GetPositionString(entity))
 	local capacityRemaining = (entity.fluidbox.get_capacity(1) - contents.amount) * EMISSIONS_PER_AIR		
 	if capacityRemaining <= 0 then return end
 
@@ -386,6 +384,7 @@ function CollectPollution(entity, surface)
 			maxCollection = maxCollection + neighbors[x][y].maxCollection
 		end
 	end
+	--log("    maxCollection=" .. maxCollection)
 	if maxCollection <= 0 then return end
 
 	local collectionMultiplier = 1
@@ -412,7 +411,7 @@ function GetPollutionNeighbors(surface, position)
 			neighbors[nearX][nearY] = {}
 			neighbors[nearX][nearY].position = {x = position.x + 32*nearX, y = position.y + 32*nearY}
 			neighbors[nearX][nearY].pollution = surface.get_pollution(neighbors[nearX][nearY].position)
-			neighbors[nearX][nearY].maxCollection = (neighbors[nearX][nearY].pollution - settings.global["zpollution-pollution-remaining"].value) / settings.global["zpollution-collectors-required"].value
+			neighbors[nearX][nearY].maxCollection = math.max(0, (neighbors[nearX][nearY].pollution - settings.global["zpollution-pollution-remaining"].value) / settings.global["zpollution-collectors-required"].value)
 		end
 	end
 	return neighbors
@@ -420,11 +419,11 @@ end
 
 function OnTick_PollutionCollectors(event)
 	if global.collectors == nil or not next(global.collectors) then return end
-	for entity,_ in pairs(global.collectors) do
+	for _,entity in pairs(global.collectors) do
 		if entity.valid then
 			CollectPollution(entity, entity.surface)
 		else
-			global.collectors[entity] = nil
+			global.collectors[entity.unit_number] = nil
 		end
 	end
 end

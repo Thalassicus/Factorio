@@ -100,6 +100,14 @@ data:extend(
 				type = "unlock-recipe",
 				recipe = "low-heat-exchanger"
 			},
+			{
+				type = "unlock-recipe",
+				recipe = "fill-toxic-sludge-barrel"
+			},
+			{
+				type = "unlock-recipe",
+				recipe = "empty-toxic-sludge-barrel"
+			},
 		},
 		order = "c-a"
 	},

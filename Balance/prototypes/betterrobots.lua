@@ -1,4 +1,4 @@
-data.raw["combat-robot"]["defender"].time_to_live = 30 * 60*60 -- 60 * 45
+data.raw["combat-robot"]["defender"].time_to_live = 10 * 60*60 -- 60 * 45
 
 data.raw["roboport-equipment"]["personal-roboport-equipment"].charge_approach_distance = 1 -- 2.6
 data.raw["roboport-equipment"]["personal-roboport-equipment"].charging_distance = 0.5 -- 1.6

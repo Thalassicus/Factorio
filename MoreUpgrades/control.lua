@@ -1,9 +1,5 @@
 require "util"
 
---find_entities_filtered doesn't work at this step?
-script.on_init(FindOutposts)
-script.on_load(FindOutposts)
-
 function FindOutposts()
 	if global.outposts and next(global.outposts) then return end
 	global.outposts = {}
@@ -29,8 +25,9 @@ script.on_event(defines.events.on_robot_built_entity, function(event)
 	end
 end)
 
----[[
 script.on_event(defines.events.on_tick, function(event)
+	--global.outposts = nil
+	---[[
 	if game.tick % 300 == 0 then
 		FindOutposts()
 	end
@@ -42,5 +39,5 @@ script.on_event(defines.events.on_tick, function(event)
 			global.outposts[entity] = nil
 		end
 	end
+	--]]
 end)
---]]
