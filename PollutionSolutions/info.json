@@ -1,12 +1,10 @@
 {
 	"name": "PollutionSolutions",
 	"author": "Zerahan, Thalassicus",
-	"version": "1.0.0",
+	"version": "1.0.2",
 	"factorio_version": "0.18",
 	"title": "Pollution Solutions",
 	"homepage": "https://github.com/Thalassicus/Factorio",
-	"description": "This connects pollution with other systems to make Factorio a little more complex.
-    
-The native life is capable of absorbing pollution. By harvesting their organs, you can build collectors to gather and transport pollution. You can also mix pollution with alien xenomass to create a toxic organic sludge with many potential uses, including combat, power generation, and oil processing.",
+	"description": "This connects pollution with other systems to make Factorio more complex.\n\nThe native life is capable of absorbing pollution. By harvesting their organs, you can build collectors to gather and transport pollution. You can also mix pollution with alien xenomass to create a toxic organic sludge with many potential uses, including combat, power generation, and oil processing.",
 	"dependencies": ["base"]
 } 

@@ -1,8 +1,8 @@
 require "constants"
 
 local incinerator_recipe = util.table.deepcopy(data.raw['recipe']['nuclear-reactor'])
-incinerator_recipe.name = "incinerator"
-incinerator_recipe.result = "incinerator"
+incinerator_recipe.name = "toxic-incinerator"
+incinerator_recipe.result = "toxic-incinerator"
 incinerator_recipe.enabled = false
 incinerator_recipe.ingredients =
 {
@@ -114,7 +114,7 @@ data:extend({
 	},
 	{
 		type = "recipe",
-		name = "waste-treatment",
+		name = "toxic-waste-treatment",
 		category = "chemistry",
 		energy_required = 5,
 		enabled = false,
@@ -144,7 +144,7 @@ data:extend({
 
 
 local newProducts = {
-	"waste-treatment",
+	"toxic-waste-treatment",
 	"liquify-pollution",
 	"blue-xenomass",
 }

@@ -36,6 +36,18 @@ data.raw["technology"]["logistic-robotics"].effects =
 		type = "unlock-recipe",
 		recipe = "logistic-robot"
 	},
+	{
+		type = "character-logistic-requests",
+		modifier = true
+	},
+	{
+		type = "auto-character-logistic-trash-slots",
+		modifier = true
+	},
+	{
+		type = "character-logistic-trash-slots",
+		modifier = 30
+	}
 }
 
 data.raw["technology"]["robotics"].icon = "__EarlyConstructionRobots__/graphics/roboports.png"

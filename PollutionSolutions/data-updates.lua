@@ -90,11 +90,11 @@ data:extend(
 			},
 			{
 				type = "unlock-recipe",
-				recipe = "waste-treatment"
+				recipe = "toxic-waste-treatment"
 			},
 			{
 				type = "unlock-recipe",
-				recipe = "incinerator"
+				recipe = "toxic-incinerator"
 			},
 			{
 				type = "unlock-recipe",

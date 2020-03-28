@@ -1,8 +1,8 @@
 data.raw["pipe-to-ground"]["pipe-to-ground"].fluid_box.pipe_connections[2].max_underground_distance=20
 
 local incinerator_item = util.table.deepcopy(data.raw['item']['nuclear-reactor'])
-incinerator_item.name = "incinerator"
-incinerator_item.place_result = "incinerator"
+incinerator_item.name = "toxic-incinerator"
+incinerator_item.place_result = "toxic-incinerator"
 incinerator_item.icon="__PollutionSolutions__/graphics/icons/incinerator.png"
 incinerator_item.icon_size=64
 

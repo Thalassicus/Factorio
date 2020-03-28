@@ -5,9 +5,9 @@ require "constants"
 --
 
 local incinerator = util.table.deepcopy(data.raw['reactor']['nuclear-reactor'])
-incinerator.name = "incinerator"
+incinerator.name = "toxic-incinerator"
 incinerator.order = "z"
-incinerator.minable.result = "incinerator"
+incinerator.minable.result = "toxic-incinerator"
 incinerator.consumption = INCINERATOR_OUTPUT .. "MW" -- the game divides this by efficiency to get true consumption
 incinerator.energy_source.fuel_category = "waste"
 incinerator.energy_source.effectivity = INCENERATOR_EFFICIENCY

@@ -1,8 +1,14 @@
 require "util"
---require "math"
 require "constants"
 
---error("AIR_PER_SLUDGE = " .. AIR_PER_SLUDGE)
+function PrintToAll(message)
+  if message[1] == "autodeconstruct-debug" then
+    table.insert(message, 2, debug.getinfo(2).name)
+  end
+  for _,p in pairs(game.players) do
+    p.print(message)
+  end
+end
 
 --==============--
 -- Script Hooks --
@@ -14,6 +20,42 @@ script.on_event(defines.events.on_pre_player_mined_item, function(event) OnEntit
 script.on_event(defines.events.on_robot_pre_mined, function(event) OnEntityPreRemoved(event) end)
 script.on_event(defines.events.on_entity_died, function(event) OnEntityPreRemoved(event) end)
 script.on_event(defines.events.on_entity_died, function(event) EntityDied(event) end)
+
+PollutionSolutions = {}
+
+script.on_init(function()
+  local _, err = pcall(PollutionSolutions.InitGlobals)
+  if err then PrintToAll({"pollutionsolutions-err-generic", err}) end
+end)
+script.on_configuration_changed(function()
+  local _, err = pcall(PollutionSolutions.InitGlobals)
+  if err then PrintToAll({"pollutionsolutions-err-generic", err}) end
+end)
+
+function PollutionSolutions.InitGlobals()
+	global.toxicDumps = {}
+	global.collectors = {}
+	global.spilledLoot = {}
+	global.lootToCheck = {}
+	--[[
+	for _, force in pairs(game.forces) do
+		force.technologies["logistic-robotics"].researched = false
+		force.technologies["logistic-robotics"].reload()
+		force.technologies["logistic-robotics"].researched = true
+	end
+	--]]
+	for _,surface in pairs(game.surfaces) do
+		for _,entity in pairs(surface.find_entities_filtered{name=TOXIC_DUMP_NAME}) do
+			AddToxicDump(entity)
+		end
+		for _,entity in pairs(surface.find_entities_filtered{name=POLLUTION_COLLECTOR_NAME}) do
+			AddPollutionCollector(entity)
+		end
+		for _,entity in pairs(surface.find_entities_filtered{name={"red-xenomass", "blue-xenomass"}}) do
+			global.spilledLoot[entity] = game.forces.neutral
+		end
+	end
+end
 
 function OnBuiltEntity(event)
 	if IsToxicDump(event.created_entity) then
@@ -37,27 +79,12 @@ function OnEntityPreRemoved(event)
 end
 
 function OnTick(event)
-	--ResetGlobals()
-	if game.tick % 300 == 0 then
-		FindDumps()
-		FindCollectors()
-		--game.players[1].insert{name="red-xenomass", count=50}
-		--game.players[1].insert{name="blue-xenomass", count=1000}
-	end
 	if game.tick % TOXIC_DUMP_INTERVAL == 0 then
 		OnTick_ToxicDumps(event)
 	end
 	if game.tick % settings.global["zpollution-collection-interval"].value == 0 then
 		OnTick_PollutionCollectors(event)
 	end
-end
-
-function ResetGlobals()
-	global.toxicDumps = nil
-	global.collectors = nil
-	global.nestsKilled = nil
-	global.spilledLoot = nil
-	global.lootToCheck = nil
 end
 
 
@@ -67,26 +94,6 @@ end
 function IsPositionEqual(entity, _DatabaseEntity)
 	--error("Is surface equal: "..tostring(entity.surface == _DatabaseEntity.surface).."\nIs Xpos equal: "..tostring(entity.position.x == _DatabaseEntity.position.x).."\nIs Ypos equal: "..tostring(entity.position.y == _DatabaseEntity.position.y).."\n\nSurface: "..tostring(entity.surface).." == "..tostring(_DatabaseEntity.surface).." ("..tostring(entity.position.x)..", "..tostring(entity.position.y)..") == ("..tostring(_DatabaseEntity.position.x)..", "..tostring(_DatabaseEntity.position.y)..")")
 	return entity.surface == _DatabaseEntity.surface and entity.position.x == _DatabaseEntity.position.x and entity.position.y == _DatabaseEntity.position.y
-end
-
-function FindDumps()
-	if global.toxicDumps and next(global.toxicDumps) then return end
-	global.toxicDumps = {}
-	for _,surface in pairs(game.surfaces) do
-		for _,entity in pairs(surface.find_entities_filtered{name=TOXIC_DUMP_NAME}) do
-			AddToxicDump(entity)
-		end
-	end
-end
-
-function FindCollectors()
-	if global.collectors and next(global.collectors) then return end
-	global.collectors = {}
-	for _,surface in pairs(game.surfaces) do
-		for _,entity in pairs(surface.find_entities_filtered{name=POLLUTION_COLLECTOR_NAME}) do
-			AddPollutionCollector(entity)
-		end
-	end
 end
 
 --[[
@@ -113,71 +120,73 @@ function EntityDied(event)
 	if global.spilledLoot == nil then global.spilledLoot = {} end
 	if global.lootToCheck == nil then global.lootToCheck = {} end
 	
-	local loot = {}	
+	local loot = {name="", count=0}
 	local quantity = 0
+
 	if alien.type == "unit" then
 		quantity = 2*math.random() * settings.global["zpollution-blue-per-alien"].value
 		loot = {name="blue-xenomass", count=math.floor(quantity+0.5)}
 	elseif alien.type == "turret" then
-		quantity = 2*math.random() * settings.global["zpollution-blue-per-alien"].value * 5
+		quantity = 2*math.random() * settings.global["zpollution-blue-per-alien"].value * 20
 		loot = {name="blue-xenomass", count=math.floor(quantity+0.5)}
 	elseif alien.type == "unit-spawner" then
 		global.nestsKilled = global.nestsKilled + 1
 		--log("global.nestsKilled=" .. global.nestsKilled)
-		quantity = math.ceil(settings.global["zpollution-red-per-alien"].value / global.nestsKilled)
-		loot = {name="red-xenomass", count=quantity}
+		quantity = settings.global["zpollution-red-per-alien"].value / global.nestsKilled
+		loot = {name="red-xenomass", count=math.ceil(quantity)}
 		--log(alien.name .. " died; create " .. quantity .. " xenomass")
 	end
+
 	--log(alien.name .. " died; create " .. quantity .. " xenomass")
 	local safetyRadius = settings.global["zpollution-pickup-safety-radius"].value
-	if next(loot) and loot.count >= 1 then
-		local isArtillery = event.cause.type == "artillery-wagon" or event.cause.type == "artillery-turret" or event.cause.type == "artillery-projectile"
+	local isArtillery = (event.cause ~= nil) and (event.cause.type == "artillery-wagon" or event.cause.type == "artillery-turret" or event.cause.type == "artillery-projectile")
+	
+	if loot.count >= 1 then
 		if safetyRadius == 0 or isArtillery then
 			alien.surface.spill_item_stack(alien.position, loot, event.force)
 			return
 		else
 			alien.surface.spill_item_stack(alien.position, loot)
+			-- remember my loot
+			local nearItems = alien.surface.find_entities_filtered{
+					position=alien.position,
+					radius=5,
+					name="item-on-ground"
+			}
+			for _,checkLoot in pairs(nearItems) do
+				if checkLoot.stack.name == loot.name and checkLoot.to_be_deconstructed(event.force) == false then
+					if global.spilledLoot[checkLoot] == nil then
+						checkLoot.to_be_looted = true
+						global.spilledLoot[checkLoot] = {force=event.force}
+					end
+				end
+			end
 		end
 	end
 
-	if IsEnemyNear(alien, 2 * safetyRadius) then
-		-- remember my loot for later pickup
-		local nearItems = alien.surface.find_entities_filtered{
-				position=alien.position,
-				radius=5,
-				name="item-on-ground"
-		}
-		for _,checkLoot in pairs(nearItems) do
-			if checkLoot.stack.name == loot.name and checkLoot.to_be_deconstructed(event.force) == false then
-				if global.spilledLoot[checkLoot] == nil then
-					checkLoot.to_be_looted = true
-					global.spilledLoot[checkLoot] = {force=event.force}
-				end
-			end
-		end
-	else
-		--log(alien.name .. " died as last survivor.")
-		for checkLoot,info in pairs(global.spilledLoot) do
-			if not checkLoot.valid then
-				--log("manually looted")
+	if safetyRadius == 0 or IsEnemyNear(alien, 2 * safetyRadius) then return end
+
+	--log(alien.name .. " died as last survivor.")
+	for checkLoot,info in pairs(global.spilledLoot) do
+		if not checkLoot.valid then
+			--log("manually looted")
+			global.spilledLoot[checkLoot] = nil
+		else
+			if Distance(alien, checkLoot) < safetyRadius then
+				checkLoot.to_be_looted = true
+				checkLoot.order_deconstruction(info.force)
 				global.spilledLoot[checkLoot] = nil
-			else
-				if Distance(alien, checkLoot) < safetyRadius then
-					checkLoot.to_be_looted = true
-					checkLoot.order_deconstruction(info.force)
-					global.spilledLoot[checkLoot] = nil
-				end
 			end
 		end
-		-- check loot spilled outside my safety-radius
-		global.lootToCheck = {}
-		for checkLoot,_ in pairs(global.spilledLoot) do
-			global.lootToCheck[checkLoot] = true
-		end
-		for checkLoot,_ in pairs(global.lootToCheck) do
-			if global.lootToCheck[checkLoot] == true then
-				AttemptMarkForPickup(checkLoot, safetyRadius)
-			end
+	end
+	-- check loot spilled outside my safety-radius
+	global.lootToCheck = {}
+	for checkLoot,_ in pairs(global.spilledLoot) do
+		global.lootToCheck[checkLoot] = true
+	end
+	for checkLoot,_ in pairs(global.lootToCheck) do
+		if global.lootToCheck[checkLoot] == true then
+			AttemptMarkForPickup(checkLoot, safetyRadius)
 		end
 	end
 end
