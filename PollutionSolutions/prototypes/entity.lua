@@ -103,9 +103,9 @@ toxicturret.name = "toxic-turret"
 toxicturret.order = "z"
 toxicturret.minable.result = "toxic-turret"
 toxicturret.attack_parameters.fluids = {
-    {type = "toxic-sludge"}
+  {type = "toxic-sludge"}
 }
-toxicturret.attack_parameters.fluid_consumption = 3.0
+toxicturret.attack_parameters.fluid_consumption = 3.0 * EMISSIONS_PER_AIR * AIR_PER_SLUDGE
 toxicturret.attack_parameters.ammo_type.action.action_delivery.stream = "toxic-flame-stream"
 table.insert(toxicturret.resistances,
 {

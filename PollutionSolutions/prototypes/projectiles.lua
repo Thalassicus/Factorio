@@ -340,7 +340,10 @@ firetoxic.name = "toxic-fire"
 firetoxic.damage_per_tick.type = POLLUTION_DAMAGE_TYPE
 firetoxic.pictures = fireutil.create_fire_pictures({ blend_mode = "normal", animation_speed = 1, scale = 0.5})
 firetoxic.spawn_entity = "toxic-flame-on-tree"
-firetoxic.emissions_per_tick = 0.5 -- default: 0.005
+local emissionsPerSludge = EMISSIONS_PER_AIR * AIR_PER_SLUDGE
+local turretSludgePerSecond = 3
+local sludgePerFire = firetoxic.add_fuel_cooldown * (turretSludgePerSecond / TICKS_PER_SECOND)
+firetoxic.emissions_per_second = 5 * emissionsPerSludge * sludgePerFire * (TICKS_PER_SECOND / firetoxic.initial_lifetime)
 firetoxic.maximum_spread_count=0
 firetoxic.damage_per_tick.amount = 6 / TICKS_PER_SECOND
 

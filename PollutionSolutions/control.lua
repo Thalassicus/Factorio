@@ -115,29 +115,37 @@ end
 
 function EntityDied(event)
 	local alien = event.entity
+	--log(alien.name .. " died in force " .. alien.force.name)
 	if alien.force ~= game.forces.enemy or not event.force then return end
 	if global.nestsKilled == nil then global.nestsKilled = 0 end
 	if global.spilledLoot == nil then global.spilledLoot = {} end
 	if global.lootToCheck == nil then global.lootToCheck = {} end
 	
 	local loot = {name="", count=0}
-	local quantity = 0
+	local quantity = 0.0
 
 	if alien.type == "unit" then
-		quantity = 2*math.random() * settings.global["zpollution-blue-per-alien"].value
-		loot = {name="blue-xenomass", count=math.floor(quantity+0.5)}
+		local blueAverage = settings.global["zpollution-blue-per-alien"].value
+		if game.active_mods["Rampant"] ~= nil then
+			blueAverage = blueAverage * 0.25
+		end		
+		if blueAverage >= 1 then
+			quantity = 2*math.random() * blueAverage
+			loot = {name="blue-xenomass", count=math.floor(quantity+0.5)}
+		elseif blueAverage > math.random() then
+			loot = {name="blue-xenomass", count=1}
+		end
+		
 	elseif alien.type == "turret" then
-		quantity = 2*math.random() * settings.global["zpollution-blue-per-alien"].value * 20
+		quantity = 2*math.random() * 20
 		loot = {name="blue-xenomass", count=math.floor(quantity+0.5)}
 	elseif alien.type == "unit-spawner" then
 		global.nestsKilled = global.nestsKilled + 1
-		--log("global.nestsKilled=" .. global.nestsKilled)
 		quantity = settings.global["zpollution-red-per-alien"].value / global.nestsKilled
 		loot = {name="red-xenomass", count=math.ceil(quantity)}
-		--log(alien.name .. " died; create " .. quantity .. " xenomass")
 	end
 
-	--log(alien.name .. " died; create " .. quantity .. " xenomass")
+	--log(create " .. quantity .. " xenomass")
 	local safetyRadius = settings.global["zpollution-pickup-safety-radius"].value
 	local isArtillery = (event.cause ~= nil) and (event.cause.type == "artillery-wagon" or event.cause.type == "artillery-turret" or event.cause.type == "artillery-projectile")
 	
@@ -224,7 +232,9 @@ function MarkForPickup(thisLoot)
 	end
 	local force = global.spilledLoot[thisLoot].force
 	if force == game.forces.neutral or force == game.forces.enemy then
-		thisLoot.order_deconstruction()
+		for _, targetForce in pairs(game.forces) do
+			thisLoot.order_deconstruction(targetForce)
+		end
 	else
 		thisLoot.order_deconstruction(force)
 	end

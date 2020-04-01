@@ -1,4 +1,5 @@
 data:extend{
+  -- Startup
   {
     type = "int-setting",
     name = "zpollution-air-per-sludge",
@@ -72,12 +73,19 @@ data:extend{
 		order = "c-a"
   },
   {
+    type = "bool-setting",
+    name = "zpollution-pipe-vulnerable",
+    setting_type = "startup",
+    default_value = false,
+		order = "c-b"
+  },
+  {
     type = "int-setting",
     name = "zpollution-pipe-distance",
     setting_type = "startup",
     minimum_value = 5,
     default_value = 20,
-		order = "c-b"
+		order = "c-c"
   },
   {
     type = "double-setting",
@@ -85,9 +93,11 @@ data:extend{
     setting_type = "startup",
     minimum_value = 0,
     default_value = 0.001,
-		order = "c-b"
+		order = "c-d"
   },
   
+
+  -- Runtime
   {
     type = "int-setting",
     name = "zpollution-collection-interval",
@@ -134,7 +144,7 @@ data:extend{
     name = "zpollution-pickup-safety-radius",
     setting_type = "runtime-global",
     minimum_value = 0,
-    default_value = 32,
+    default_value = 24,
 		order = "b-c"
   },
 }

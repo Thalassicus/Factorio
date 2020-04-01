@@ -1,9 +1,18 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.0.3
+Date: 2020.3.30
+  Features:
+    - Added an option to make pipe-to-ground segments invulnerable.
+  Compatibility:
+    - Enemies drop 25% less loot when using attack swarms in the Rampant mod.
+  Bugfixes:
+    - Less than 1 loot per enemy should now calculate properly.
+---------------------------------------------------------------------------------------------------
 Version: 1.0.2
 Date: 2020.3.28
-  Modding:
+  Compatibility:
     - Renamed Incenerator to Toxic Incenerator
-		- Renamed Waste Treatment to Toxic Waste Treatment
+    - Renamed Waste Treatment to Toxic Waste Treatment
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Version: 1.0.1
 Date: 2020.3.27

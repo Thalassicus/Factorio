@@ -4,7 +4,7 @@
 	"version": "1.0.2",
 	"factorio_version": "0.18",
 	"title": "Pollution Solutions",
-	"homepage": "https://github.com/Thalassicus/Factorio",
-	"description": "This connects pollution with other systems to make Factorio more complex.\n\nThe native life is capable of absorbing pollution. By harvesting their organs, you can build collectors to gather and transport pollution. You can also mix pollution with alien xenomass to create a toxic organic sludge with many potential uses, including combat, power generation, and oil processing.",
-	"dependencies": ["base"]
+	"homepage": "https://forums.factorio.com/viewtopic.php?f=190&t=83002",
+	"description": "This makes Factorio more fun by turning pollution and combat into an interconnected system you actively engage with, instead of just tossing down laser turrets and forgetting about both. This minimalist mod stays close to the vanilla experience, adding only what's necessary to accomplish the goals.\n\nThe native life is capable of absorbing pollution. Destroying alien nests provides the red xenomass necessary to build pollution collectors. This gives a reason to go out and fight the aliens, something missing from the game after Alien Science was removed. In addition, turning pollution into electricity or oil products requires blue xenomass, acquired by killing alien creatures. Passive defenses are still an option, but with this mod, you're rewarded for investing in more complex systems.",
+	"dependencies": ["base >= 0.18", "? Rampant"]
 } 
