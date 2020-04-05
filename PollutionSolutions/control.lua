@@ -126,9 +126,11 @@ function EntityDied(event)
 
 	if alien.type == "unit" then
 		local blueAverage = settings.global["zpollution-blue-per-alien"].value
+		--[[
 		if game.active_mods["Rampant"] ~= nil then
-			blueAverage = blueAverage * 0.25
-		end		
+			blueAverage = blueAverage * 0.5
+		end
+		--]]
 		if blueAverage >= 1 then
 			quantity = 2*math.random() * blueAverage
 			loot = {name="blue-xenomass", count=math.floor(quantity+0.5)}

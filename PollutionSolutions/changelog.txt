@@ -3,10 +3,9 @@ Version: 1.0.3
 Date: 2020.3.30
   Features:
     - Added an option to make pipe-to-ground segments invulnerable.
-  Compatibility:
-    - Enemies drop 25% less loot when using attack swarms in the Rampant mod.
   Bugfixes:
-    - Less than 1 loot per enemy should now calculate properly.
+    - Setting loot to less than 1 per enemy should now calculate properly.
+    - Toxic turrets now output the correct amount of emissions.
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.2
 Date: 2020.3.28
