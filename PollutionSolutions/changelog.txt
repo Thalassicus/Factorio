@@ -1,11 +1,27 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.0.6
+Date: 2020.3.13
+  Balance:
+    - Reduced crafting time and inputs for waste treatment.
+---------------------------------------------------------------------------------------------------
+Version: 1.0.5
+Date: 2020.3.11
+  Bugfixes:
+    - Fixed a script error for artillery loot logging.
+---------------------------------------------------------------------------------------------------
+Version: 1.0.4
+Date: 2020.3.11
+  Bugfixes:
+    - Toxic turrets now output the correct amount of emissions.
+    - Xenomass should now properly pick up when walked over.
+    - Artillery should properly mark loot for pickup.
+---------------------------------------------------------------------------------------------------
 Version: 1.0.3
 Date: 2020.3.30
   Features:
     - Added an option to make pipe-to-ground segments invulnerable.
   Bugfixes:
     - Setting loot to less than 1 per enemy should now calculate properly.
-    - Toxic turrets now output the correct amount of emissions.
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.2
 Date: 2020.3.28

@@ -85,6 +85,13 @@ data.raw["land-mine"]["land-mine"].resistances =
         percent = 100
 	}
 }
+
+for damageType, _ in pairs(data.raw["damage-type"]) do
+	data.raw["land-mine"]["land-mine"].resistances[damageType] = {
+		type = damageType,
+		percent = 100
+	}
+end
 --[[
 table.insert(data.raw["technology"]["laser-turret-damage-1"].effects,
 	{

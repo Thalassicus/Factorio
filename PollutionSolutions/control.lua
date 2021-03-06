@@ -153,10 +153,13 @@ function EntityDied(event)
 	
 	if loot.count >= 1 then
 		if safetyRadius == 0 or isArtillery then
-			alien.surface.spill_item_stack(alien.position, loot, event.force)
+			if isArtillery then
+				log(event.cause.type.." from force "..event.force.name.." killed "..alien.name..".")
+			end
+			alien.surface.spill_item_stack(alien.position, loot, true, event.force)
 			return
 		else
-			alien.surface.spill_item_stack(alien.position, loot)
+			alien.surface.spill_item_stack(alien.position, loot, true)
 			-- remember my loot
 			local nearItems = alien.surface.find_entities_filtered{
 					position=alien.position,
@@ -440,11 +443,11 @@ end
 
 function OnTick_PollutionCollectors(event)
 	if global.collectors == nil or not next(global.collectors) then return end
-	for _,entity in pairs(global.collectors) do
+	for unit_number,entity in pairs(global.collectors) do
 		if entity.valid then
 			CollectPollution(entity, entity.surface)
 		else
-			global.collectors[entity.unit_number] = nil
+			global.collectors[unit_number] = nil
 		end
 	end
 end
