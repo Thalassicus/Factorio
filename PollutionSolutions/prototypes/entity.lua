@@ -22,7 +22,7 @@ incinerator.picture.layers[1].filename = "__PollutionSolutions__/graphics/entity
 incinerator.picture.layers[1].hr_version.filename = "__PollutionSolutions__/graphics/entity/incinerator/hr-incinerator.png"
 incinerator.working_light_picture.filename="__PollutionSolutions__/graphics/entity/incinerator/reactor-lights-color.png"
 incinerator.working_light_picture.hr_version.filename="__PollutionSolutions__/graphics/entity/incinerator/hr-reactor-lights-color.png"
-incinerator.light.color={r=0.744, g=0.275, b=0.867}
+ncinerator.light_color={r=0.744, g=0.275, b=0.867}
 incinerator.heat_buffer.max_temperature=400
 
 incinerator.energy_source.smoke =
